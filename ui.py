@@ -311,6 +311,79 @@ def message_for_exception(exception, message):
             reset,
             buffer.getvalue())
 
+def read_input():
+    """ Read input from the user
+
+    """
+    info(green, "> ", end="")
+    return input()
+
+
+def ask_string(question, default=None):
+    """Ask the user to enter something.
+
+    Returns what the user entered
+    """
+    if default:
+        question += " (%s)" % default
+    info(green, "::", reset, question)
+    try:
+        answer = read_input()
+    except KeyboardInterrupt:
+        return default
+    if not answer:
+        return default
+    return answer
+
+
+def ask_choice(input_text, choices):
+    """Ask the user to choose from a list of choices
+
+    """
+    info(green, "::", reset, input_text)
+    for i, choice in enumerate(choices, start=1):
+        if i == 1:
+            choice += " \t(default)"
+        info("  ", blue, "%i" % i, reset, choice)
+    keep_asking = True
+    res = None
+    while keep_asking:
+        try:
+            answer = read_input()
+        except KeyboardInterrupt:
+            break
+        if not answer:
+            return choices[0]
+        try:
+            index = int(answer)
+        except ValueError:
+            info("Please enter number")
+            continue
+        if index not in range(1, len(choices)+1):
+            info(index, "is out of range")
+            continue
+        res = choices[index-1]
+        keep_asking = False
+
+    return res
+
+
+def ask_yes_no(question, default=False):
+    """Ask the user to answer by yes or no"""
+    while True:
+        if default:
+            info(green, "::", reset, question, "(Y/n)")
+        else:
+            info(green, "::", reset, question, "(y/N)")
+        answer = read_input()
+        if answer.lower() in ["y", "yes"]:
+            return True
+        if answer.lower() in ["n", "no"]:
+            return False
+        if not answer:
+            return default
+        warning("Please answer by 'y' (yes) or 'n' (no) ")
+
 
 class Timer:
     """ To be used as a decorator,
