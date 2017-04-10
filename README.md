@@ -54,8 +54,7 @@ I can change my mind, though, and I'm also willing to accept pull requests.
 
 ### Python2 support?
 
-* Maybe. I've start using Python2 altogether last year, but the code _should_ be
-  more or less compatible.
+* No. If you need this, feel free to create your own fork :)
 
 ### Windows support?
 
