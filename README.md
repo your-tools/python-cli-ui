@@ -5,27 +5,9 @@ in several projects.
 
 ## Demo:
 
-```python
-info_1("Info 1")
-time.sleep(0.5)
-info_2("Info 2")
-time.sleep(0.5)
-info_3("Info 3")
-time.sleep(0.5)
-list_of_things = ["foo", "bar", "baz"]
-for i, thing in enumerate(list_of_things):
-    time.sleep(0.5)
-    info_count(i, len(list_of_things), thing)
-info_progress("Done",  5, 20)
-time.sleep(0.5)
-info_progress("Done", 10, 20)
-time.sleep(0.5)
-info_progress("Done", 20, 20)
-time.sleep(0.5)
-info("\n", check, "all done")
-```
+Run `python3 ui.py` and be amazed!
 
-https://asciinema.org/a/112368
+Or just watch the [asciinema recording](https://asciinema.org/a/112368)
 
 
 ## Usage
