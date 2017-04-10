@@ -450,20 +450,26 @@ def did_you_mean(message, user_input, choices):
 
 
 if __name__ == "__main__":
-    info_1("Info 1")
-    time.sleep(0.5)
-    info_2("Info 2")
-    time.sleep(0.5)
-    info_3("Info 3")
-    time.sleep(0.5)
+    # Monkey-patch message() so that we sleep after
+    # each call
+    old_message = message
+    def new_message(*args, **kwargs):
+        old_message(*args, **kwargs)
+        time.sleep(1)
+    message = new_message
+    info_1("Important info")
+    info_2("Secondary info")
+    info("This is", red, "red", reset, ", and this is", bold, "bold")
     list_of_things = ["foo", "bar", "baz"]
     for i, thing in enumerate(list_of_things):
-        time.sleep(0.5)
         info_count(i, len(list_of_things), thing)
     info_progress("Done",  5, 20)
-    time.sleep(0.5)
     info_progress("Done", 10, 20)
-    time.sleep(0.5)
     info_progress("Done", 20, 20)
-    time.sleep(0.5)
     info("\n", check, "all done")
+
+    # stop monkey patching
+    message = old_message
+    fruits = ["apple", "orange", "banana"]
+    answer = ask_choice("Choose a fruit", fruits)
+    info("You chose:", answer)
