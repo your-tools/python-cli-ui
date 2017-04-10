@@ -42,9 +42,17 @@ You can check what messages are displayed in your own tests using the
 
 ## FAQ
 
-### Why not publish on pypi ?
+### Documentation?
 
-* I'm lazy
+Use the source, Luke!
+
+I'm too lazy to write a proper documentation, and it would always be outdated
+anyway ...
+
+
+### Why not publish on pypi?
+
+* I'm lazy (again)
 * The code is really small
 * It's better for you to integrate the `ui.py` file directly in
   you project: that way you can tweak it however you like, and
