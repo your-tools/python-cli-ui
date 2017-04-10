@@ -62,3 +62,11 @@ def test_info_characters(smart_tty):
     actual = smart_tty.getvalue()
     expected = "Doing stuff " + RESET + "…" + " sucess " + GREEN + "✓"
     assert_equal_strings(actual, expected)
+
+
+def test_record_message(messages):
+    ui.info_1("This is foo")
+    assert messages.find("foo")
+    messages.reset()
+    ui.info_1("This is bar")
+    assert not messages.find("foo")
