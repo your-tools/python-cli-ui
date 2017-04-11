@@ -3,6 +3,9 @@
 This repository contains a small Python module I've been using
 in several projects.
 
+_Note: I've also written a [blog post](https://dmerej.info/blog/post/introducing-python-cli-ui/) that contains a more detailed list of
+features, if you're interesting_
+
 ## Demo:
 
 Run `python3 ui.py` and be amazed!
