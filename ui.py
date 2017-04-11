@@ -459,7 +459,8 @@ if __name__ == "__main__":
     message = new_message
     info_1("Important info")
     info_2("Secondary info")
-    info("This is", red, "red", reset, ", and this is", bold, "bold")
+    info("This is", red, "red")
+    info("this is", bold, "bold")
     list_of_things = ["foo", "bar", "baz"]
     for i, thing in enumerate(list_of_things):
         info_count(i, len(list_of_things), thing)
