@@ -1,4 +1,6 @@
+import datetime
 import io
+import re
 from unittest import mock
 
 import ui
@@ -27,8 +29,15 @@ def smart_tty():
 @pytest.fixture
 def dumb_tty():
     res = io.StringIO()
-    res.isatty = lambda: True
+    res.isatty = lambda: False
     return res
+
+
+@pytest.fixture
+def toggle_timestamp():
+    ui.CONFIG["timestamp"] = True
+    yield
+    ui.CONFIG["timestamp"] = False
 
 
 def test_info_stdout_is_a_tty(smart_tty):
@@ -63,6 +72,14 @@ def test_info_characters(smart_tty):
     actual = smart_tty.getvalue()
     expected = "Doing stuff " + RESET + "…" + " sucess " + GREEN + "✓"
     assert_equal_strings(actual, expected)
+
+
+def test_timestamp(dumb_tty, toggle_timestamp):
+    ui.info("message", fileobj=dumb_tty)
+    actual = dumb_tty.getvalue()
+    match = re.match("\[(.*)\]", actual)
+    assert match
+    assert datetime.datetime.strptime(match.groups()[0], "%Y-%m-%d %H:%M:%S")
 
 
 def test_record_message(messages):

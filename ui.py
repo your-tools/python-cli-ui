@@ -17,6 +17,7 @@ CONFIG = {
     "quiet": False,
     "color": "auto",
     "title": "auto",
+    "timestamp": False,
     "record": False  # used for testing
 }
 
@@ -128,6 +129,7 @@ def update_title(mystr, fileobj):
     fileobj.write(mystr)
     fileobj.flush()
 
+
 def process_tokens(tokens, *, end="\n", sep=" "):
     """ Returns two strings from a list of tokens.
     One containing ASCII escape codes, the other
@@ -149,6 +151,11 @@ def process_tokens(tokens, *, end="\n", sep=" "):
 
 def _process_tokens(tokens, *, end="\n", sep=" ", color=True):
     res = ""
+
+    if CONFIG["timestamp"]:
+        now = datetime.datetime.now()
+        res += now.strftime("[%Y-%m-%d %H:%M:%S] ")
+
     for i, token in enumerate(tokens):
         if isinstance(token, _Color):
             if color:
