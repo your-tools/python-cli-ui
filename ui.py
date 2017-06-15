@@ -343,28 +343,40 @@ def ask_string(question, default=None):
     return answer
 
 
-def ask_choice(input_text, choices):
+def ask_choice(input_text, choices,  *, func_desc=None):
     """Ask the user to choose from a list of choices
+    `func_desc` will be called on list item for displaying
+    and sorting the list. If not given, will default to
+    the identity function
+
+    Will loop until:
+        * the user enters a valid index
+        * or he hits ctrl-c
+        * or he leaves the prompt empty
+
+    In the last two cases, None is returned
 
     """
+    if func_desc is None:
+        func_desc = lambda x: x
     info(green, "::", reset, input_text)
+    choices.sort(key=func_desc)
     for i, choice in enumerate(choices, start=1):
-        if i == 1:
-            choice += " \t(default)"
-        info("  ", blue, "%i" % i, reset, choice)
+        choice_desc = func_desc(choice)
+        info("  ", blue, "%i" % i, reset, choice_desc)
     keep_asking = True
     res = None
     while keep_asking:
         try:
             answer = read_input()
         except KeyboardInterrupt:
-            break
+            return None
         if not answer:
-            return choices[0]
+            return None
         try:
             index = int(answer)
         except ValueError:
-            info("Please enter number")
+            info("Please enter a valid number")
             continue
         if index not in range(1, len(choices)+1):
             info(index, "is out of range")

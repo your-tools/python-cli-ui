@@ -1,5 +1,6 @@
 import datetime
 import io
+import operator
 import re
 from unittest import mock
 
@@ -132,18 +133,28 @@ def test_ask_yes_no_wrong_input():
         assert m.call_count == 2
 
 
+
 def test_ask_choice():
-    fruits = ["apple", "banana", "orange"]
+    class Fruit:
+        def __init__(self, name, price):
+            self.name = name
+            self.price = price
+
+    def func_desc(fruit):
+        return fruit.name
+
+    fruits = [Fruit("apple", 42), Fruit("banana", 10), Fruit("orange", 12)]
     with mock.patch('builtins.input') as m:
-        m.side_effect = ["nan", "2"]
-        actual = ui.ask_choice("Select a fruit", fruits)
-        assert actual == "banana"
-        assert m.call_count == 2
+        m.side_effect = ["nan", "5", "2"]
+        actual = ui.ask_choice("Select a fruit", fruits,
+                               func_desc=operator.attrgetter("name"))
+        assert actual.name == "banana"
+        assert actual.price == 10
+        assert m.call_count == 3
 
 
-def test_ask_choice_default():
-    fruits = ["apple", "banana", "orange"]
+def test_ask_choice_empty_input():
     with mock.patch('builtins.input') as m:
         m.side_effect = [""]
-        actual = ui.ask_choice("Select a fruit", fruits)
-        assert actual == "apple"
+        res = ui.ask_choice("Select a animal", ["cat", "dog", "cow"])
+        assert res is None
