@@ -242,6 +242,15 @@ def info_3(*tokens, **kwargs):
     info(bold, blue, "*", reset, *tokens, **kwargs)
 
 
+def dot(*, last=False):
+    """ Print a dot without a newline unless it is the last on.
+    Useful when you want to display a progress with very little
+    knowledge.
+    """
+    end = "\n" if last else ""
+    info(".", end=end)
+
+
 def info_count(i, n, *rest, **kwargs):
     """ Same as info, but displays a nice counter
     color will be reset
