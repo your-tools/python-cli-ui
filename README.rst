@@ -1,17 +1,16 @@
 python-cli-ui
 =============
 
+Tools for nice user interfaces in the terminal.
 
-This repository contains a small Python module I've been using
-in several projects.
 
 Demo:
 -----
 
 
-Run `python3 ui.py` and be amazed!
+Run ``python3 ui.py`` and be amazed!
 
-Or just watch the [asciinema recording](https://asciinema.org/a/112368)
+Or just watch the `asciinema recording <https://asciinema.org/a/112368>`_
 
 
 Usage
@@ -42,18 +41,22 @@ Usage
     selected_fruit = ui.ask_choice("Choose a fruit", fruits)
 
     #  ... and more!
-```
 
-## FAQ
 
-### Python2 support?
+FAQ
+---
+
+Python2 support?
+~~~~~~~~~~~~~~~~
 
 * No. If you need this, feel free to create your own fork :)
 
-### Windows support?
+Windows support?
+~~~~~~~~~~~~~~~~
 
 * Yes! Should work in `mintty` and `cmd.exe` at least.
 
-### Documentation?
+Documentation?
+~~~~~~~~~~~~~~
 
 Use the source, Luke!
