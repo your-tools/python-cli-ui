@@ -3,6 +3,14 @@ python-cli-ui
 
 Tools for nice user interfaces in the terminal.
 
+.. image:: https://img.shields.io/travis/TankerApp/python-cli-ui.svg?branch=master
+  :target: https://travis-ci.org/TankerApp/python-cli-ui
+
+.. image:: https://img.shields.io/pypi/v/python-cli-ui.svg
+  :target: https://pypi.org/project/python-cli-ui/
+
+.. image:: https://img.shields.io/github/license/TankerApp/python-cli-ui.svg
+  :target: https://github.com/TankerApp/python-cli-ui/blob/master/LICENSE
 
 Demo:
 -----
@@ -16,7 +24,7 @@ Or just watch the `asciinema recording <https://asciinema.org/a/112368>`_
 Usage
 -----
 
-
+Example:
 
 .. code-block:: python
 
@@ -43,20 +51,4 @@ Usage
     #  ... and more!
 
 
-FAQ
----
-
-Python2 support?
-~~~~~~~~~~~~~~~~
-
-* No. If you need this, feel free to create your own fork :)
-
-Windows support?
-~~~~~~~~~~~~~~~~
-
-* Yes! Should work in `mintty` and `cmd.exe` at least.
-
-Documentation?
-~~~~~~~~~~~~~~
-
-Use the source, Luke!
+See more in the `documentation <https://tankerapp.github.io/python-cli-ui>`_.
