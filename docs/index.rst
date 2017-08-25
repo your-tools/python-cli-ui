@@ -9,12 +9,3 @@ Tools for nice user interfaces in the terminal.
 
    usage
    changelog
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
