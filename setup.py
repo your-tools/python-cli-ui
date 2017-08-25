@@ -20,6 +20,7 @@ setup(name="python-cli-ui",
       include_package_data=True,
       install_requires=[
         "colorama",
+        "tabulate",
         "unidecode",
       ],
       classifiers=[
