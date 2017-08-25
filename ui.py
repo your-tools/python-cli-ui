@@ -207,7 +207,7 @@ def message(*tokens, **kwargs):
 
 
 def fatal(*tokens, **kwargs):
-    """ Print an error message and calls sys.exit """
+    """ Print an error message and calls ``sys.exit`` """
     error(*tokens, **kwargs)
     sys.exit(1)
 
@@ -227,7 +227,14 @@ def warning(*tokens, **kwargs):
 
 
 def info(*tokens, **kwargs):
-    """ Print an informative message """
+    r""" Print an informative message
+
+    :param tokens: list of `ui` constants or strings, like ``(ui.red, 'this is an error')``
+    :param sep: separator, defaults to ``' '``
+    :param end: token to place at the end, defaults to ``'\n'``
+    :param fileobj: file-like object to print the output, defaults to ``sys.stdout``
+    :param update_title: whether to update the title of the terminal window
+    """
     if CONFIG["quiet"]:
         return
     message(*tokens, **kwargs)
@@ -249,24 +256,26 @@ def info_3(*tokens, **kwargs):
 
 
 def dot(*, last=False):
-    """ Print a dot without a newline unless it is the last on.
+    """ Print a dot without a newline unless it is the last one.
+
     Useful when you want to display a progress with very little
     knowledge.
+
+    :param last: whether this is the last dot (will insert a newline)
     """
     end = "\n" if last else ""
     info(".", end=end)
 
 
 def info_count(i, n, *rest, **kwargs):
-    """ Same as info, but displays a nice counter
-    color will be reset
-    >>> info_count(0, 4)
-    * (1/4)
-    >>> info_count(4, 12)
-    * ( 5/12)
-    >>> info_count(4, 10)
-    * ( 5/10)
+    """ Display a counter before the rest of the message.
 
+    ``rest`` and ``kwargs`` are passed to :func:`info`
+
+    Current index should start at 0 and end at ``n-1``, like in ``enumerate()``
+
+    :param i: current index
+    :param n: total tnumber of items
     """
     num_digits = len(str(n)) # lame, I know
     counter_format = "(%{}d/%d)".format(num_digits)
@@ -275,13 +284,12 @@ def info_count(i, n, *rest, **kwargs):
 
 
 def info_progress(prefix, value, max_value):
-    """ Display info progress in percent
-    :param: value the current value
-    :param: max_value the max value
-    :param: prefix the prefix message to print
+    """ Display info progress in percent.
 
-    >>> info_progress(5, 20, "Done")
-    Done: 25%
+    :param value: the current value
+    :param max_value: the max value
+    :param prefix: the prefix message to print
+
 
     """
     if sys.stdout.isatty():
@@ -291,7 +299,10 @@ def info_progress(prefix, value, max_value):
 
 
 def debug(*tokens, **kwargs):
-    """ Print a debug message """
+    """ Print a debug message.
+
+    Messages are shown only when ``CONFIG["verbose"]`` is true
+    """
     if not CONFIG["verbose"] or CONFIG["record"]:
         return
     tokens = [blue, "[DEBUG]:"] + list(tokens)
@@ -310,7 +321,9 @@ def indent(text, num=2):
 
 
 def tabs(num):
-    """ Compute a blank tab """
+    """ Compute a blank tab
+
+    """
     return "  " * num
 
 
@@ -383,18 +396,20 @@ def ask_string(question, default=None):
 
 
 def ask_choice(input_text, choices,  *, func_desc=None):
-    """Ask the user to choose from a list of choices
-    `func_desc` will be called on list item for displaying
+    """Ask the user to choose from a list of choices.
+
+    :return: the selected choice
+
+    ``func_desc`` will be called on list item for displaying
     and sorting the list. If not given, will default to
-    the identity function
+    the identity function.
 
     Will loop until:
         * the user enters a valid index
-        * or he hits ctrl-c
-        * or he leaves the prompt empty
+        * or hits ``ctrl-c``
+        * or leaves the prompt empty
 
-    In the last two cases, None is returned
-
+    In the last two cases, None will be returned
     """
     if func_desc is None:
         func_desc = lambda x: x
@@ -444,20 +459,7 @@ def ask_yes_no(question, default=False):
 
 
 class Timer:
-    """ To be used as a decorator,
-    or as a with statement:
-
-    >>> @Timer("something")
-        def do_something():
-            foo()
-            bar()
-    # Or:
-    >>> with Timer("something")
-        foo()
-        bar()
-
-    This will print:
-    'something took 2h 33m 42s'
+    """ Display time taken when executing a list of statements.
 
     """
     def __init__(self, description):
@@ -498,6 +500,10 @@ class Timer:
 
 
 def did_you_mean(message, user_input, choices):
+    """ Given a list of choices and an invalid user input, display the closest
+    items in the list that match the input.
+
+    """
     if not choices:
         return message
     else:
