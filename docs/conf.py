@@ -23,4 +23,6 @@ pygments_style = 'sphinx'
 todo_include_todos = True
 
 
-html_theme = 'sphinxdoc'
+html_theme = 'alabaster'
+html_copy_source = True
+html_show_sourcelink = False
