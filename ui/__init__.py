@@ -1,3 +1,7 @@
+# -*- encoding: utf-8 -*-
+
+from __future__ import unicode_literals
+
 import sys
 import time
 import os
@@ -131,7 +135,7 @@ def update_title(mystr, fileobj):
     fileobj.flush()
 
 
-def process_tokens(tokens, *, end="\n", sep=" "):
+def process_tokens(tokens, end="\n", sep=" "):
     """ Returns two strings from a list of tokens.
     One containing ASCII escape codes, the other
     only the 'normal' characters
@@ -150,7 +154,7 @@ def process_tokens(tokens, *, end="\n", sep=" "):
     return (with_color, without_color)
 
 
-def _process_tokens(tokens, *, end="\n", sep=" ", color=True):
+def _process_tokens(tokens, end="\n", sep=" ", color=True):
     res = ""
 
     if CONFIG["timestamp"]:
@@ -162,8 +166,11 @@ def _process_tokens(tokens, *, end="\n", sep=" ", color=True):
             if color:
                 res += token.code
         else:
-            res += str(token)
-            if i != len(tokens) -1:
+            if sys.version_info.major < 3:
+                res += unicode(token)
+            else:
+                res += str(token)
+            if i != len(tokens) - 1:
                 res += sep
     res += end
     if color:
@@ -255,7 +262,7 @@ def info_3(*tokens, **kwargs):
     info(bold, blue, "*", reset, *tokens, **kwargs)
 
 
-def dot(*, last=False):
+def dot(last=False):
     """ Print a dot without a newline unless it is the last one.
 
     Useful when you want to display a progress with very little
@@ -327,7 +334,7 @@ def tabs(num):
     return "  " * num
 
 
-def info_table(data, *, headers=None, fileobj=None):
+def info_table(data, headers=None, fileobj=None):
     if not fileobj:
         fileobj = sys.stdout
     colored_data = list()
@@ -375,7 +382,10 @@ def read_input():
 
     """
     info(green, "> ", end="")
-    return input()
+    if sys.version_info.major < 3:
+        return raw_input()
+    else:
+        return input()
 
 
 def ask_string(question, default=None):
@@ -395,7 +405,7 @@ def ask_string(question, default=None):
     return answer
 
 
-def ask_choice(input_text, choices,  *, func_desc=None):
+def ask_choice(input_text, choices,  func_desc=None):
     """Ask the user to choose from a list of choices.
 
     :return: the selected choice

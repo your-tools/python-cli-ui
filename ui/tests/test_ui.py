@@ -1,11 +1,16 @@
+# -*- encoding: utf-8 *-*
+
+from __future__ import unicode_literals
+
 import datetime
 import io
 import operator
 import re
-from unittest import mock
+import sys
 
 import ui
 
+import mock
 import pytest
 
 RED = "\x1b[31;1m"
@@ -14,6 +19,11 @@ RESET = "\x1b[0m"
 BOLD = "\x1b[1m"
 BEGIN_TITLE = "\x1b]0;"
 END_TITLE = "\x07"
+
+if sys.version_info.major < 3:
+    input_builtin = "__builtin__.raw_input"
+else:
+    input_builtin = "builtins.input"
 
 
 def assert_equal_strings(a, b):
@@ -92,14 +102,14 @@ def test_record_message(messages):
 
 
 def test_read_input():
-    with mock.patch('builtins.input') as m:
+    with mock.patch(input_builtin) as m:
         m.side_effect = ["foo"]
         actual = ui.read_input()
         assert actual == "foo"
 
 
 def test_ask_string():
-    with mock.patch('builtins.input') as m:
+    with mock.patch(input_builtin) as m:
         m.side_effect = ["sugar!", ""]
         res = ui.ask_string("coffee with what?")
         assert res == "sugar!"
@@ -109,7 +119,7 @@ def test_ask_string():
 
 def test_ask_yes_no():
     """ Test that you can answer with several types of common answers """
-    with mock.patch('builtins.input') as m:
+    with mock.patch(input_builtin) as m:
         m.side_effect = ["y", "yes", "Yes", "n", "no", "No"]
         expected_res  = [True, True, True, False, False, False]
         for res in expected_res:
@@ -119,7 +129,7 @@ def test_ask_yes_no():
 
 def test_ask_yes_no_default():
     """ Test that just pressing enter returns the default value """
-    with mock.patch('builtins.input') as m:
+    with mock.patch(input_builtin) as m:
         m.side_effect = ["", ""]
         assert ui.ask_yes_no("coffee?", default=True)  is True
         assert ui.ask_yes_no("coffee?", default=False) is False
@@ -127,7 +137,7 @@ def test_ask_yes_no_default():
 
 def test_ask_yes_no_wrong_input():
     """ Test that we keep asking when answer does not make sense """
-    with mock.patch('builtins.input') as m:
+    with mock.patch(input_builtin) as m:
         m.side_effect = ["coffee!", "n"]
         assert ui.ask_yes_no("tea?") is False
         assert m.call_count == 2
@@ -144,7 +154,7 @@ def test_ask_choice():
         return fruit.name
 
     fruits = [Fruit("apple", 42), Fruit("banana", 10), Fruit("orange", 12)]
-    with mock.patch('builtins.input') as m:
+    with mock.patch(input_builtin) as m:
         m.side_effect = ["nan", "5", "2"]
         actual = ui.ask_choice("Select a fruit", fruits,
                                func_desc=operator.attrgetter("name"))
@@ -154,7 +164,7 @@ def test_ask_choice():
 
 
 def test_ask_choice_empty_input():
-    with mock.patch('builtins.input') as m:
+    with mock.patch(input_builtin) as m:
         m.side_effect = [""]
         res = ui.ask_choice("Select a animal", ["cat", "dog", "cow"])
         assert res is None
