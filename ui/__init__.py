@@ -115,6 +115,7 @@ ellipsis = _Characters(reset, "…", "...")
 check    = _Characters(green, "✓", "ok")
 cross    = _Characters(red,   "❌","ko")
 
+
 def using_colorama():
     if os.name == "nt":
         if "TERM" not in os.environ:
@@ -127,6 +128,10 @@ def using_colorama():
 
 
 def config_color(fileobj):
+    if CONFIG["color"] == "never":
+        return False
+    if CONFIG["color"] == "always":
+        return True
     if os.name == "nt":
         # sys.isatty() is False on mintty, so
         # let there be colors by default. (when running on windows,

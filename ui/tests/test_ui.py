@@ -165,3 +165,15 @@ def test_quiet(message_recorder):
     ui.error("error")
     assert message_recorder.find("error")
     assert not message_recorder.find("info")
+
+
+def test_color_always(dumb_tty):
+    ui.setup(color="always")
+    ui.info(ui.red, "this is red", fileobj=dumb_tty)
+    assert RED in dumb_tty.getvalue()
+
+
+def test_color_never(smart_tty):
+    ui.setup(color="never")
+    ui.info(ui.red, "this is red", fileobj=smart_tty)
+    assert RED not in smart_tty.getvalue()
