@@ -22,8 +22,19 @@ class MessageRecorder():
             if re.search(regexp, message):
                 return message
 
+
 @pytest.fixture()
 def message_recorder(request):
+    """ Start recording messages
+
+    *Methods*
+
+    * `stop()`: stop recording
+    * `reset()`: clear the list of recorded messages.
+    * `find(regex)` find a message in the list matching the given regular
+       expression
+
+    """
     recorder = MessageRecorder()
     yield recorder
     recorder.stop()

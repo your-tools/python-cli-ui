@@ -66,7 +66,6 @@ You can use any of these constants as a ``token`` in the following functions:
 Informative messages
 ++++++++++++++++++++
 
-
 .. autofunction:: info
 
    ::
@@ -97,8 +96,6 @@ Progress messages
 +++++++++++++++++
 
 .. autofunction:: dot
-
-
 
 .. autofunction:: info_count
 
@@ -200,3 +197,24 @@ Misc
       >>> did_you_mean("Invalid name: %s" % input, input, choices)
       Invalid name: Joohn
       Did you mean: John?
+
+
+.. _pytest:
+
+Testing with pytest
+-------------------
+
+.. autofunction:: ui.tests.conftest.message_recorder
+
+::
+
+    from ui.tests.conftest import message_recorder
+
+
+    def foo():
+        ui.info("Fooing")
+
+
+    def test_foo(message_recorder):
+         foo()
+         assert message_recorder.find("Fooing")
