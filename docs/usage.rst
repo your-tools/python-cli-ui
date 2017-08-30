@@ -15,6 +15,11 @@ It depends on ``colorama`` and ``unidecode`` for Windows support, and on
 API
 ----
 
+Configuration
++++++++++++++
+
+.. autofunction:: setup
+
 
 Constants
 ++++++++++

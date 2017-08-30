@@ -158,3 +158,11 @@ def test_ask_choice_empty_input():
         m.side_effect = [""]
         res = ui.ask_choice("Select a animal", ["cat", "dog", "cow"])
         assert res is None
+
+
+def test_quiet(message_recorder):
+    ui.setup(quiet=True)
+    ui.info("info")
+    ui.error("error")
+    assert message_recorder.find("error")
+    assert not message_recorder.find("info")

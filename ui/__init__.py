@@ -34,6 +34,25 @@ _ENABLE_XTERM_TITLE = None
 _INITIALIZED = False
 
 
+def setup(*, verbose=False, quiet=False, color="auto", title="auto", timestamp=False):
+    """ Configure behavior of message functions.
+
+    :param verbose: Whether :func:`debug` messages should get printed
+    :param quiet: Hide every message except :func:`warning`, :func:`error`, and
+                  :func:`fatal`
+    :param color: Choices: 'auto', 'always', or 'never'. Whether to color output.
+                  By default ('auto'), only use color when output is a terminal.
+    :param title: Ditto for setting terminal title
+    :param timestamp: Whether to prefix every message with a time stamp
+    """
+    _setup(verbose=verbose, quiet=quiet, color=color, title=title, timestamp=timestamp)
+
+
+def _setup(*args, **kwargs):
+    for key, value in kwargs.items():
+        CONFIG[key] = value
+
+
 # ANSI color codes, as classes,
 # so that we can use ::
 #
