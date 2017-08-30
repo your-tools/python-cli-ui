@@ -3,6 +3,7 @@ import re
 
 import pytest
 
+
 class MessageRecorder():
     def __init__(self):
         ui.CONFIG["record"] = True
@@ -22,7 +23,7 @@ class MessageRecorder():
                 return message
 
 @pytest.fixture()
-def messages(request):
+def message_recorder(request):
     recorder = MessageRecorder()
     request.addfinalizer(recorder.stop)
     return recorder

@@ -83,12 +83,12 @@ def test_timestamp(dumb_tty, toggle_timestamp):
     assert datetime.datetime.strptime(match.groups()[0], "%Y-%m-%d %H:%M:%S")
 
 
-def test_record_message(messages):
+def test_record_message(message_recorder):
     ui.info_1("This is foo")
-    assert messages.find("foo")
-    messages.reset()
+    assert message_recorder.find("foo")
+    message_recorder.reset()
     ui.info_1("This is bar")
-    assert not messages.find("foo")
+    assert not message_recorder.find("foo")
 
 
 def test_read_input():
