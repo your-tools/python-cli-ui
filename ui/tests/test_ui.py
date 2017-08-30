@@ -111,7 +111,7 @@ def test_ask_yes_no():
     """ Test that you can answer with several types of common answers """
     with mock.patch('builtins.input') as m:
         m.side_effect = ["y", "yes", "Yes", "n", "no", "No"]
-        expected_res  = [True, True, True, False, False, False]
+        expected_res = [True, True, True, False, False, False]
         for res in expected_res:
             actual = ui.ask_yes_no("coffee?")
             assert actual == res
@@ -121,7 +121,7 @@ def test_ask_yes_no_default():
     """ Test that just pressing enter returns the default value """
     with mock.patch('builtins.input') as m:
         m.side_effect = ["", ""]
-        assert ui.ask_yes_no("coffee?", default=True)  is True
+        assert ui.ask_yes_no("coffee?", default=True) is True
         assert ui.ask_yes_no("coffee?", default=False) is False
 
 
@@ -131,7 +131,6 @@ def test_ask_yes_no_wrong_input():
         m.side_effect = ["coffee!", "n"]
         assert ui.ask_yes_no("tea?") is False
         assert m.call_count == 2
-
 
 
 def test_ask_choice():
