@@ -25,5 +25,5 @@ class MessageRecorder():
 @pytest.fixture()
 def message_recorder(request):
     recorder = MessageRecorder()
-    request.addfinalizer(recorder.stop)
-    return recorder
+    yield recorder
+    recorder.stop()
