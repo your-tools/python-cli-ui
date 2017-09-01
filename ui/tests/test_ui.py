@@ -83,12 +83,12 @@ def test_timestamp(dumb_tty, toggle_timestamp):
     assert datetime.datetime.strptime(match.groups()[0], "%Y-%m-%d %H:%M:%S")
 
 
-def test_record_message(messages):
+def test_record_message(message_recorder):
     ui.info_1("This is foo")
-    assert messages.find("foo")
-    messages.reset()
+    assert message_recorder.find("foo")
+    message_recorder.reset()
     ui.info_1("This is bar")
-    assert not messages.find("foo")
+    assert not message_recorder.find("foo")
 
 
 def test_read_input():
@@ -111,7 +111,7 @@ def test_ask_yes_no():
     """ Test that you can answer with several types of common answers """
     with mock.patch('builtins.input') as m:
         m.side_effect = ["y", "yes", "Yes", "n", "no", "No"]
-        expected_res  = [True, True, True, False, False, False]
+        expected_res = [True, True, True, False, False, False]
         for res in expected_res:
             actual = ui.ask_yes_no("coffee?")
             assert actual == res
@@ -121,7 +121,7 @@ def test_ask_yes_no_default():
     """ Test that just pressing enter returns the default value """
     with mock.patch('builtins.input') as m:
         m.side_effect = ["", ""]
-        assert ui.ask_yes_no("coffee?", default=True)  is True
+        assert ui.ask_yes_no("coffee?", default=True) is True
         assert ui.ask_yes_no("coffee?", default=False) is False
 
 
@@ -131,7 +131,6 @@ def test_ask_yes_no_wrong_input():
         m.side_effect = ["coffee!", "n"]
         assert ui.ask_yes_no("tea?") is False
         assert m.call_count == 2
-
 
 
 def test_ask_choice():
@@ -158,3 +157,23 @@ def test_ask_choice_empty_input():
         m.side_effect = [""]
         res = ui.ask_choice("Select a animal", ["cat", "dog", "cow"])
         assert res is None
+
+
+def test_quiet(message_recorder):
+    ui.setup(quiet=True)
+    ui.info("info")
+    ui.error("error")
+    assert message_recorder.find("error")
+    assert not message_recorder.find("info")
+
+
+def test_color_always(dumb_tty):
+    ui.setup(color="always")
+    ui.info(ui.red, "this is red", fileobj=dumb_tty)
+    assert RED in dumb_tty.getvalue()
+
+
+def test_color_never(smart_tty):
+    ui.setup(color="never")
+    ui.info(ui.red, "this is red", fileobj=smart_tty)
+    assert RED not in smart_tty.getvalue()
