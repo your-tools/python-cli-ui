@@ -238,14 +238,14 @@ def fatal(*tokens, **kwargs):
 
 def error(*tokens, **kwargs):
     """ Print an error message """
-    tokens = [bold, red, "[ERROR]:"] + list(tokens)
+    tokens = [bold, red, "Error:"] + list(tokens)
     kwargs["fileobj"] = sys.stderr
     message(*tokens, **kwargs)
 
 
 def warning(*tokens, **kwargs):
     """ Print a warning message """
-    tokens = [brown, "[WARN ]:"] + list(tokens)
+    tokens = [brown, "Warning:"] + list(tokens)
     kwargs["fileobj"] = sys.stderr
     message(*tokens, **kwargs)
 
@@ -329,7 +329,6 @@ def debug(*tokens, **kwargs):
     """
     if not CONFIG["verbose"] or CONFIG["record"]:
         return
-    tokens = [blue, "[DEBUG]:"] + list(tokens)
     message(*tokens, **kwargs)
 
 
