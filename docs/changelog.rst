@@ -1,6 +1,16 @@
 Changelog
 ==========
 
+v0.3.0
+------
+
+* Add ``info_section``
+
+* Cosmetic changes about prefixes for ``debug``, ``warn`` and ``error``
+  messages. (See `#6 <https://github.com/TankerApp/python-cli-ui/pull/6>`_
+  for the details)
+
+
 v0.2.0
 ------
 
