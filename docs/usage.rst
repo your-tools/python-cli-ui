@@ -75,6 +75,18 @@ Informative messages
 
 Functions below take the same arguments as the :func:`info` function
 
+.. autofunction:: info_section
+
+   ::
+
+      >>> ui.info_section("Section one")
+      >>> ui.info("Starting stuff")
+
+      Section one
+      ------------
+
+      Starting stuff
+
 .. autofunction:: info_1
 .. autofunction:: info_2
 .. autofunction:: info_3

@@ -208,7 +208,6 @@ def write_and_flush(fileobj, to_write):
     fileobj.flush()
 
 
-
 def message(*tokens, **kwargs):
     """ Helper method for error, warning, info, debug
 
@@ -262,6 +261,14 @@ def info(*tokens, **kwargs):
     if CONFIG["quiet"]:
         return
     message(*tokens, **kwargs)
+
+
+def info_section(*tokens, **kwargs):
+    """ Print an underlined section name """
+    kwargs["color"] = False
+    no_color = _process_tokens(tokens, **kwargs)
+    info(*tokens, **kwargs)
+    info("-" * len(no_color), end="\n\n")
 
 
 def info_1(*tokens, **kwargs):
@@ -537,6 +544,7 @@ def did_you_mean(message, user_input, choices):
 
 
 if __name__ == "__main__":
+    info_section(bold, "python-cli demo")
     # Monkey-patch message() so that we sleep after
     # each call
     old_message = message
