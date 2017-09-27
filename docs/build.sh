@@ -2,4 +2,4 @@
 
 set -e
 
-sphinx-build -M html . _build
+sphinx-build -W . _build/html
