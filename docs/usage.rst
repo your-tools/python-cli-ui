@@ -70,7 +70,7 @@ Informative messages
 
    ::
 
-      ui.info("this is", ui.red, "red")
+      >>> ui.info("this is", ui.red, "red")
 
 
 Functions below take the same arguments as the :func:`info` function
@@ -113,14 +113,14 @@ Progress messages
 
    ::
 
-      >>> info_count(4, 12)
+      >>> ui.info_count(4, 12)
       * ( 5/12)
 
 .. autofunction:: info_progress
 
    ::
 
-      >>> info_progress("Done", 5, 20)
+      >>> ui.info_progress("Done", 5, 20)
       Done: 25%
 
 
@@ -131,10 +131,10 @@ Formatting
 
    ::
 
-    ui.info("one", "\n",
-             ui.tabs(1), "two", "\n",
-             ui.tabs(2), "three", "\n",
-             sep="")
+    >>> ui.info("one", "\n",
+                ui.tabs(1), "two", "\n",
+                ui.tabs(2), "three", "\n",
+                sep="")
     one
       two
         three
@@ -155,13 +155,13 @@ Formatting
 
    ::
 
-      headers=["name", "score"]
-      data = [
-         [(bold, "John"), (green, 10.0)],
-         [(bold, "Jane"), (green, 5.0)],
-      ]
+      >>> headers=["name", "score"]
+      >>> data = [
+            [(bold, "John"), (green, 10.0)],
+            [(bold, "Jane"), (green, 5.0)],
+          ]
 
-      >>> info_table(data, headers=headers)
+      >>> ui.info_table(data, headers=headers)
       name      score
       --------  --------
       John       10.0
@@ -178,23 +178,24 @@ Asking for user input
 
    ::
 
-         >>> ask_yes_no("With cream?", default=False)
+         >>> ui.ask_yes_no("With cream?", default=False)
          :: With cream? (y/N)
 
 
 Misc
 ++++
 
+
 .. autoclass:: Timer
 
    ::
 
-      >>> @Timer("something")
+      >>> @ui.Timer("something")
           def do_something():
                foo()
                bar()
       # Or:
-      >>> with Timer("something"):
+      >>> with ui.Timer("something"):
               foo()
               bar()
 
@@ -204,9 +205,9 @@ Misc
 
    ::
 
-      input = "Joohn"
-      names = ["Alice", "John", "Bob"]
-      >>> did_you_mean("Invalid name: %s" % input, input, choices)
+      >>> user_input = "Joohn"
+      >>> names = ["Alice", "John", "Bob"]
+      >>> ui.did_you_mean("Invalid name: %s" % user_input, user_input, choices)
       Invalid name: Joohn
       Did you mean: John?
 
