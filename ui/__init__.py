@@ -99,7 +99,8 @@ darkyellow = brown
 fuscia = fuchsia
 
 # Other nice-to-have characters:
-class _Characters:
+class UnicodeSequence:
+    """ Represent a sequence containing a color followed by a Unicode symbol """
     def __init__(self, color, as_unicode, as_ascii):
         if os.name == "nt":
             self.as_string = as_ascii
@@ -111,9 +112,9 @@ class _Characters:
         return (reset, self.color, self.as_string, reset)
 
 
-ellipsis = _Characters(reset, "…", "...")
-check    = _Characters(green, "✓", "ok")
-cross    = _Characters(red,   "❌","ko")
+ellipsis = UnicodeSequence(reset, "…", "...")
+check    = UnicodeSequence(green, "✓", "ok")
+cross    = UnicodeSequence(red,   "❌","ko")
 
 
 def using_colorama():
@@ -161,10 +162,11 @@ def process_tokens(tokens, *, end="\n", sep=" "):
     only the 'normal' characters
 
     """
-    # Flatten the list of tokens in case some of them are of class _Characters
+    # Flatten the list of tokens in case some of them are of
+    # class UnicodeSequence:
     flat_tokens = list()
     for token in tokens:
-        if isinstance(token, _Characters):
+        if isinstance(token, UnicodeSequence):
             flat_tokens.extend(token.tuple())
         else:
             flat_tokens.append(token)

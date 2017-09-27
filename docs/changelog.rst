@@ -1,6 +1,11 @@
 Changelog
 ==========
 
+v0.4.0
+------
+
+* Expose the previously private ``UnicodeSequence`` class.
+
 v0.3.0
 ------
 
