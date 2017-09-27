@@ -432,7 +432,7 @@ def ask_choice(input_text, choices,  *, func_desc=None):
 
     :return: the selected choice
 
-    ``func_desc`` will be called on list item for displaying
+    ``func_desc`` will be called on every list item for displaying
     and sorting the list. If not given, will default to
     the identity function.
 
