@@ -57,11 +57,24 @@ You can use any of these constants as a ``token`` in the following functions:
   * ``white``
   * ``yellow``
 
-* Unicode characters:
+* Sequence of Unicode characters:
 
-  * ``check``: ✓
-  * ``cross``: ❌
-  * ``ellipsis``:  …
+  * ``check``: ✓ (green, replaced by 'ok' on Windows)
+  * ``cross``: ❌ (red, replaced by 'ko' on Windows)
+  * ``ellipsis``:  … (no color, replaced by '...' on Windows)
+
+  You can create your own sequences using :class:`UnicodeSequence`:
+
+.. autoclass:: UnicodeSequence
+
+  ::
+
+      >>> up_arrow = ui.UnicodeSequence(ui.blue, "↑", "+")
+      >>> ui.info(up_arrow, "2 commits")
+      ↑ 2 commits # on Linux
+      + 2 commits # on Windows
+
+
 
 Informative messages
 ++++++++++++++++++++
