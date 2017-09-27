@@ -232,7 +232,7 @@ def message(*tokens, **kwargs):
 
 
 def fatal(*tokens, **kwargs):
-    """ Print an error message and calls ``sys.exit`` """
+    """ Print an error message and call ``sys.exit`` """
     error(*tokens, **kwargs)
     sys.exit(1)
 
@@ -411,9 +411,7 @@ def read_input():
 
 
 def ask_string(question, default=None):
-    """Ask the user to enter something.
-
-    Returns what the user entered
+    """Ask the user to enter a string.
     """
     if default:
         question += " (%s)" % default
