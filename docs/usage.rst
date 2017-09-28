@@ -12,6 +12,9 @@ and is compatible with Python **3.3** and higher.
 It depends on ``colorama`` and ``unidecode`` for Windows support, and on
 ``tabulate`` for the :func:`info_table` function.
 
+.. note:: The name of the Pypi package is ``python-cli-ui``, but after you
+          install it, you should use ``import ui`` to use it.
+
 API
 ----
 

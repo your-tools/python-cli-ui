@@ -24,9 +24,15 @@ Or just watch the `asciinema recording <https://asciinema.org/a/112368>`_
 Usage
 -----
 
+.. code-block:: console
+
+    $ pip install python-cli-ui
+
 Example:
 
 .. code-block:: python
+
+    import ui
 
     # coloring:
     ui.info("This is", ui.red, "red",
