@@ -12,21 +12,32 @@ Tools for nice user interfaces in the terminal.
 .. image:: https://img.shields.io/github/license/TankerApp/python-cli-ui.svg
   :target: https://github.com/TankerApp/python-cli-ui/blob/master/LICENSE
 
-Demo:
------
+
+Documentation
+-------------
 
 
-Run ``python3 ui.py`` and be amazed!
+See `python-cli-ui documentation <https://tankerapp.github.io/python-cli-ui>`_.
 
-Or just watch the `asciinema recording <https://asciinema.org/a/112368>`_
+Demo
+----
+
+
+Watch the `asciinema recording <https://asciinema.org/a/112368>`_.
 
 
 Usage
 -----
 
+.. code-block:: console
+
+    $ pip install python-cli-ui
+
 Example:
 
 .. code-block:: python
+
+    import ui
 
     # coloring:
     ui.info("This is", ui.red, "red",
@@ -49,6 +60,3 @@ Example:
     selected_fruit = ui.ask_choice("Choose a fruit", fruits)
 
     #  ... and more!
-
-
-See more in the `documentation <https://tankerapp.github.io/python-cli-ui>`_.

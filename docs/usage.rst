@@ -12,6 +12,9 @@ and is compatible with Python **3.3** and higher.
 It depends on ``colorama`` and ``unidecode`` for Windows support, and on
 ``tabulate`` for the :func:`info_table` function.
 
+.. note:: The name of the Pypi package is ``python-cli-ui``, but after you
+          install it, you should use ``import ui`` to use it.
+
 API
 ----
 
@@ -19,6 +22,14 @@ Configuration
 +++++++++++++
 
 .. autofunction:: setup
+
+::
+
+  >>> ui.debug("this will not be printed")
+  <nothing>
+  >>> ui.setup(verbose=True)
+  >>> ui.debug("this will be printed")
+  this will be printed
 
 
 Constants
@@ -84,6 +95,7 @@ Informative messages
    ::
 
       >>> ui.info("this is", ui.red, "red")
+      This is red
 
 
 Functions below take the same arguments as the :func:`info` function
@@ -101,11 +113,32 @@ Functions below take the same arguments as the :func:`info` function
       Starting stuff
 
 .. autofunction:: info_1
+
+   ::
+
+      >>> ui.info_1("Message")
+      :: Message
+
 .. autofunction:: info_2
+
+   ::
+
+      >>> ui.info_2("Message")
+      => Message
+
 .. autofunction:: info_3
 
+   ::
+
+      >>> ui.info_3("Message")
+      * Message
 
 .. autofunction:: debug
+
+    ::
+
+      >>> ui.debug("Message")
+      <nothing>
 
 
 Error messages
@@ -114,20 +147,47 @@ Error messages
 Functions below use ``sys.stderr`` by default:
 
 .. autofunction:: error
+
+   ::
+
+      >>> ui.error("Message")
+      Error: message
+
 .. autofunction:: warning
+
+   ::
+
+      >>> ui.warning("Message")
+      Warning: message
+
 .. autofunction:: fatal
+
+   ::
+
+      >>> ui.fatal("Message")
+      Error: message
+      exit()
+
 
 Progress messages
 +++++++++++++++++
 
 .. autofunction:: dot
 
+   ::
+
+      >>> for in in rang(0, 5):
+      >>>     ui.dot()
+      ....<no newline>
+      >>> ui.dot(last=True)
+      .....
+
 .. autofunction:: info_count
 
    ::
 
-      >>> ui.info_count(4, 12)
-      * ( 5/12)
+      >>> ui.info_count(4, 12, message)
+      * ( 5/12) message
 
 .. autofunction:: info_progress
 
@@ -156,9 +216,11 @@ Formatting
 
    ::
 
-      >>> ui.info("John said:")
-      >>> ui.info(ui.indent("First, we take Manhattan.\nThen we take Berlin!")
-
+      >>> quote = (
+            "First, we take Manhattan\n"
+            "Then we take Berlin!"
+      )
+      >>> ui.info("John said:", ui.indent(quote))
       John said:
          First, we take Manhattan.
          Then we take Berlin!
@@ -186,13 +248,38 @@ Asking for user input
 
 .. autofunction:: read_input
 .. autofunction:: ask_string
+
+  ::
+
+      >>> name = ui.ask_string("Enter your name")
+      :: Enter your name
+      <john>
+      >>> name
+      'john'
+
 .. autofunction:: ask_choice
+
+  ::
+
+      >>> choices = ["apple", "banana", "orange"]
+      >>> fruit = ui.ask_choice("Select a fruit", choices)
+      :: Select a fruit
+        1 apple
+        2 banana
+        3 orange
+      <2>
+      >>> fruit
+      'banana'
+
 .. autofunction:: ask_yes_no
 
    ::
 
-         >>> ui.ask_yes_no("With cream?", default=False)
+         >>> with_cream = ui.ask_yes_no("With cream?", default=False)
          :: With cream? (y/N)
+         <y>
+         >>> with_cream
+         True
 
 
 Misc
@@ -211,6 +298,7 @@ Misc
       >>> with ui.Timer("something"):
               foo()
               bar()
+      * Something took 0h 3m 10s 430ms
 
 
 
@@ -218,11 +306,17 @@ Misc
 
    ::
 
-      >>> user_input = "Joohn"
-      >>> names = ["Alice", "John", "Bob"]
-      >>> ui.did_you_mean("Invalid name: %s" % user_input, user_input, choices)
-      Invalid name: Joohn
+      >>> allowed_names = ["Alice", "John", "Bob"]
+      >>> name = ui.ask_string("Enter a name")
+      >>> if not name in allowed_names:
+      >>>       ui.did_you_mean("Invalid name", user_input, choices)
+      :: Enter a name
+      <Joohn>
+      Invalid name.
       Did you mean: John?
+
+  Note: if the list of possible choices is short, consider using
+  :func:`ask_choice` instead.
 
 
 .. _pytest:
