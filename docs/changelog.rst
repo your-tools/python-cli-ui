@@ -1,6 +1,12 @@
 Changelog
 ==========
 
+v0.4.1
+------
+
+* Export a ``Symbol`` class, to use when you do not want to force
+  color as  with ``UnicodeSequence``
+
 v0.4.0
 ------
 

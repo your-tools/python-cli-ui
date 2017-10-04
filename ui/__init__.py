@@ -117,6 +117,14 @@ check    = UnicodeSequence(green, "✓", "ok")
 cross    = UnicodeSequence(red,   "❌","ko")
 
 
+class Symbol(UnicodeSequence):
+    def __init__(self, as_unicode, as_ascii):
+        super().__init__(reset, as_unicode, as_ascii)
+
+    def tuple(self):
+        return (self.as_string,)
+
+
 def using_colorama():
     if os.name == "nt":
         if "TERM" not in os.environ:
@@ -544,6 +552,9 @@ def did_you_mean(message, user_input, choices):
 
 
 if __name__ == "__main__":
+    info("OK", check)
+    up = Symbol("👍", "+1")
+    info("I like it", blue, up)
     info_section(bold, "python-cli demo")
     # Monkey-patch message() so that we sleep after
     # each call
