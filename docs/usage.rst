@@ -85,7 +85,7 @@ You can use any of these constants as a ``token`` in the following functions:
       ↑ 2 commits # on Linux
       + 2 commits # on Windows
 
-  Alternatively, if you do not wont to force a color, you can use
+  Alternatively, if you do not want to force a color, you can use
   :class:`Symbol`:
 
 .. autoclass:: Symbol
