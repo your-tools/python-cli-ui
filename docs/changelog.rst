@@ -1,7 +1,7 @@
 Changelog
 ==========
 
-v0.4.1
+v0.5.0
 ------
 
 * Export a ``Symbol`` class, to use when you do not want to force
