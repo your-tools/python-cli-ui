@@ -59,7 +59,7 @@ def _setup(*args, **kwargs):
 #  ui.info(ui.bold, "This is bold")
 
 
-class _Color:
+class Color:
     def __init__(self, code, modifier=None):
         self.code = '\033[%d' % code
         if modifier is not None:
@@ -68,31 +68,31 @@ class _Color:
             self.code += 'm'
 
 
-reset     = _Color(0)
-bold      = _Color(1)
-faint     = _Color(2)
-standout  = _Color(3)
-underline = _Color(4)
-blink     = _Color(5)
-overline  = _Color(6)
+reset     = Color(0)
+bold      = Color(1)
+faint     = Color(2)
+standout  = Color(3)
+underline = Color(4)
+blink     = Color(5)
+overline  = Color(6)
 
-black      = _Color(30)
-darkred    = _Color(31)
-darkgreen  = _Color(32)
-brown      = _Color(33)
-darkblue   = _Color(34)
-purple     = _Color(35)
-teal       = _Color(36)
-lightgray  = _Color(37)
+black      = Color(30)
+darkred    = Color(31)
+darkgreen  = Color(32)
+brown      = Color(33)
+darkblue   = Color(34)
+purple     = Color(35)
+teal       = Color(36)
+lightgray  = Color(37)
 
-darkgray   = _Color(30, 1)
-red        = _Color(31, 1)
-green      = _Color(32, 1)
-yellow     = _Color(33, 1)
-blue       = _Color(34, 1)
-fuchsia    = _Color(35, 1)
-turquoise  = _Color(36, 1)
-white      = _Color(37, 1)
+darkgray   = Color(30, 1)
+red        = Color(31, 1)
+green      = Color(32, 1)
+yellow     = Color(33, 1)
+blue       = Color(34, 1)
+fuchsia    = Color(35, 1)
+turquoise  = Color(36, 1)
+white      = Color(37, 1)
 
 darkteal = turquoise
 darkyellow = brown
@@ -192,7 +192,7 @@ def _process_tokens(tokens, *, end="\n", sep=" ", color=True):
         res += now.strftime("[%Y-%m-%d %H:%M:%S] ")
 
     for i, token in enumerate(tokens):
-        if isinstance(token, _Color):
+        if isinstance(token, Color):
             if color:
                 res += token.code
         else:
