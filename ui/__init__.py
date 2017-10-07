@@ -296,7 +296,7 @@ def info_3(*tokens, **kwargs):
     info(bold, blue, "*", reset, *tokens, **kwargs)
 
 
-def dot(*, last=False):
+def dot(*, last=False, fileobj=None):
     """ Print a dot without a newline unless it is the last one.
 
     Useful when you want to display a progress with very little
@@ -305,7 +305,7 @@ def dot(*, last=False):
     :param last: whether this is the last dot (will insert a newline)
     """
     end = "\n" if last else ""
-    info(".", end=end)
+    info(".", end=end, fileobj=fileobj)
 
 
 def info_count(i, n, *rest, **kwargs):
