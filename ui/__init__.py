@@ -553,13 +553,21 @@ def did_you_mean(message, user_input, choices):
         return message
 
 
-if __name__ == "__main__":
+def main_test_colors():
+    this_module = sys.modules[__name__]
+    for name, value in inspect.getmembers(this_module):
+        if isinstance(value, Color):
+            info(value, name)
+
+
+def main_demo():
     info("OK", check)
     up = Symbol("👍", "+1")
     info("I like it", blue, up)
     info_section(bold, "python-cli demo")
     # Monkey-patch message() so that we sleep after
     # each call
+    global message
     old_message = message
     def new_message(*args, **kwargs):
         old_message(*args, **kwargs)
@@ -582,3 +590,17 @@ if __name__ == "__main__":
     fruits = ["apple", "orange", "banana"]
     answer = ask_choice("Choose a fruit", fruits)
     info("You chose:", answer)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("action", choices=["test_colors", "demo"])
+    args = parser.parse_args()
+    if args.action == "demo":
+        main_demo()
+    elif args.action == "test_colors":
+        main_test_colors()
+
+
+if __name__ == "__main__":
+    main()
