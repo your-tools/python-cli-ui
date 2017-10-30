@@ -1,11 +1,13 @@
-import sys
-import time
-import os
+import argparse
 import datetime
 import difflib
 import functools
-import traceback
+import inspect
 import io
+import os
+import sys
+import time
+import traceback
 
 import colorama
 import unidecode
@@ -59,7 +61,7 @@ def _setup(*args, **kwargs):
 #  ui.info(ui.bold, "This is bold")
 
 
-class _Color:
+class Color:
     def __init__(self, code, modifier=None):
         self.code = '\033[%d' % code
         if modifier is not None:
@@ -68,31 +70,31 @@ class _Color:
             self.code += 'm'
 
 
-reset     = _Color(0)
-bold      = _Color(1)
-faint     = _Color(2)
-standout  = _Color(3)
-underline = _Color(4)
-blink     = _Color(5)
-overline  = _Color(6)
+reset     = Color(0)
+bold      = Color(1)
+faint     = Color(2)
+standout  = Color(3)
+underline = Color(4)
+blink     = Color(5)
+overline  = Color(6)
 
-black      = _Color(30)
-darkred    = _Color(31)
-darkgreen  = _Color(32)
-brown      = _Color(33)
-darkblue   = _Color(34)
-purple     = _Color(35)
-teal       = _Color(36)
-lightgray  = _Color(37)
+black      = Color(30)
+darkred    = Color(31)
+darkgreen  = Color(32)
+brown      = Color(33)
+darkblue   = Color(34)
+purple     = Color(35)
+teal       = Color(36)
+lightgray  = Color(37)
 
-darkgray   = _Color(30, 1)
-red        = _Color(31, 1)
-green      = _Color(32, 1)
-yellow     = _Color(33, 1)
-blue       = _Color(34, 1)
-fuchsia    = _Color(35, 1)
-turquoise  = _Color(36, 1)
-white      = _Color(37, 1)
+darkgray   = Color(30, 1)
+red        = Color(31, 1)
+green      = Color(32, 1)
+yellow     = Color(33, 1)
+blue       = Color(34, 1)
+fuchsia    = Color(35, 1)
+turquoise  = Color(36, 1)
+white      = Color(37, 1)
 
 darkteal = turquoise
 darkyellow = brown
@@ -192,7 +194,7 @@ def _process_tokens(tokens, *, end="\n", sep=" ", color=True):
         res += now.strftime("[%Y-%m-%d %H:%M:%S] ")
 
     for i, token in enumerate(tokens):
-        if isinstance(token, _Color):
+        if isinstance(token, Color):
             if color:
                 res += token.code
         else:
@@ -296,7 +298,7 @@ def info_3(*tokens, **kwargs):
     info(bold, blue, "*", reset, *tokens, **kwargs)
 
 
-def dot(*, last=False):
+def dot(*, last=False, fileobj=None):
     """ Print a dot without a newline unless it is the last one.
 
     Useful when you want to display a progress with very little
@@ -305,7 +307,7 @@ def dot(*, last=False):
     :param last: whether this is the last dot (will insert a newline)
     """
     end = "\n" if last else ""
-    info(".", end=end)
+    info(".", end=end, fileobj=fileobj)
 
 
 def info_count(i, n, *rest, **kwargs):
@@ -551,13 +553,21 @@ def did_you_mean(message, user_input, choices):
         return message
 
 
-if __name__ == "__main__":
+def main_test_colors():
+    this_module = sys.modules[__name__]
+    for name, value in inspect.getmembers(this_module):
+        if isinstance(value, Color):
+            info(value, name)
+
+
+def main_demo():
     info("OK", check)
     up = Symbol("👍", "+1")
     info("I like it", blue, up)
     info_section(bold, "python-cli demo")
     # Monkey-patch message() so that we sleep after
     # each call
+    global message
     old_message = message
     def new_message(*args, **kwargs):
         old_message(*args, **kwargs)
@@ -580,3 +590,17 @@ if __name__ == "__main__":
     fruits = ["apple", "orange", "banana"]
     answer = ask_choice("Choose a fruit", fruits)
     info("You chose:", answer)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("action", choices=["test_colors", "demo"])
+    args = parser.parse_args()
+    if args.action == "demo":
+        main_demo()
+    elif args.action == "test_colors":
+        main_test_colors()
+
+
+if __name__ == "__main__":
+    main()
