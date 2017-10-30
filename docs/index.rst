@@ -70,6 +70,8 @@ You can use any of these constants as a ``token`` in the following functions:
   * ``white``
   * ``yellow``
 
+.. note:: Each of these constants is an instance of :class:`Color`.
+
 * Sequence of Unicode characters:
 
   * ``check``: ✓ (green, replaced by 'ok' on Windows)
@@ -359,6 +361,11 @@ Testing with pytest
 
 Changelog
 -----------
+
+v0.6.0
+++++++
+
+* Export ``Color`` class.
 
 v0.5.0
 ++++++

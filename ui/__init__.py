@@ -55,13 +55,8 @@ def _setup(*args, **kwargs):
         CONFIG[key] = value
 
 
-# ANSI color codes, as classes,
-# so that we can use ::
-#
-#  ui.info(ui.bold, "This is bold")
-
-
 class Color:
+    """Represent an ANSI escape sequence """
     def __init__(self, code, modifier=None):
         self.code = '\033[%d' % code
         if modifier is not None:
