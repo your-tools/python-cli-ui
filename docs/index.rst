@@ -9,7 +9,7 @@ Installation
 -------------
 
 ``python-cli-ui`` is available on `Pypi <https://pypi.org/project/python-cli-ui/>`_
-and is compatible with Python **3.3** and higher.
+and is compatible with Python **3.4** and higher.
 
 It depends on ``colorama`` and ``unidecode`` for Windows support, and on
 ``tabulate`` for the :func:`info_table` function.
