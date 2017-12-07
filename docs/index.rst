@@ -362,6 +362,11 @@ Testing with pytest
 Changelog
 -----------
 
+v0.6.1
+++++++
+
+* Fix metadata (owner moved from TankerApp to SuperTanker)
+
 v0.6.0
 ++++++
 
