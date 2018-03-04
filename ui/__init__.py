@@ -416,7 +416,7 @@ def read_input():
     return input()
 
 def read_password():
-    """ Read input from the user
+    """ Read a password from the user
 
     """
     info(green, "> ", end="")
