@@ -2,6 +2,7 @@ import argparse
 import datetime
 import difflib
 import functools
+import getpass
 import inspect
 import io
 import os
@@ -414,6 +415,12 @@ def read_input():
     info(green, "> ", end="")
     return input()
 
+def read_password():
+    """ Read input from the user
+
+    """
+    info(green, "> ", end="")
+    return getpass.getpass(prompt='')
 
 def ask_string(question, default=None):
     """Ask the user to enter a string.
@@ -429,6 +436,17 @@ def ask_string(question, default=None):
         return default
     return answer
 
+def ask_password(question):
+    """Ask the user to enter a password.
+    """
+    info(green, "::", reset, question)
+    try:
+        answer = read_password()
+    except KeyboardInterrupt:
+        return default
+    if not answer:
+        return default
+    return answer
 
 def ask_choice(input_text, choices,  *, func_desc=None):
     """Ask the user to choose from a list of choices.
