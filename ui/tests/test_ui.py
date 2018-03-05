@@ -115,7 +115,7 @@ def test_ask_string():
 def test_ask_password():
     with mock.patch('getpass.getpass') as m:
         m.side_effect = ["chocolate!", ""]
-        res = ui.ask_password("gulty pleasure?")
+        res = ui.ask_password("guilty pleasure?")
         assert res == "chocolate!"
 
 def test_ask_yes_no():
