@@ -297,6 +297,16 @@ Asking for user input
          >>> with_cream
          True
 
+.. autofunction:: read_pasword
+.. autofunction:: ask_password
+
+  ::
+
+      >>> fav_food = ui.ask_password("Guilty pleasure?")
+      :: Guilty pleasure?
+      
+      >>> fav_food
+      'chocolate'
 
 Displaying duration
 +++++++++++++++++++
