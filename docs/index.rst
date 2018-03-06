@@ -304,7 +304,7 @@ Asking for user input
 
       >>> fav_food = ui.ask_password("Guilty pleasure?")
       :: Guilty pleasure?
-      
+
       >>> fav_food
       'chocolate'
 
@@ -371,6 +371,11 @@ Testing with pytest
 
 Changelog
 -----------
+
+v0.7.0
+++++++
+
+* Add ``ask_password`` and ``read_pasword``. Patch by @drazisil
 
 v0.6.1
 ++++++
