@@ -438,8 +438,6 @@ def ask_password(question):
     """
     info(green, "::", reset, question)
     answer = read_password()
-    if not answer:
-        return default
     return answer
 
 def ask_choice(input_text, choices,  *, func_desc=None):
