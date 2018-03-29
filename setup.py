@@ -19,18 +19,17 @@ setup(name="python-cli-ui",
       packages=find_packages(),
       include_package_data=True,
       install_requires=[
-        "colorama",
-        "tabulate",
-        "unidecode",
+          "colorama",
+          "tabulate",
+          "unidecode",
       ],
       classifiers=[
-        "Programming Language :: Python :: 3.4",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
+          "Programming Language :: Python :: 3.5",
+          "Programming Language :: Python :: 3.6",
       ],
       entry_points={
-        "console_scripts": [
-          "tsrc = tsrc.cli.main:main",
-         ]
+          "console_scripts": [
+              "tsrc = tsrc.cli.main:main",
+          ]
       }
       )
