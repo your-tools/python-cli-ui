@@ -297,7 +297,7 @@ Asking for user input
          >>> with_cream
          True
 
-.. autofunction:: read_pasword
+.. autofunction:: read_password
 .. autofunction:: ask_password
 
   ::
