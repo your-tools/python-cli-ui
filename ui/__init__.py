@@ -315,7 +315,7 @@ def info_count(i, n, *rest, **kwargs):
     Current index should start at 0 and end at ``n-1``, like in ``enumerate()``
 
     :param i: current index
-    :param n: total tnumber of items
+    :param n: total number of items
     """
     num_digits = len(str(n))
     counter_format = "(%{}d/%d)".format(num_digits)
