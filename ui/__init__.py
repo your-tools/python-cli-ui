@@ -96,6 +96,7 @@ darkteal = turquoise
 darkyellow = brown
 fuscia = fuchsia
 
+
 # Other nice-to-have characters:
 class UnicodeSequence:
     """ Represent a sequence containing a color followed by a Unicode symbol """
@@ -112,7 +113,7 @@ class UnicodeSequence:
 
 ellipsis = UnicodeSequence(reset, "…", "...")
 check    = UnicodeSequence(green, "✓", "ok")
-cross    = UnicodeSequence(red,   "❌","ko")
+cross    = UnicodeSequence(red, "❌", "ko")
 
 
 class Symbol(UnicodeSequence):
@@ -195,7 +196,7 @@ def _process_tokens(tokens, *, end="\n", sep=" ", color=True):
                 res += token.code
         else:
             res += str(token)
-            if i != len(tokens) -1:
+            if i != len(tokens) - 1:
                 res += sep
     res += end
     if color:
@@ -316,9 +317,9 @@ def info_count(i, n, *rest, **kwargs):
     :param i: current index
     :param n: total tnumber of items
     """
-    num_digits = len(str(n)) # lame, I know
+    num_digits = len(str(n))
     counter_format = "(%{}d/%d)".format(num_digits)
-    counter_str = counter_format % (i+1, n)
+    counter_str = counter_format % (i + 1, n)
     info(green, "*", reset, counter_str, reset, *rest, **kwargs)
 
 
@@ -408,6 +409,7 @@ def message_for_exception(exception, message):
             reset,
             buffer.getvalue())
 
+
 def read_input():
     """ Read input from the user
 
@@ -415,12 +417,14 @@ def read_input():
     info(green, "> ", end="")
     return input()
 
+
 def read_password():
     """ Read a password from the user
 
     """
     info(green, "> ", end="")
     return getpass.getpass(prompt='')
+
 
 def ask_string(question, default=None):
     """Ask the user to enter a string.
@@ -433,6 +437,7 @@ def ask_string(question, default=None):
         return default
     return answer
 
+
 def ask_password(question):
     """Ask the user to enter a password.
     """
@@ -440,7 +445,8 @@ def ask_password(question):
     answer = read_password()
     return answer
 
-def ask_choice(input_text, choices,  *, func_desc=None):
+
+def ask_choice(input_text, choices, *, func_desc=None):
     """Ask the user to choose from a list of choices.
 
     :return: the selected choice
@@ -474,10 +480,10 @@ def ask_choice(input_text, choices,  *, func_desc=None):
         except ValueError:
             info("Please enter a valid number")
             continue
-        if index not in range(1, len(choices)+1):
+        if index not in range(1, len(choices) + 1):
             info(index, "is out of range")
             continue
-        res = choices[index-1]
+        res = choices[index - 1]
         keep_asking = False
 
     return res
@@ -549,8 +555,10 @@ def did_you_mean(message, user_input, choices):
     if not choices:
         return message
     else:
-        result = {difflib.SequenceMatcher(a=user_input, b=choice).ratio(): choice \
-                  for choice in choices}
+        result = {
+            difflib.SequenceMatcher(a=user_input, b=choice).ratio(): choice
+            for choice in choices
+        }
         message += "\nDid you mean: %s?" % result[max(result)]
         return message
 
@@ -571,10 +579,12 @@ def main_demo():
     # each call
     global message
     old_message = message
+
     def new_message(*args, **kwargs):
         old_message(*args, **kwargs)
         time.sleep(1)
     message = new_message
+
     info_1("Important info")
     info_2("Secondary info")
     info("This is", red, "red")
@@ -582,7 +592,7 @@ def main_demo():
     list_of_things = ["foo", "bar", "baz"]
     for i, thing in enumerate(list_of_things):
         info_count(i, len(list_of_things), thing)
-    info_progress("Done",  5, 20)
+    info_progress("Done", 5, 20)
     info_progress("Done", 10, 20)
     info_progress("Done", 20, 20)
     info("\n", check, "all done")
