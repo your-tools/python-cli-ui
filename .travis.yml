@@ -11,4 +11,5 @@ install:
 
 script:
   - pipenv check
+  - pipenv run pyflakes ui/__init__.py ui/tests/test_ui.py
   - pipenv run pytest

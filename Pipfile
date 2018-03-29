@@ -13,6 +13,8 @@ tabulate = "*"
 
 
 [dev-packages]
+
 sphinx = "*"
 ghp-import = "*"
 pytest = "*"
+pyflakes = "*"
