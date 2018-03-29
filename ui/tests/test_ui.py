@@ -97,11 +97,13 @@ def test_read_input():
         actual = ui.read_input()
         assert actual == "foo"
 
+
 def test_read_password():
     with mock.patch('getpass.getpass') as m:
         m.side_effect = ["bar"]
         actual = ui.read_password()
         assert actual == "bar"
+
 
 def test_ask_string():
     with mock.patch('builtins.input') as m:
@@ -117,6 +119,14 @@ def test_ask_password():
         m.side_effect = ["chocolate!", ""]
         res = ui.ask_password("guilty pleasure?")
         assert res == "chocolate!"
+
+
+def test_empty_password():
+    with mock.patch('getpass.getpass') as m:
+        m.side_effect = [""]
+        actual = ui.ask_password("Please enter your password or just press enter to skip")
+        assert actual == ""
+
 
 def test_ask_yes_no():
     """ Test that you can answer with several types of common answers """
@@ -168,6 +178,13 @@ def test_ask_choice_empty_input():
         m.side_effect = [""]
         res = ui.ask_choice("Select a animal", ["cat", "dog", "cow"])
         assert res is None
+
+
+def test_ask_choice_ctrl_c():
+    with pytest.raises(KeyboardInterrupt):
+        with mock.patch('builtins.input') as m:
+            m.side_effect = KeyboardInterrupt
+            ui.ask_choice("Select a animal", ["cat", "dog", "cow"])
 
 
 def test_quiet(message_recorder):
