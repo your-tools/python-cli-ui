@@ -428,10 +428,7 @@ def ask_string(question, default=None):
     if default:
         question += " (%s)" % default
     info(green, "::", reset, question)
-    try:
-        answer = read_input()
-    except KeyboardInterrupt:
-        return default
+    answer = read_input()
     if not answer:
         return default
     return answer
@@ -440,10 +437,7 @@ def ask_password(question):
     """Ask the user to enter a password.
     """
     info(green, "::", reset, question)
-    try:
-        answer = read_password()
-    except KeyboardInterrupt:
-        return default
+    answer = read_password()
     if not answer:
         return default
     return answer
@@ -474,10 +468,7 @@ def ask_choice(input_text, choices,  *, func_desc=None):
     keep_asking = True
     res = None
     while keep_asking:
-        try:
-            answer = read_input()
-        except KeyboardInterrupt:
-            return None
+        answer = read_input()
         if not answer:
             return None
         try:
