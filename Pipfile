@@ -14,6 +14,8 @@ tabulate = "*"
 
 [dev-packages]
 
+scandir = { version = "*", markers="python_version <= '3.4'" }
+pathlib2 = { version = "*", markers="python_version <= '3.5'" }
 sphinx = "*"
 ghp-import = "*"
 pytest = "*"
