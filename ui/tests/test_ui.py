@@ -78,7 +78,7 @@ def test_info_characters(smart_tty):
 def test_timestamp(dumb_tty, toggle_timestamp):
     ui.info("message", fileobj=dumb_tty)
     actual = dumb_tty.getvalue()
-    match = re.match("\[(.*)\]", actual)
+    match = re.match(r"\[(.*)\]", actual)
     assert match
     assert datetime.datetime.strptime(match.groups()[0], "%Y-%m-%d %H:%M:%S")
 
