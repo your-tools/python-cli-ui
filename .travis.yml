@@ -11,12 +11,10 @@ matrix:
       sudo: true
 
 install:
-  - pip install --upgrade pip
-  - pip install pipenv
-  - pipenv install --dev
+  - pip install poetry
+  - poetry install
 
 script:
-  - pipenv check
-  - pipenv run pyflakes ui/__init__.py ui/tests/test_ui.py
-  - pipenv run pytest
-  - pipenv run sphinx-build -W docs docs/_build/html
+  - poetry run pyflakes ui/__init__.py ui/tests/test_ui.py
+  - poetry run pytest
+  - poetry run sphinx-build -W docs docs/_build/html
