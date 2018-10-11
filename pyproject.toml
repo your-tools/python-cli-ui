@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "python-cli-ui"
+version ="0.7.2"
+
+license = "MIT"
+
+authors = [
+  "Dimitir Merejkowsky"
+]
+
+readme = "README.rst"
+description = "Build Nice User Interfaces In The Terminal"
+
+repository = "https://github.com/SuperTanker/python-cli-ui"
+homepage = "https://github.com/SuperTanker/python-cli-ui"
+
+keywords = ["terminal", "colors"]
+
+[tool.poetry.dependencies]
+python = "^3.4"
+colorama = "^0.3"
+tabulate = "^0.8"
+unidecode = "^1.0"
+
+[tool.poetry.dev-dependencies]
+sphinx = "^1.7"
+ghp-import = "^0.5"
+pytest = "^3.8"
+pyflakes = "^2.0"
