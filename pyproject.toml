@@ -5,7 +5,7 @@ version = "0.7.2"
 license = "MIT"
 
 authors = [
-  "Dimitir Merejkowsky"
+  "Dimitri Merejkowsky"
 ]
 
 readme = "README.rst"
