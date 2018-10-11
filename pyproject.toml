@@ -16,6 +16,10 @@ homepage = "https://github.com/SuperTanker/python-cli-ui"
 
 keywords = ["terminal", "colors"]
 
+packages = [
+ { include = "ui" }
+]
+
 [tool.poetry.dependencies]
 python = "^3.4"
 colorama = "^0.3"
