@@ -372,6 +372,11 @@ Testing with pytest
 Changelog
 -----------
 
+v0.7.2
+++++++
+
+* Switch to `poetry <https://poetry.eustace.io>`_ .
+
 v0.7.1
 ++++++
 
