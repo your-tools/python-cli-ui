@@ -11,8 +11,8 @@ authors = [
 readme = "README.rst"
 description = "Build Nice User Interfaces In The Terminal"
 
-repository = "https://github.com/SuperTanker/python-cli-ui"
-homepage = "https://github.com/SuperTanker/python-cli-ui"
+repository = "https://github.com/TankerHQ/python-cli-ui"
+homepage = "https://github.com/TankerHQ/python-cli-ui"
 
 keywords = ["terminal", "colors"]
 

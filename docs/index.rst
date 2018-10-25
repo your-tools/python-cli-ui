@@ -392,7 +392,7 @@ v0.7.0
 v0.6.1
 ++++++
 
-* Fix metadata (owner moved from TankerApp to SuperTanker)
+* Fix metadata (owner moved from TankerApp to TankerHQ)
 
 v0.6.0
 ++++++
@@ -416,7 +416,7 @@ v0.3.0
 * Add ``info_section``
 
 * Cosmetic changes about prefixes for ``debug``, ``warn`` and ``error``
-  messages. (See `#6 <https://github.com/SuperTanker/python-cli-ui/pull/6>`_
+  messages. (See `#6 <https://github.com/TankerHQ/python-cli-ui/pull/6>`_
   for the details)
 
 
