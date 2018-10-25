@@ -3,21 +3,21 @@ python-cli-ui
 
 Tools for nice user interfaces in the terminal.
 
-.. image:: https://img.shields.io/travis/SuperTanker/python-cli-ui.svg?branch=master
-  :target: https://travis-ci.org/SuperTanker/python-cli-ui
+.. image:: https://img.shields.io/travis/TankerHQ/python-cli-ui.svg?branch=master
+  :target: https://travis-ci.org/TankerHQ/python-cli-ui
 
 .. image:: https://img.shields.io/pypi/v/python-cli-ui.svg
   :target: https://pypi.org/project/python-cli-ui/
 
-.. image:: https://img.shields.io/github/license/SuperTanker/python-cli-ui.svg
-  :target: https://github.com/SuperTanker/python-cli-ui/blob/master/LICENSE
+.. image:: https://img.shields.io/github/license/TankerHQ/python-cli-ui.svg
+  :target: https://github.com/TankerHQ/python-cli-ui/blob/master/LICENSE
 
 
 Documentation
 -------------
 
 
-See `python-cli-ui documentation <https://supertanker.github.io/python-cli-ui>`_.
+See `python-cli-ui documentation <https://TankerHQ.github.io/python-cli-ui>`_.
 
 Demo
 ----
