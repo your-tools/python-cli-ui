@@ -10,9 +10,14 @@ matrix:
       dist: xenial
       sudo: true
 
+
+
 install:
-  - pip install poetry
-  - poetry install
+  - curl https://raw.githubusercontent.com/dmerejkowsky/dmenv/master/installer.py -o dmenv-installer.py
+  - python3 dmenv-installer.py --dest ./dmenv
+  - ./dmenv install
 
 script:
-  - bash ci.sh
+  - ./dmenv run -- pyflakes ui/__init__.py ui/tests/test_ui.py
+  - ./dmenv run -- pytest
+  - ./dmenv run -- sphinx-build -W docs docs/_build/html
