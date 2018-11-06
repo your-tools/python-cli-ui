@@ -370,7 +370,12 @@ Testing with pytest
 
 
 Changelog
------------
+----------
+
+v0.7.3
+++++++
+
+* Switch to ``dmenv``. This makes it possible to use ``python-cli-ui`` with ``colorama >= 4.0``.
 
 v0.7.2
 ++++++
