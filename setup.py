@@ -37,9 +37,4 @@ setup(name="python-cli-ui",
           "Programming Language :: Python :: 3.6",
           "Programming Language :: Python :: 3.7",
       ],
-      entry_points={
-          "console_scripts": [
-              "tsrc = tsrc.cli.main:main",
-          ]
-      }
       )
