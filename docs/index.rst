@@ -372,6 +372,11 @@ Testing with pytest
 Changelog
 ----------
 
+v0.7.4
+++++++
+
+* Remove buggy ``entry_points`` from ``setup.py``.
+
 v0.7.3
 ++++++
 
