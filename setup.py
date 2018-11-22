@@ -11,7 +11,7 @@ def get_long_description():
 
 
 setup(name="python-cli-ui",
-      version="0.7.3",
+      version="0.7.4",
       description="Build Nice User Interfaces In The Terminal",
       long_description=get_long_description(),
       url="https://github.com/TankerHQ/python-cli-ui",
