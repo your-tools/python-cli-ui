@@ -1,4 +1,4 @@
-import ui
+import cli_ui
 import re
 
 import pytest
@@ -6,19 +6,19 @@ import pytest
 
 class MessageRecorder():
     def __init__(self):
-        ui.CONFIG["record"] = True
-        ui._MESSAGES = list()
+        cli_ui.CONFIG["record"] = True
+        cli_ui._MESSAGES = list()
 
     def stop(self):
-        ui.CONFIG["record"] = False
-        ui._MESSAGES = list()
+        cli_ui.CONFIG["record"] = False
+        cli_ui._MESSAGES = list()
 
     def reset(self):
-        ui._MESSAGES = list()
+        cli_ui._MESSAGES = list()
 
     def find(self, pattern):
         regexp = re.compile(pattern)
-        for message in ui._MESSAGES:
+        for message in cli_ui._MESSAGES:
             if re.search(regexp, message):
                 return message
 
