@@ -1,21 +1,18 @@
 Python CLI UI
 =============
 
-.. module:: ui
+.. module:: cli_ui
 
 Tools for nice user interfaces in the terminal.
 
 Installation
 -------------
 
-``python-cli-ui`` is available on `Pypi <https://pypi.org/project/python-cli-ui/>`_
+``cli-ui`` is available on `Pypi <https://pypi.org/project/cli-ui/>`_
 and is compatible with Python **3.4** and higher.
 
 It depends on ``colorama`` and ``unidecode`` for Windows support, and on
 ``tabulate`` for the :func:`info_table` function.
-
-.. note:: The name of the Pypi package is ``python-cli-ui``, but after you
-          install it, you should use ``import ui`` to use it.
 
 API
 ----
@@ -27,10 +24,10 @@ Configuration
 
 ::
 
-  >>> ui.debug("this will not be printed")
+  >>> cli_ui.debug("this will not be printed")
   <nothing>
-  >>> ui.setup(verbose=True)
-  >>> ui.debug("this will be printed")
+  >>> cli_ui.setup(verbose=True)
+  >>> cli_ui.debug("this will be printed")
   this will be printed
 
 
@@ -84,8 +81,8 @@ You can use any of these constants as a ``token`` in the following functions:
 
   ::
 
-      >>> up_arrow = ui.UnicodeSequence(ui.blue, "↑", "+")
-      >>> ui.info(up_arrow, "2 commits")
+      >>> up_arrow = cli_ui.UnicodeSequence(cli_ui.blue, "↑", "+")
+      >>> cli_ui.info(up_arrow, "2 commits")
       ↑ 2 commits # on Linux
       + 2 commits # on Windows
 
@@ -96,10 +93,10 @@ You can use any of these constants as a ``token`` in the following functions:
 
   ::
 
-      >>> heart = ui.Symbol("❤", "<3")
-      >>> ui.info("Thanks for using python-cli-ui", heart)
-      Thanks for using python-cli-ui ❤  # on Linux
-      Thanks for using python-cli-ui <3  # on Windows
+      >>> heart = cli_ui.Symbol("❤", "<3")
+      >>> cli_ui.info("Thanks for using cli-ui", heart)
+      Thanks for using cli-ui ❤  # on Linux
+      Thanks for using cli-ui <3  # on Windows
 
 
 
@@ -110,7 +107,7 @@ Informative messages
 
    ::
 
-      >>> ui.info("this is", ui.red, "red")
+      >>> cli_ui.info("this is", cli_ui.red, "red")
       This is red
 
 
@@ -120,8 +117,8 @@ Functions below take the same arguments as the :func:`info` function
 
    ::
 
-      >>> ui.info_section("Section one")
-      >>> ui.info("Starting stuff")
+      >>> cli_ui.info_section("Section one")
+      >>> cli_ui.info("Starting stuff")
 
       Section one
       ------------
@@ -132,28 +129,28 @@ Functions below take the same arguments as the :func:`info` function
 
    ::
 
-      >>> ui.info_1("Message")
+      >>> cli_ui.info_1("Message")
       :: Message
 
 .. autofunction:: info_2
 
    ::
 
-      >>> ui.info_2("Message")
+      >>> cli_ui.info_2("Message")
       => Message
 
 .. autofunction:: info_3
 
    ::
 
-      >>> ui.info_3("Message")
+      >>> cli_ui.info_3("Message")
       * Message
 
 .. autofunction:: debug
 
     ::
 
-      >>> ui.debug("Message")
+      >>> cli_ui.debug("Message")
       <nothing>
 
 
@@ -166,21 +163,21 @@ Functions below use ``sys.stderr`` by default:
 
    ::
 
-      >>> ui.error("Message")
+      >>> cli_ui.error("Message")
       Error: message
 
 .. autofunction:: warning
 
    ::
 
-      >>> ui.warning("Message")
+      >>> cli_ui.warning("Message")
       Warning: message
 
 .. autofunction:: fatal
 
    ::
 
-      >>> ui.fatal("Message")
+      >>> cli_ui.fatal("Message")
       Error: message
       exit()
 
@@ -193,23 +190,23 @@ Progress messages
    ::
 
       >>> for in in rang(0, 5):
-      >>>     ui.dot()
+      >>>     cli_ui.dot()
       ....<no newline>
-      >>> ui.dot(last=True)
+      >>> cli_ui.dot(last=True)
       .....
 
 .. autofunction:: info_count
 
    ::
 
-      >>> ui.info_count(4, 12, message)
+      >>> cli_ui.info_count(4, 12, message)
       * ( 5/12) message
 
 .. autofunction:: info_progress
 
    ::
 
-      >>> ui.info_progress("Done", 5, 20)
+      >>> cli_ui.info_progress("Done", 5, 20)
       Done: 25%
 
 
@@ -220,9 +217,9 @@ Formatting
 
    ::
 
-    >>> ui.info("one", "\n",
-                ui.tabs(1), "two", "\n",
-                ui.tabs(2), "three", "\n",
+    >>> cli_ui.info("one", "\n",
+                cli_ui.tabs(1), "two", "\n",
+                cli_ui.tabs(2), "three", "\n",
                 sep="")
     one
       two
@@ -236,7 +233,7 @@ Formatting
             "First, we take Manhattan\n"
             "Then we take Berlin!"
       )
-      >>> ui.info("John said:", ui.indent(quote))
+      >>> cli_ui.info("John said:", cli_ui.indent(quote))
       John said:
          First, we take Manhattan.
          Then we take Berlin!
@@ -252,7 +249,7 @@ Formatting
             [(bold, "Jane"), (green, 5.0)],
           ]
 
-      >>> ui.info_table(data, headers=headers)
+      >>> cli_ui.info_table(data, headers=headers)
       name      score
       --------  --------
       John       10.0
@@ -267,7 +264,7 @@ Asking for user input
 
   ::
 
-      >>> name = ui.ask_string("Enter your name")
+      >>> name = cli_ui.ask_string("Enter your name")
       :: Enter your name
       <john>
       >>> name
@@ -278,7 +275,7 @@ Asking for user input
   ::
 
       >>> choices = ["apple", "banana", "orange"]
-      >>> fruit = ui.ask_choice("Select a fruit", choices)
+      >>> fruit = cli_ui.ask_choice("Select a fruit", choices)
       :: Select a fruit
         1 apple
         2 banana
@@ -291,7 +288,7 @@ Asking for user input
 
    ::
 
-         >>> with_cream = ui.ask_yes_no("With cream?", default=False)
+         >>> with_cream = cli_ui.ask_yes_no("With cream?", default=False)
          :: With cream? (y/N)
          <y>
          >>> with_cream
@@ -302,7 +299,7 @@ Asking for user input
 
   ::
 
-      >>> fav_food = ui.ask_password("Guilty pleasure?")
+      >>> fav_food = cli_ui.ask_password("Guilty pleasure?")
       :: Guilty pleasure?
 
       >>> fav_food
@@ -316,12 +313,12 @@ Displaying duration
 
    ::
 
-      >>> @ui.Timer("something")
+      >>> @cli_ui.Timer("something")
           def do_something():
                foo()
                bar()
       # Or:
-      >>> with ui.Timer("something"):
+      >>> with cli_ui.Timer("something"):
               foo()
               bar()
       * Something took 0h 3m 10s 430ms
@@ -336,9 +333,9 @@ Auto-correct
    ::
 
       >>> allowed_names = ["Alice", "John", "Bob"]
-      >>> name = ui.ask_string("Enter a name")
+      >>> name = cli_ui.ask_string("Enter a name")
       >>> if not name in allowed_names:
-      >>>       ui.did_you_mean("Invalid name", user_input, choices)
+      >>>       cli_ui.did_you_mean("Invalid name", user_input, choices)
       :: Enter a name
       <Joohn>
       Invalid name.
@@ -353,15 +350,15 @@ Auto-correct
 Testing with pytest
 ++++++++++++++++++++
 
-.. autofunction:: ui.tests.conftest.message_recorder
+.. autofunction:: cli_ui.tests.conftest.message_recorder
 
 ::
 
-    from ui.tests.conftest import message_recorder
+    from cli_ui.tests.conftest import message_recorder
 
 
     def foo():
-        ui.info("Fooing")
+        cli_ui.info("Fooing")
 
 
     def test_foo(message_recorder):
@@ -380,7 +377,7 @@ v0.7.4
 v0.7.3
 ++++++
 
-* Switch to ``dmenv``. This makes it possible to use ``python-cli-ui`` with ``colorama >= 4.0``.
+* Switch to ``dmenv``. This makes it possible to use ``cli-ui`` with ``colorama >= 4.0``.
 
 v0.7.2
 ++++++
@@ -433,10 +430,10 @@ v0.3.0
 v0.2.0
 ++++++
 
-* Add ``ui.setup`` to configure things like verbosity and when to
+* Add ``cli_ui.setup`` to configure things like verbosity and when to
   use colored output (#3)
 
-* Add a ``message_recorder`` in ``ui.tests.conf`` that can
+* Add a ``message_recorder`` in ``cli_ui.tests.conf`` that can
   be used as a ``pytest`` fixture in other projects.
 
 v0.1.0

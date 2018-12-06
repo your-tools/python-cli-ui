@@ -11,7 +11,7 @@ source_suffix = '.rst'
 
 master_doc = 'index'
 
-project = 'python-cli-ui'
+project = 'cli_ui'
 copyright = '2017, Kontrol SAS'
 author = 'Kontrol SAS'
 version = '0.1.0'

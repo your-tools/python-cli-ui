@@ -249,7 +249,7 @@ def warning(*tokens, **kwargs):
 def info(*tokens, **kwargs):
     r""" Print an informative message
 
-    :param tokens: list of `ui` constants or strings, like ``(ui.red, 'this is an error')``
+    :param tokens: list of `ui` constants or strings, like ``(cli_ui.red, 'this is an error')``
     :param sep: separator, defaults to ``' '``
     :param end: token to place at the end, defaults to ``'\n'``
     :param fileobj: file-like object to print the output, defaults to ``sys.stdout``
@@ -379,7 +379,7 @@ def info_table(data, *, headers=None, fileobj=None):
 
 
 def message_for_exception(exception, message):
-    """ Returns a tuple suitable for ui.error()
+    """ Returns a tuple suitable for cli_ui.error()
     from the given exception.
     (Traceback will be part of the message, after
     the ``message`` argument)
