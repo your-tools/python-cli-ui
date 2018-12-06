@@ -58,43 +58,31 @@ def _setup(*args, **kwargs):
 
 class Color:
     """Represent an ANSI escape sequence """
-    def __init__(self, code, modifier=None):
-        self.code = '\033[%d' % code
-        if modifier is not None:
-            self.code += ';%dm' % modifier
-        else:
-            self.code += 'm'
+    def __init__(self, code):
+        self.code = code
 
 
-reset     = Color(0)
-bold      = Color(1)
-faint     = Color(2)
-standout  = Color(3)
-underline = Color(4)
-blink     = Color(5)
-overline  = Color(6)
+reset     = Color(colorama.Style.RESET_ALL)
+bold      = Color(colorama.Style.BRIGHT)
+faint     = Color(colorama.Style.DIM)
+# for some reason those are not in colorama
+standout  = Color('\x1b[3m')
+underline = Color('\x1b[4m')
+blink     = Color('\x1b[5m')
+overline  = Color('\x1b[6m')
 
-black      = Color(30)
-darkred    = Color(31)
-darkgreen  = Color(32)
-brown      = Color(33)
-darkblue   = Color(34)
-purple     = Color(35)
-teal       = Color(36)
-lightgray  = Color(37)
+black   = Color(colorama.Fore.BLACK)
+red     = Color(colorama.Fore.RED)
+green   = Color(colorama.Fore.GREEN)
+yellow  = Color(colorama.Fore.YELLOW)
+blue    = Color(colorama.Fore.BLUE)
+magenta = Color(colorama.Fore.MAGENTA)
+cyan    = Color(colorama.Fore.CYAN)
+white   = Color(colorama.Fore.WHITE)
 
-darkgray   = Color(30, 1)
-red        = Color(31, 1)
-green      = Color(32, 1)
-yellow     = Color(33, 1)
-blue       = Color(34, 1)
-fuchsia    = Color(35, 1)
-turquoise  = Color(36, 1)
-white      = Color(37, 1)
-
-darkteal = turquoise
-darkyellow = brown
-fuscia = fuchsia
+# backward compatibility:
+brown = yellow      # used by ui.warning
+lightgray = white  # used by ui.debug
 
 
 # Other nice-to-have characters:

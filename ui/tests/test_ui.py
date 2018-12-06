@@ -4,16 +4,11 @@ import operator
 import re
 from unittest import mock
 
-import ui
-
+import colorama.ansi
+import colorama
 import pytest
 
-RED = "\x1b[31;1m"
-GREEN = "\x1b[32;1m"
-RESET = "\x1b[0m"
-BOLD = "\x1b[1m"
-BEGIN_TITLE = "\x1b]0;"
-END_TITLE = "\x07"
+import ui
 
 
 def assert_equal_strings(a, b):
@@ -45,16 +40,18 @@ def test_info_stdout_is_a_tty(smart_tty):
     ui.info(ui.red, "this is red", ui.reset,
             ui.green, "this is green",
             fileobj=smart_tty)
-    expected = (RED + "this is red " + RESET +
-                GREEN + "this is green" + RESET + "\n")
+    expected = (colorama.Fore.RED + "this is red " + colorama.Style.RESET_ALL +
+                colorama.Fore.GREEN + "this is green" + colorama.Style.RESET_ALL + "\n")
     actual = smart_tty.getvalue()
     assert_equal_strings(actual, expected)
 
 
 def test_update_title(smart_tty):
     ui.info("Something", ui.bold, "bold", fileobj=smart_tty, update_title=True)
-    expected = (BEGIN_TITLE + "Something bold" + END_TITLE +
-                "Something " + BOLD + "bold" + RESET + "\n")
+    expected = (
+        colorama.ansi.set_title("Something bold") +
+        "Something " + colorama.Style.BRIGHT + "bold" + colorama.Style.RESET_ALL + "\n"
+    )
     actual = smart_tty.getvalue()
     assert_equal_strings(actual, expected)
 
@@ -71,7 +68,7 @@ def test_info_stdout_is_not_a_tty(dumb_tty):
 def test_info_characters(smart_tty):
     ui.info("Doing stuff", ui.ellipsis, "sucess", ui.check, fileobj=smart_tty)
     actual = smart_tty.getvalue()
-    expected = "Doing stuff " + RESET + "…" + " sucess " + GREEN + "✓"
+    expected = "Doing stuff " + colorama.Style.RESET_ALL + "…" + " sucess " + colorama.Fore.GREEN + "✓"
     assert_equal_strings(actual, expected)
 
 
@@ -198,10 +195,10 @@ def test_quiet(message_recorder):
 def test_color_always(dumb_tty):
     ui.setup(color="always")
     ui.info(ui.red, "this is red", fileobj=dumb_tty)
-    assert RED in dumb_tty.getvalue()
+    assert colorama.Fore.RED in dumb_tty.getvalue()
 
 
 def test_color_never(smart_tty):
     ui.setup(color="never")
     ui.info(ui.red, "this is red", fileobj=smart_tty)
-    assert RED not in smart_tty.getvalue()
+    assert colorama.Fore.RED not in smart_tty.getvalue()
