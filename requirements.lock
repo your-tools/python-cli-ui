@@ -1,11 +1,11 @@
-# Generated with dmenv 0.4.2, python 3.6.7, on Linux
+# Generated with dmenv 0.6.0, python 3.6.7, on Linux
 alabaster==0.7.12
 atomicwrites==1.2.1
 attrs==18.2.0
 Babel==2.6.0
-certifi==2018.10.15
+certifi==2018.11.29
 chardet==3.0.4
-colorama==0.4.0
+colorama==0.4.1
 docutils==0.14
 ghp-import==0.5.5
 idna==2.7
@@ -17,15 +17,16 @@ packaging==18.0
 pluggy==0.8.0
 py==1.7.0
 pyflakes==2.0.0
-Pygments==2.2.0
+Pygments==2.3.0
 pyparsing==2.3.0
-pytest==3.10.0
+pytest==4.0.1
+python-cli-ui==0.7.4
 pytz==2018.7
-requests==2.20.0
+requests==2.20.1
 six==1.11.0
 snowballstemmer==1.2.1
-Sphinx==1.8.1
+Sphinx==1.8.2
 sphinxcontrib-websupport==1.1.0
 tabulate==0.8.2
-Unidecode==1.0.22
+Unidecode==1.0.23
 urllib3==1.24.1
