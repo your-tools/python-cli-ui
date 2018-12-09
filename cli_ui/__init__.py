@@ -232,8 +232,8 @@ def write_and_flush(fileobj: FileObj, to_write: str) -> None:
 
 def message(
     *tokens: Token,
-    end: str = "",
-    sep: str = "",
+    end: str = "\n",
+    sep: str = " ",
     fileobj: FileObj = sys.stdout,
     update_title: bool = False
 ) -> None:
@@ -290,8 +290,10 @@ def info(*tokens: Token, **kwargs: Any) -> None:
 
 def info_section(*tokens: Token, **kwargs: Any) -> None:
     """ Print an underlined section name """
-    kwargs["color"] = False
-    no_color = _process_tokens(tokens, **kwargs)
+    # We need to know the length of the section:
+    process_tokens_kwargs = kwargs.copy()
+    process_tokens_kwargs["color"] = False
+    no_color = _process_tokens(tokens, **process_tokens_kwargs)
     info(*tokens, **kwargs)
     info("-" * len(no_color), end="\n\n")
 
