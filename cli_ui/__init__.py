@@ -1,3 +1,7 @@
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type, Union, IO
+
+Dict, Type
+
 import argparse
 import datetime
 import difflib
@@ -14,6 +18,9 @@ import colorama
 import unidecode
 import tabulate
 
+ConfigValue = Union[None, bool, str]
+FileObj = IO[str]
+
 # Global variable to store configuration
 
 CONFIG = {
@@ -23,7 +30,7 @@ CONFIG = {
     "title": "auto",
     "timestamp": False,
     "record": False,  # used for testing
-}
+}  # type: Dict[str, ConfigValue]
 
 
 # used for testing
@@ -37,7 +44,17 @@ _ENABLE_XTERM_TITLE = None
 _INITIALIZED = False
 
 
-def setup(*, verbose=False, quiet=False, color="auto", title="auto", timestamp=False):
+Token = Union[str, "Color", "UnicodeSequence", "Symbol"]
+
+
+def setup(
+    *,
+    verbose: bool = False,
+    quiet: bool = False,
+    color: str = "auto",
+    title: str = "auto",
+    timestamp: bool = False
+) -> None:
     """ Configure behavior of message functions.
 
     :param verbose: Whether :func:`debug` messages should get printed
@@ -51,7 +68,7 @@ def setup(*, verbose=False, quiet=False, color="auto", title="auto", timestamp=F
     _setup(verbose=verbose, quiet=quiet, color=color, title=title, timestamp=timestamp)
 
 
-def _setup(*args, **kwargs):
+def _setup(**kwargs: ConfigValue) -> None:
     for key, value in kwargs.items():
         CONFIG[key] = value
 
@@ -59,7 +76,7 @@ def _setup(*args, **kwargs):
 class Color:
     """Represent an ANSI escape sequence """
 
-    def __init__(self, code):
+    def __init__(self, code: str):
         self.code = code
 
 
@@ -92,14 +109,14 @@ lightgray = white  # used by ui.debug
 class UnicodeSequence:
     """ Represent a sequence containing a color followed by a Unicode symbol """
 
-    def __init__(self, color, as_unicode, as_ascii):
+    def __init__(self, color: Color, as_unicode: str, as_ascii: str):
         if os.name == "nt":
             self.as_string = as_ascii
         else:
             self.as_string = as_unicode
         self.color = color
 
-    def tuple(self):
+    def tuple(self) -> Tuple[Token, ...]:
         return (reset, self.color, self.as_string, reset)
 
 
@@ -109,14 +126,14 @@ cross = UnicodeSequence(red, "❌", "ko")
 
 
 class Symbol(UnicodeSequence):
-    def __init__(self, as_unicode, as_ascii):
+    def __init__(self, as_unicode: str, as_ascii: str):
         super().__init__(reset, as_unicode, as_ascii)
 
-    def tuple(self):
+    def tuple(self) -> Tuple[Token, ...]:
         return (self.as_string,)
 
 
-def using_colorama():
+def using_colorama() -> bool:
     if os.name == "nt":
         if "TERM" not in os.environ:
             return True
@@ -127,7 +144,7 @@ def using_colorama():
         return False
 
 
-def config_color(fileobj):
+def config_color(fileobj: FileObj) -> bool:
     if CONFIG["color"] == "never":
         return False
     if CONFIG["color"] == "always":
@@ -143,7 +160,7 @@ def config_color(fileobj):
         return fileobj.isatty()
 
 
-def update_title(mystr, fileobj):
+def write_title_string(mystr: str, fileobj: FileObj) -> None:
     if using_colorama():
         # By-pass colorama bug:
         # colorama/win32.py, line 154
@@ -155,7 +172,9 @@ def update_title(mystr, fileobj):
     fileobj.flush()
 
 
-def process_tokens(tokens, *, end="\n", sep=" "):
+def process_tokens(
+    tokens: Sequence[Token], *, end: str = "\n", sep: str = " "
+) -> Tuple[str, str]:
     """ Returns two strings from a list of tokens.
     One containing ASCII escape codes, the other
     only the 'normal' characters
@@ -163,7 +182,7 @@ def process_tokens(tokens, *, end="\n", sep=" "):
     """
     # Flatten the list of tokens in case some of them are of
     # class UnicodeSequence:
-    flat_tokens = list()
+    flat_tokens = list()  # type: List[Token]
     for token in tokens:
         if isinstance(token, UnicodeSequence):
             flat_tokens.extend(token.tuple())
@@ -175,7 +194,9 @@ def process_tokens(tokens, *, end="\n", sep=" "):
     return (with_color, without_color)
 
 
-def _process_tokens(tokens, *, end="\n", sep=" ", color=True):
+def _process_tokens(
+    tokens: Sequence[Token], *, end: str = "\n", sep: str = " ", color: bool = True
+) -> str:
     res = ""
 
     if CONFIG["timestamp"]:
@@ -196,7 +217,7 @@ def _process_tokens(tokens, *, end="\n", sep=" ", color=True):
     return res
 
 
-def write_and_flush(fileobj, to_write):
+def write_and_flush(fileobj: FileObj, to_write: str) -> None:
     try:
         fileobj.write(to_write)
     except UnicodeEncodeError:
@@ -209,7 +230,13 @@ def write_and_flush(fileobj, to_write):
     fileobj.flush()
 
 
-def message(*tokens, **kwargs):
+def message(
+    *tokens: Token,
+    end: str = "",
+    sep: str = "",
+    fileobj: FileObj = sys.stdout,
+    update_title: bool = False
+) -> None:
     """ Helper method for error, warning, info, debug
 
     """
@@ -218,39 +245,36 @@ def message(*tokens, **kwargs):
         if not _INITIALIZED:
             colorama.init()
             _INITIALIZED = True
-    sep = kwargs.get("sep", " ")
-    end = kwargs.get("end", "\n")
-    fileobj = kwargs.get("fileobj") or sys.stdout
     with_color, without_color = process_tokens(tokens, end=end, sep=sep)
     if CONFIG["record"]:
         _MESSAGES.append(without_color)
-    if kwargs.get("update_title") and with_color:
-        update_title(without_color, fileobj)
+    if update_title and with_color:
+        write_title_string(without_color, fileobj)
     to_write = with_color if config_color(fileobj) else without_color
     write_and_flush(fileobj, to_write)
 
 
-def fatal(*tokens, **kwargs):
+def fatal(*tokens: Token, **kwargs: Any) -> None:
     """ Print an error message and call ``sys.exit`` """
     error(*tokens, **kwargs)
     sys.exit(1)
 
 
-def error(*tokens, **kwargs):
+def error(*tokens: Token, **kwargs: Any) -> None:
     """ Print an error message """
-    tokens = [bold, red, "Error:"] + list(tokens)
+    tokens = [bold, red, "Error:"] + list(tokens)  # type: ignore
     kwargs["fileobj"] = sys.stderr
     message(*tokens, **kwargs)
 
 
-def warning(*tokens, **kwargs):
+def warning(*tokens: Token, **kwargs: Any) -> None:
     """ Print a warning message """
-    tokens = [brown, "Warning:"] + list(tokens)
+    tokens = [brown, "Warning:"] + list(tokens)  # type: ignore
     kwargs["fileobj"] = sys.stderr
     message(*tokens, **kwargs)
 
 
-def info(*tokens, **kwargs):
+def info(*tokens: Token, **kwargs: Any) -> None:
     r""" Print an informative message
 
     :param tokens: list of `ui` constants or strings, like ``(cli_ui.red, 'this is an error')``
@@ -264,7 +288,7 @@ def info(*tokens, **kwargs):
     message(*tokens, **kwargs)
 
 
-def info_section(*tokens, **kwargs):
+def info_section(*tokens: Token, **kwargs: Any) -> None:
     """ Print an underlined section name """
     kwargs["color"] = False
     no_color = _process_tokens(tokens, **kwargs)
@@ -272,22 +296,22 @@ def info_section(*tokens, **kwargs):
     info("-" * len(no_color), end="\n\n")
 
 
-def info_1(*tokens, **kwargs):
+def info_1(*tokens: Token, **kwargs: Any) -> None:
     """ Print an important informative message """
     info(bold, blue, "::", reset, *tokens, **kwargs)
 
 
-def info_2(*tokens, **kwargs):
+def info_2(*tokens: Token, **kwargs: Any) -> None:
     """ Print an not so important informative message """
     info(bold, blue, "=>", reset, *tokens, **kwargs)
 
 
-def info_3(*tokens, **kwargs):
+def info_3(*tokens: Token, **kwargs: Any) -> None:
     """ Print an even less important informative message """
     info(bold, blue, "*", reset, *tokens, **kwargs)
 
 
-def dot(*, last=False, fileobj=None):
+def dot(*, last: bool = False, fileobj: Any = None) -> None:
     """ Print a dot without a newline unless it is the last one.
 
     Useful when you want to display a progress with very little
@@ -299,7 +323,7 @@ def dot(*, last=False, fileobj=None):
     info(".", end=end, fileobj=fileobj)
 
 
-def info_count(i, n, *rest, **kwargs):
+def info_count(i: int, n: int, *rest: Token, **kwargs: Any) -> None:
     """ Display a counter before the rest of the message.
 
     ``rest`` and ``kwargs`` are passed to :func:`info`
@@ -315,7 +339,7 @@ def info_count(i, n, *rest, **kwargs):
     info(green, "*", reset, counter_str, reset, *rest, **kwargs)
 
 
-def info_progress(prefix, value, max_value):
+def info_progress(prefix: str, value: float, max_value: float) -> None:
     """ Display info progress in percent.
 
     :param value: the current value
@@ -330,7 +354,7 @@ def info_progress(prefix, value, max_value):
         sys.stdout.flush()
 
 
-def debug(*tokens, **kwargs):
+def debug(*tokens: Token, **kwargs: Any) -> None:
     """ Print a debug message.
 
     Messages are shown only when ``CONFIG["verbose"]`` is true
@@ -340,25 +364,27 @@ def debug(*tokens, **kwargs):
     message(*tokens, **kwargs)
 
 
-def indent_iterable(elems, num=2):
+def indent_iterable(elems: Sequence[str], num: int = 2) -> List[str]:
     """Indent an iterable."""
     return [" " * num + l for l in elems]
 
 
-def indent(text, num=2):
+def indent(text: str, num: int = 2) -> str:
     """Indent a piece of text."""
     lines = text.splitlines()
     return "\n".join(indent_iterable(lines, num=num))
 
 
-def tabs(num):
+def tabs(num: int) -> str:
     """ Compute a blank tab
 
     """
     return "  " * num
 
 
-def info_table(data, *, headers=None, fileobj=None):
+def info_table(
+    data: Any, *, headers: Optional[List[str]] = None, fileobj: Any = None
+) -> None:
     if not fileobj:
         fileobj = sys.stdout
     colored_data = list()
@@ -382,7 +408,7 @@ def info_table(data, *, headers=None, fileobj=None):
     write_and_flush(fileobj, res)
 
 
-def message_for_exception(exception, message):
+def message_for_exception(exception: Exception, message: str) -> Sequence[Token]:
     """ Returns a tuple suitable for cli_ui.error()
     from the given exception.
     (Traceback will be part of the message, after
@@ -394,7 +420,7 @@ def message_for_exception(exception, message):
     """
     tb = sys.exc_info()[2]
     buffer = io.StringIO()
-    traceback.print_tb(tb, file=io)
+    traceback.print_tb(tb, file=io)  # type: ignore
     # fmt: off
     return (
         red, message + "\n",
@@ -405,7 +431,7 @@ def message_for_exception(exception, message):
     # fmt: on
 
 
-def read_input():
+def read_input() -> str:
     """ Read input from the user
 
     """
@@ -413,7 +439,7 @@ def read_input():
     return input()
 
 
-def read_password():
+def read_password() -> str:
     """ Read a password from the user
 
     """
@@ -421,7 +447,7 @@ def read_password():
     return getpass.getpass(prompt="")
 
 
-def ask_string(question, default=None):
+def ask_string(question: str, default: Optional[str] = None) -> Optional[str]:
     """Ask the user to enter a string.
     """
     if default:
@@ -433,7 +459,7 @@ def ask_string(question, default=None):
     return answer
 
 
-def ask_password(question):
+def ask_password(question: str) -> str:
     """Ask the user to enter a password.
     """
     info(green, "::", reset, question)
@@ -441,7 +467,12 @@ def ask_password(question):
     return answer
 
 
-def ask_choice(input_text, choices, *, func_desc=None):
+FuncDesc = Callable[[Any], str]
+
+
+def ask_choice(
+    input_text: str, choices: List[Any], *, func_desc: Optional[FuncDesc] = None
+) -> Any:
     """Ask the user to choose from a list of choices.
 
     :return: the selected choice
@@ -458,7 +489,7 @@ def ask_choice(input_text, choices, *, func_desc=None):
     In the last two cases, None will be returned
     """
     if func_desc is None:
-        func_desc = lambda x: x
+        func_desc = lambda x: str(x)
     info(green, "::", reset, input_text)
     choices.sort(key=func_desc)
     for i, choice in enumerate(choices, start=1):
@@ -476,7 +507,7 @@ def ask_choice(input_text, choices, *, func_desc=None):
             info("Please enter a valid number")
             continue
         if index not in range(1, len(choices) + 1):
-            info(index, "is out of range")
+            info(str(index), "is out of range")
             continue
         res = choices[index - 1]
         keep_asking = False
@@ -484,7 +515,7 @@ def ask_choice(input_text, choices, *, func_desc=None):
     return res
 
 
-def ask_yes_no(question, default=False):
+def ask_yes_no(question: str, default: bool = False) -> bool:
     """Ask the user to answer by yes or no"""
     while True:
         if default:
@@ -501,20 +532,23 @@ def ask_yes_no(question, default=False):
         warning("Please answer by 'y' (yes) or 'n' (no) ")
 
 
+AnyFunc = Callable[..., Any]
+
+
 class Timer:
     """ Display time taken when executing a list of statements.
 
     """
 
-    def __init__(self, description):
+    def __init__(self, description: str):
         self.description = description
-        self.start_time = None
-        self.stop_time = None
-        self.elapsed_time = None
+        self.start_time = datetime.datetime.now()
+        self.stop_time = datetime.datetime.now()
+        self.elapsed_time = 0
 
-    def __call__(self, func, *args, **kwargs):
+    def __call__(self, func: AnyFunc, *args: Any, **kwargs: Any) -> AnyFunc:
         @functools.wraps(func)
-        def res(*args, **kwargs):
+        def res(*args: Any, **kwargs: Any) -> Any:
             self.start()
             ret = func(*args, **kwargs)
             self.stop()
@@ -522,18 +556,18 @@ class Timer:
 
         return res
 
-    def __enter__(self):
+    def __enter__(self) -> "Timer":
         self.start()
         return self
 
-    def __exit__(self, *unused):
+    def __exit__(self, *unused: Any) -> None:
         self.stop()
 
-    def start(self):
+    def start(self) -> None:
         """ Start the timer """
         self.start_time = datetime.datetime.now()
 
-    def stop(self):
+    def stop(self) -> None:
         """ Stop the timer and emit a nice log """
         end_time = datetime.datetime.now()
         elapsed_time = end_time - self.start_time
@@ -549,7 +583,7 @@ class Timer:
         info("%s took %s" % (self.description, as_str))
 
 
-def did_you_mean(message, user_input, choices):
+def did_you_mean(message: str, user_input: str, choices: Sequence[str]) -> str:
     """ Given a list of choices and an invalid user input, display the closest
     items in the list that match the input.
 
@@ -565,14 +599,14 @@ def did_you_mean(message, user_input, choices):
         return message
 
 
-def main_test_colors():
+def main_test_colors() -> None:
     this_module = sys.modules[__name__]
     for name, value in inspect.getmembers(this_module):
         if isinstance(value, Color):
             info(value, name)
 
 
-def main_demo():
+def main_demo() -> None:
     info("OK", check)
     up = Symbol("👍", "+1")
     info("I like it", blue, up)
@@ -582,7 +616,7 @@ def main_demo():
     global message
     old_message = message
 
-    def new_message(*args, **kwargs):
+    def new_message(*args: Any, **kwargs: Any) -> None:
         old_message(*args, **kwargs)
         time.sleep(1)
 
@@ -607,7 +641,7 @@ def main_demo():
     info("You chose:", answer)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("action", choices=["test_colors", "demo"])
     args = parser.parse_args()
