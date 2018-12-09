@@ -17,6 +17,8 @@ imagesize==1.1.0
 Jinja2==2.10
 MarkupSafe==1.1.0
 more-itertools==4.3.0
+mypy==0.650
+mypy-extensions==0.4.1
 packaging==18.0
 pkginfo==1.4.2
 pluggy==0.8.0
@@ -37,6 +39,7 @@ tabulate==0.8.2
 toml==0.10.0
 tqdm==4.28.1
 twine==1.12.1
+typed-ast==1.1.0
 Unidecode==1.0.23
 urllib3==1.24.1
 webencodings==0.5.1
