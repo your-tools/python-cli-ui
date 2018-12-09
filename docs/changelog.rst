@@ -7,6 +7,15 @@ v0.8.0
 Highlights
 ~~~~~~~~~~
 
+* **Breaking change**: Rename main package from ``ui`` to ``cli_ui``. This name is less likely to
+  cause clash with existing code.
+
+
+* **Breaking change** Instead of hard-coding ANSI sequences names and values, use `colorama` instead.
+  All existing names have been kept, but some of the values changed slighlty.
+
+
+
 * ``ask_`` functions now take a variable number of tokens as first argument.
   This allows to color the prompt when requiring input from the user, for instance::
 
