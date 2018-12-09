@@ -4,7 +4,7 @@ import re
 import pytest
 
 
-class MessageRecorder():
+class MessageRecorder:
     def __init__(self):
         cli_ui.CONFIG["record"] = True
         cli_ui._MESSAGES = list()

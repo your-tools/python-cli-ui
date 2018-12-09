@@ -22,7 +22,7 @@ CONFIG = {
     "color": "auto",
     "title": "auto",
     "timestamp": False,
-    "record": False  # used for testing
+    "record": False,  # used for testing
 }
 
 
@@ -58,10 +58,12 @@ def _setup(*args, **kwargs):
 
 class Color:
     """Represent an ANSI escape sequence """
+
     def __init__(self, code):
         self.code = code
 
 
+# fmt: off
 reset     = Color(colorama.Style.RESET_ALL)
 bold      = Color(colorama.Style.BRIGHT)
 faint     = Color(colorama.Style.DIM)
@@ -83,11 +85,13 @@ white   = Color(colorama.Fore.WHITE)
 # backward compatibility:
 brown = yellow      # used by ui.warning
 lightgray = white  # used by ui.debug
+# fmt: on
 
 
 # Other nice-to-have characters:
 class UnicodeSequence:
     """ Represent a sequence containing a color followed by a Unicode symbol """
+
     def __init__(self, color, as_unicode, as_ascii):
         if os.name == "nt":
             self.as_string = as_ascii
@@ -100,8 +104,8 @@ class UnicodeSequence:
 
 
 ellipsis = UnicodeSequence(reset, "…", "...")
-check    = UnicodeSequence(green, "✓", "ok")
-cross    = UnicodeSequence(red, "❌", "ko")
+check = UnicodeSequence(green, "✓", "ok")
+cross = UnicodeSequence(red, "❌", "ko")
 
 
 class Symbol(UnicodeSequence):
@@ -146,7 +150,7 @@ def update_title(mystr, fileobj):
         #   return _SetConsoleTitleW(title)
         # ctypes.ArgumentError: argument 1: <class 'TypeError'>: wrong type
         return
-    mystr = '\x1b]0;%s\x07' % mystr
+    mystr = "\x1b]0;%s\x07" % mystr
     fileobj.write(mystr)
     fileobj.flush()
 
@@ -344,7 +348,7 @@ def indent_iterable(elems, num=2):
 def indent(text, num=2):
     """Indent a piece of text."""
     lines = text.splitlines()
-    return '\n'.join(indent_iterable(lines, num=num))
+    return "\n".join(indent_iterable(lines, num=num))
 
 
 def tabs(num):
@@ -391,11 +395,14 @@ def message_for_exception(exception, message):
     tb = sys.exc_info()[2]
     buffer = io.StringIO()
     traceback.print_tb(tb, file=io)
-    return (red, message + "\n",
-            exception.__class__.__name__,
-            str(exception), "\n",
-            reset,
-            buffer.getvalue())
+    # fmt: off
+    return (
+        red, message + "\n",
+        exception.__class__.__name__,
+        str(exception), "\n",
+        reset, buffer.getvalue()
+    )
+    # fmt: on
 
 
 def read_input():
@@ -411,7 +418,7 @@ def read_password():
 
     """
     info(green, "> ", end="")
-    return getpass.getpass(prompt='')
+    return getpass.getpass(prompt="")
 
 
 def ask_string(question, default=None):
@@ -498,6 +505,7 @@ class Timer:
     """ Display time taken when executing a list of statements.
 
     """
+
     def __init__(self, description):
         self.description = description
         self.start_time = None
@@ -511,6 +519,7 @@ class Timer:
             ret = func(*args, **kwargs)
             self.stop()
             return ret
+
         return res
 
     def __enter__(self):
@@ -531,7 +540,12 @@ class Timer:
         elapsed_seconds = elapsed_time.seconds
         hours, remainder = divmod(int(elapsed_seconds), 3600)
         minutes, seconds = divmod(remainder, 60)
-        as_str = "%sh %sm %ss %dms" % (hours, minutes, seconds, elapsed_time.microseconds / 1000)
+        as_str = "%sh %sm %ss %dms" % (
+            hours,
+            minutes,
+            seconds,
+            elapsed_time.microseconds / 1000,
+        )
         info("%s took %s" % (self.description, as_str))
 
 
@@ -571,6 +585,7 @@ def main_demo():
     def new_message(*args, **kwargs):
         old_message(*args, **kwargs)
         time.sleep(1)
+
     message = new_message
 
     info_1("Important info")
