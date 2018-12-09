@@ -102,6 +102,16 @@ white   = Color(colorama.Fore.WHITE)
 # backward compatibility:
 brown = yellow      # used by ui.warning
 lightgray = white  # used by ui.debug
+darkred = red
+darkgreen = green
+darkblue = blue
+purple = magenta
+fuscia = magenta
+fuschia = magenta
+turquoise = cyan
+darkgray = black
+darkteal = cyan
+darkyellow = yellow
 # fmt: on
 
 
