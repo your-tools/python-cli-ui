@@ -61,6 +61,6 @@ Example:
     with_sugar = cli_ui.ask_yes_no("With sugar?", default=False)
 
     fruits = ["apple", "orange", "banana"]
-    selected_fruit = cli_ui.ask_choice("Choose a fruit", fruits)
+    selected_fruit = cli_ui.ask_choice("Choose a fruit", choices=fruits)
 
     #  ... and more!
