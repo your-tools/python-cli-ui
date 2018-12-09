@@ -37,38 +37,72 @@ def toggle_timestamp():
 
 
 def test_info_stdout_is_a_tty(smart_tty):
-    cli_ui.info(cli_ui.red, "this is red", cli_ui.reset,
-                cli_ui.green, "this is green",
-                fileobj=smart_tty)
-    expected = (colorama.Fore.RED + "this is red " + colorama.Style.RESET_ALL +
-                colorama.Fore.GREEN + "this is green" + colorama.Style.RESET_ALL + "\n")
+    # fmt: off
+    cli_ui.info(
+        cli_ui.red, "this is red", cli_ui.reset,
+        cli_ui.green, "this is green",
+        fileobj=smart_tty
+    )
+    # fmt: on
+    expected = (
+        colorama.Fore.RED
+        + "this is red "
+        + colorama.Style.RESET_ALL
+        + colorama.Fore.GREEN
+        + "this is green"
+        + colorama.Style.RESET_ALL
+        + "\n"
+    )
     actual = smart_tty.getvalue()
     assert_equal_strings(actual, expected)
 
 
 def test_update_title(smart_tty):
-    cli_ui.info("Something", cli_ui.bold, "bold", fileobj=smart_tty, update_title=True)
+    # fmt: off
+    cli_ui.info(
+        "Something", cli_ui.bold, "bold",
+        fileobj=smart_tty,
+        update_title=True
+    )
+    # fmt: on
     expected = (
-        colorama.ansi.set_title("Something bold") +
-        "Something " + colorama.Style.BRIGHT + "bold" + colorama.Style.RESET_ALL + "\n"
+        colorama.ansi.set_title("Something bold")
+        + "Something "
+        + colorama.Style.BRIGHT
+        + "bold"
+        + colorama.Style.RESET_ALL
+        + "\n"
     )
     actual = smart_tty.getvalue()
     assert_equal_strings(actual, expected)
 
 
 def test_info_stdout_is_not_a_tty(dumb_tty):
-    cli_ui.info(cli_ui.red, "this is red", cli_ui.reset,
-                cli_ui.green, "this is green",
-                fileobj=dumb_tty)
+    # fmt: off
+    cli_ui.info(
+        cli_ui.red, "this is red", cli_ui.reset,
+        cli_ui.green, "this is green",
+        fileobj=dumb_tty
+    )
+    # fmt: on
     expected = "this is red this is green\n"
     actual = dumb_tty.getvalue()
     assert_equal_strings(actual, expected)
 
 
 def test_info_characters(smart_tty):
-    cli_ui.info("Doing stuff", cli_ui.ellipsis, "sucess", cli_ui.check, fileobj=smart_tty)
+    cli_ui.info(
+        "Doing stuff", cli_ui.ellipsis, "sucess", cli_ui.check, fileobj=smart_tty
+    )
     actual = smart_tty.getvalue()
-    expected = "Doing stuff " + colorama.Style.RESET_ALL + "…" + " sucess " + colorama.Fore.GREEN + "✓"
+    expected = (
+        "Doing stuff "
+        + colorama.Style.RESET_ALL
+        + "…"
+        + " sucess "
+        + colorama.Fore.GREEN
+        + "✓"
+    )
     assert_equal_strings(actual, expected)
 
 
@@ -89,21 +123,21 @@ def test_record_message(message_recorder):
 
 
 def test_read_input():
-    with mock.patch('builtins.input') as m:
+    with mock.patch("builtins.input") as m:
         m.side_effect = ["foo"]
         actual = cli_ui.read_input()
         assert actual == "foo"
 
 
 def test_read_password():
-    with mock.patch('getpass.getpass') as m:
+    with mock.patch("getpass.getpass") as m:
         m.side_effect = ["bar"]
         actual = cli_ui.read_password()
         assert actual == "bar"
 
 
 def test_ask_string():
-    with mock.patch('builtins.input') as m:
+    with mock.patch("builtins.input") as m:
         m.side_effect = ["sugar!", ""]
         res = cli_ui.ask_string("coffee with what?")
         assert res == "sugar!"
@@ -112,22 +146,24 @@ def test_ask_string():
 
 
 def test_ask_password():
-    with mock.patch('getpass.getpass') as m:
+    with mock.patch("getpass.getpass") as m:
         m.side_effect = ["chocolate!", ""]
         res = cli_ui.ask_password("guilty pleasure?")
         assert res == "chocolate!"
 
 
 def test_empty_password():
-    with mock.patch('getpass.getpass') as m:
+    with mock.patch("getpass.getpass") as m:
         m.side_effect = [""]
-        actual = cli_ui.ask_password("Please enter your password or just press enter to skip")
+        actual = cli_ui.ask_password(
+            "Please enter your password or just press enter to skip"
+        )
         assert actual == ""
 
 
 def test_ask_yes_no():
     """ Test that you can answer with several types of common answers """
-    with mock.patch('builtins.input') as m:
+    with mock.patch("builtins.input") as m:
         m.side_effect = ["y", "yes", "Yes", "n", "no", "No"]
         expected_res = [True, True, True, False, False, False]
         for res in expected_res:
@@ -137,7 +173,7 @@ def test_ask_yes_no():
 
 def test_ask_yes_no_default():
     """ Test that just pressing enter returns the default value """
-    with mock.patch('builtins.input') as m:
+    with mock.patch("builtins.input") as m:
         m.side_effect = ["", ""]
         assert cli_ui.ask_yes_no("coffee?", default=True) is True
         assert cli_ui.ask_yes_no("coffee?", default=False) is False
@@ -145,7 +181,7 @@ def test_ask_yes_no_default():
 
 def test_ask_yes_no_wrong_input():
     """ Test that we keep asking when answer does not make sense """
-    with mock.patch('builtins.input') as m:
+    with mock.patch("builtins.input") as m:
         m.side_effect = ["coffee!", "n"]
         assert cli_ui.ask_yes_no("tea?") is False
         assert m.call_count == 2
@@ -161,17 +197,18 @@ def test_ask_choice():
         return fruit.name
 
     fruits = [Fruit("apple", 42), Fruit("banana", 10), Fruit("orange", 12)]
-    with mock.patch('builtins.input') as m:
+    with mock.patch("builtins.input") as m:
         m.side_effect = ["nan", "5", "2"]
-        actual = cli_ui.ask_choice("Select a fruit", fruits,
-                               func_desc=operator.attrgetter("name"))
+        actual = cli_ui.ask_choice(
+            "Select a fruit", fruits, func_desc=operator.attrgetter("name")
+        )
         assert actual.name == "banana"
         assert actual.price == 10
         assert m.call_count == 3
 
 
 def test_ask_choice_empty_input():
-    with mock.patch('builtins.input') as m:
+    with mock.patch("builtins.input") as m:
         m.side_effect = [""]
         res = cli_ui.ask_choice("Select a animal", ["cat", "dog", "cow"])
         assert res is None
@@ -179,7 +216,7 @@ def test_ask_choice_empty_input():
 
 def test_ask_choice_ctrl_c():
     with pytest.raises(KeyboardInterrupt):
-        with mock.patch('builtins.input') as m:
+        with mock.patch("builtins.input") as m:
             m.side_effect = KeyboardInterrupt
             cli_ui.ask_choice("Select a animal", ["cat", "dog", "cow"])
 
