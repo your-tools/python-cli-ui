@@ -1,6 +1,12 @@
 Python CLI UI
 =============
 
+.. toctree::
+    :hidden:
+
+    changelog
+
+
 .. module:: cli_ui
 
 Tools for nice user interfaces in the terminal.
@@ -272,10 +278,11 @@ Asking for user input
 
 .. autofunction:: ask_choice
 
+
   ::
 
       >>> choices = ["apple", "banana", "orange"]
-      >>> fruit = cli_ui.ask_choice("Select a fruit", choices)
+      >>> fruit = cli_ui.ask_choice("Select a fruit", choices=choices)
       :: Select a fruit
         1 apple
         2 banana
@@ -283,6 +290,11 @@ Asking for user input
       <2>
       >>> fruit
       'banana'
+
+  .. versionchanged:: 0.8
+
+      ``choices`` is now a named keyword argument
+
 
 .. autofunction:: ask_yes_no
 
@@ -301,6 +313,7 @@ Asking for user input
 
       >>> fav_food = cli_ui.ask_password("Guilty pleasure?")
       :: Guilty pleasure?
+      ****
 
       >>> fav_food
       'chocolate'
@@ -364,79 +377,3 @@ Testing with pytest
     def test_foo(message_recorder):
          foo()
          assert message_recorder.find("Fooing")
-
-
-Changelog
-----------
-
-v0.7.4
-++++++
-
-* Remove buggy ``entry_points`` from ``setup.py``.
-
-v0.7.3
-++++++
-
-* Switch to ``dmenv``. This makes it possible to use ``cli-ui`` with ``colorama >= 4.0``.
-
-v0.7.2
-++++++
-
-* Switch to `poetry <https://poetry.eustace.io>`_ .
-
-v0.7.1
-++++++
-
-* Fix crash in ``ask_password`` when password was empty.
-* Let the ``KeyboardInterrput`` exception propagate back to the caller instead of catching
-  it ourselves and returning ``None``. Reported by Théo Delrieu.
-
-v0.7.0
-++++++
-
-* Add ``ask_password`` and ``read_pasword``. Patch by @drazisil
-
-v0.6.1
-++++++
-
-* Fix metadata (owner moved from TankerApp to TankerHQ)
-
-v0.6.0
-++++++
-
-* Export ``Color`` class.
-
-v0.5.0
-++++++
-
-* Export a ``Symbol`` class, to use when you do not want to force
-  color as  with ``UnicodeSequence``
-
-v0.4.0
-++++++
-
-* Expose the previously private ``UnicodeSequence`` class.
-
-v0.3.0
-++++++
-
-* Add ``info_section``
-
-* Cosmetic changes about prefixes for ``debug``, ``warn`` and ``error``
-  messages. (See `#6 <https://github.com/TankerHQ/python-cli-ui/pull/6>`_
-  for the details)
-
-
-v0.2.0
-++++++
-
-* Add ``cli_ui.setup`` to configure things like verbosity and when to
-  use colored output (#3)
-
-* Add a ``message_recorder`` in ``cli_ui.tests.conf`` that can
-  be used as a ``pytest`` fixture in other projects.
-
-v0.1.0
-+++++++
-
-First public release.
