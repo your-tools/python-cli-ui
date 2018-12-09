@@ -1,0 +1,104 @@
+Changelog
+----------
+
+v0.8.0
+++++++
+
+Highlights
+~~~~~~~~~~
+
+* ``ask_`` functions now take a variable number of tokens as first argument.
+  This allows to color the prompt when requiring input from the user, for instance::
+
+    res = cli_ui.ask_yes_no(
+      "Deploy to",
+      cli_ui.bold, "production", cli_ui.reset, "?",
+      default=False
+    )
+
+* **Breaking change**: Because of this new feature, the list of choices used by
+  ``ask_choice`` is now a named keyword argument::
+
+    # Old (<= 0.7)
+    ask_choice("select a fruit", ["apple", "banana"])
+    # New (>= 0.8)
+    ask_choice("select a fruit", choices=["apple", "banana"])
+
+
+Other Changes
+~~~~~~~~~~~~~~
+
+* Annotate everything with ``mypy``.
+* Use ``black`` for automatic code formatting.
+
+v0.7.4
+++++++
+
+* Remove buggy ``entry_points`` from ``setup.py``.
+
+v0.7.3
+++++++
+
+* Switch to ``dmenv``. This makes it possible to use ``cli-ui`` with ``colorama >= 4.0``.
+
+v0.7.2
+++++++
+
+* Switch to `poetry <https://poetry.eustace.io>`_ .
+
+v0.7.1
+++++++
+
+* Fix crash in ``ask_password`` when password was empty.
+* Let the ``KeyboardInterrput`` exception propagate back to the caller instead of catching
+  it ourselves and returning ``None``. Reported by Théo Delrieu.
+
+v0.7.0
+++++++
+
+* Add ``ask_password`` and ``read_pasword``. Patch by @drazisil
+
+v0.6.1
+++++++
+
+* Fix metadata (owner moved from TankerApp to TankerHQ)
+
+v0.6.0
+++++++
+
+* Export ``Color`` class.
+
+v0.5.0
+++++++
+
+* Export a ``Symbol`` class, to use when you do not want to force
+  color as  with ``UnicodeSequence``
+
+v0.4.0
+++++++
+
+* Expose the previously private ``UnicodeSequence`` class.
+
+v0.3.0
+++++++
+
+* Add ``info_section``
+
+* Cosmetic changes about prefixes for ``debug``, ``warn`` and ``error``
+  messages. (See `#6 <https://github.com/TankerHQ/python-cli-ui/pull/6>`_
+  for the details)
+
+
+v0.2.0
+++++++
+
+* Add ``cli_ui.setup`` to configure things like verbosity and when to
+  use colored output (#3)
+
+* Add a ``message_recorder`` in ``cli_ui.tests.conf`` that can
+  be used as a ``pytest`` fixture in other projects.
+
+v0.1.0
++++++++
+
+First public release.
