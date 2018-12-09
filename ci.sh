@@ -1,7 +1,7 @@
 set -x
 set -e
 
-black --check .
+which black && black --check .
 MYPYPATH=stubs mypy --ignore-missing-imports --strict cli_ui
 pyflakes cli_ui/__init__.py cli_ui/tests/test_cli_ui.py
 pytest
