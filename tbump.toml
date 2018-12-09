@@ -10,6 +10,7 @@ regex = '''
   (?P<minor>\d+)
   \.
   (?P<patch>\d+)
+  (?P<beta>b\d+)
   '''
 
 [git]
