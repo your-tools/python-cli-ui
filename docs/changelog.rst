@@ -14,8 +14,6 @@ Highlights
 * **Breaking change** Instead of hard-coding ANSI sequences names and values, use `colorama` instead.
   All existing names have been kept, but some of the values changed slighlty.
 
-
-
 * ``ask_`` functions now take a variable number of tokens as first argument.
   This allows to color the prompt when requiring input from the user, for instance::
 
@@ -39,6 +37,8 @@ Other Changes
 
 * Annotate everything with ``mypy``.
 * Use ``black`` for automatic code formatting.
+* If you nedd the ``record_message()`` pytest fixture in your own tests, you can now
+  import it with ``from cli_ui.tests import message_recorder``.
 
 v0.7.4
 ++++++

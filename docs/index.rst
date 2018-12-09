@@ -11,6 +11,8 @@ Python CLI UI
 
 Tools for nice user interfaces in the terminal.
 
+.. contents::
+
 Installation
 -------------
 
@@ -363,11 +365,11 @@ Auto-correct
 Testing with pytest
 ++++++++++++++++++++
 
-.. autofunction:: cli_ui.tests.conftest.message_recorder
+.. autofunction:: cli_ui.tests.message_recorder
 
 ::
 
-    from cli_ui.tests.conftest import message_recorder
+    from cli_ui.tests import message_recorder
 
 
     def foo():
