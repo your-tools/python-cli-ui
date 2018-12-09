@@ -449,22 +449,28 @@ def read_password() -> str:
     return getpass.getpass(prompt="")
 
 
-def ask_string(question: str, default: Optional[str] = None) -> Optional[str]:
+def get_ask_tokens(tokens: Sequence[Token]) -> List[Token]:
+    return [green, "::", reset] + list(tokens) + [reset]  # type: ignore
+
+
+def ask_string(*question: Token, default: Optional[str] = None) -> Optional[str]:
     """Ask the user to enter a string.
     """
+    tokens = get_ask_tokens(question)
     if default:
-        question += " (%s)" % default
-    info(green, "::", reset, question)
+        tokens.append("(%s)" % default)
+    info(*tokens)
     answer = read_input()
     if not answer:
         return default
     return answer
 
 
-def ask_password(question: str) -> str:
+def ask_password(*question: Token) -> str:
     """Ask the user to enter a password.
     """
-    info(green, "::", reset, question)
+    tokens = get_ask_tokens(question)
+    info(*tokens)
     answer = read_password()
     return answer
 
@@ -473,7 +479,7 @@ FuncDesc = Callable[[Any], str]
 
 
 def ask_choice(
-    input_text: str, choices: List[Any], *, func_desc: Optional[FuncDesc] = None
+    *prompt: Token, choices: List[Any], func_desc: Optional[FuncDesc] = None
 ) -> Any:
     """Ask the user to choose from a list of choices.
 
@@ -492,7 +498,8 @@ def ask_choice(
     """
     if func_desc is None:
         func_desc = lambda x: str(x)
-    info(green, "::", reset, input_text)
+    tokens = get_ask_tokens(prompt)
+    info(*tokens)
     choices.sort(key=func_desc)
     for i, choice in enumerate(choices, start=1):
         choice_desc = func_desc(choice)
@@ -517,13 +524,15 @@ def ask_choice(
     return res
 
 
-def ask_yes_no(question: str, default: bool = False) -> bool:
+def ask_yes_no(*question: Token, default: bool = False) -> bool:
     """Ask the user to answer by yes or no"""
     while True:
+        tokens = [green, "::", reset] + list(question) + [reset]
         if default:
-            info(green, "::", reset, question, "(Y/n)")
+            tokens.append("(Y/n)")
         else:
-            info(green, "::", reset, question, "(y/N)")
+            tokens.append("(y/N)")
+        info(*tokens)  # type: ignore
         answer = read_input()
         if answer.lower() in ["y", "yes"]:
             return True
@@ -639,7 +648,7 @@ def main_demo() -> None:
     # stop monkey patching
     message = old_message
     fruits = ["apple", "orange", "banana"]
-    answer = ask_choice("Choose a fruit", fruits)
+    answer = ask_choice("Choose a fruit", choices=fruits)
     info("You chose:", answer)
 
 

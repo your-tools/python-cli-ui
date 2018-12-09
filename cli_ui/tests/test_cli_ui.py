@@ -159,6 +159,15 @@ def test_ask_string() -> None:
         assert res == "milk"
 
 
+def test_ask_colored_message() -> None:
+    with mock.patch("builtins.input") as m:
+        m.side_effect = ["y"]
+        res = cli_ui.ask_yes_no(
+            "Deploy to", cli_ui.bold, "prod", cli_ui.reset, "?", default=False
+        )
+        assert res
+
+
 def test_ask_password() -> None:
     with mock.patch("getpass.getpass") as m:
         m.side_effect = ["chocolate!", ""]
@@ -214,7 +223,7 @@ def test_ask_choice() -> None:
     with mock.patch("builtins.input") as m:
         m.side_effect = ["nan", "5", "2"]
         actual = cli_ui.ask_choice(
-            "Select a fruit", fruits, func_desc=operator.attrgetter("name")
+            "Select a fruit", choices=fruits, func_desc=operator.attrgetter("name")
         )
         assert actual.name == "banana"
         assert actual.price == 10
@@ -224,7 +233,7 @@ def test_ask_choice() -> None:
 def test_ask_choice_empty_input() -> None:
     with mock.patch("builtins.input") as m:
         m.side_effect = [""]
-        res = cli_ui.ask_choice("Select a animal", ["cat", "dog", "cow"])
+        res = cli_ui.ask_choice("Select a animal", choices=["cat", "dog", "cow"])
         assert res is None
 
 
@@ -232,7 +241,7 @@ def test_ask_choice_ctrl_c() -> None:
     with pytest.raises(KeyboardInterrupt):
         with mock.patch("builtins.input") as m:
             m.side_effect = KeyboardInterrupt
-            cli_ui.ask_choice("Select a animal", ["cat", "dog", "cow"])
+            cli_ui.ask_choice("Select a animal", choices=["cat", "dog", "cow"])
 
 
 def test_quiet(message_recorder: MessageRecorder) -> None:
