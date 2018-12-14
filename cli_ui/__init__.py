@@ -44,7 +44,9 @@ _ENABLE_XTERM_TITLE = None
 _INITIALIZED = False
 
 
-Token = Union[str, "Color", "UnicodeSequence", "Symbol"]
+# Tokens can be strings, or Color, UnicodeSequence or Symbol instances,
+# or anything that can be converted to string.
+Token = Any
 
 
 def setup(
@@ -460,7 +462,7 @@ def read_password() -> str:
 
 
 def get_ask_tokens(tokens: Sequence[Token]) -> List[Token]:
-    return [green, "::", reset] + list(tokens) + [reset]  # type: ignore
+    return [green, "::", reset] + list(tokens) + [reset]
 
 
 def ask_string(*question: Token, default: Optional[str] = None) -> Optional[str]:
@@ -542,7 +544,7 @@ def ask_yes_no(*question: Token, default: bool = False) -> bool:
             tokens.append("(Y/n)")
         else:
             tokens.append("(y/N)")
-        info(*tokens)  # type: ignore
+        info(*tokens)
         answer = read_input()
         if answer.lower() in ["y", "yes"]:
             return True
