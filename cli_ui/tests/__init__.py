@@ -1,1 +1,1 @@
-from .conftest import message_recorder
+from .conftest import MessageRecorder  # noqa

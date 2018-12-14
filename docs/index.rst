@@ -360,22 +360,35 @@ Auto-correct
   :func:`ask_choice` instead.
 
 
-.. _pytest:
 
-Testing with pytest
-++++++++++++++++++++
+Testing
++++++++
 
-.. autofunction:: cli_ui.tests.message_recorder
+.. autoclass:: cli_ui.tests.MessageRecorder
+   :members:
 
 ::
 
-    from cli_ui.tests import message_recorder
+    # Example with pytest
+
+    # in conftest.py
+    from cli_ui.tests import MessageRecorder
+    import pytest
+
+    @pytest.fixture()
+    def message_recorder():
+        message_recorder = MessageRecorder()
+        message_recorder.start()
+        yield message_recorder
+        message_recorder.stop()
 
 
+    # in foo.py
     def foo():
         cli_ui.info("Fooing")
 
 
+    # in test_foo.py
     def test_foo(message_recorder):
          foo()
          assert message_recorder.find("Fooing")
