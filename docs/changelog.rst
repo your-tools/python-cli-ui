@@ -1,6 +1,12 @@
 Changelog
 ----------
 
+v0.9.0
+++++++
+
+* Relax constraints on the ``Token`` type.
+* Expose the ``MessageRecorder`` class, not the ``pytest`` fixture.
+
 v0.8.0
 ++++++
 
