@@ -397,7 +397,7 @@ def tabs(num: int) -> str:
 
 
 def info_table(
-    data: Any, *, headers: Optional[List[str]] = None, fileobj: Any = None
+    data: Any, *, headers: Optional[Sequence[str]] = None, fileobj: Any = None
 ) -> None:
     if not fileobj:
         fileobj = sys.stdout
