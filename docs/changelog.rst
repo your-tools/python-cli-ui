@@ -1,6 +1,11 @@
 Changelog
 ----------
 
+v0.9.1
+++++++
+
+* Relax type constraints for the ``info_table()`` function.
+
 v0.9.0
 ++++++
 
