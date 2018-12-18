@@ -7,7 +7,7 @@ Tools for nice user interfaces in the terminal.
   :target: https://travis-ci.org/TankerHQ/python-cli-ui
   
 .. image:: https://img.shields.io/pypi/pyversions/cli-ui.svg
-  :target: https://pypi.org/project/python-cli-ui
+  :target: https://pypi.org/project/cli-ui
    
 .. image:: https://img.shields.io/pypi/v/cli-ui.svg
   :target: https://pypi.org/project/cli-ui/
