@@ -5,10 +5,10 @@ Tools for nice user interfaces in the terminal.
 
 .. image:: https://img.shields.io/travis/TankerHQ/python-cli-ui.svg?branch=master
   :target: https://travis-ci.org/TankerHQ/python-cli-ui
-  
+
 .. image:: https://img.shields.io/pypi/pyversions/cli-ui.svg
   :target: https://pypi.org/project/cli-ui
-   
+
 .. image:: https://img.shields.io/pypi/v/cli-ui.svg
   :target: https://pypi.org/project/cli-ui/
 

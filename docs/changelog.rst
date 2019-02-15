@@ -19,11 +19,20 @@ Highlights
 ~~~~~~~~~~
 
 * **Breaking change**: Rename main package from ``ui`` to ``cli_ui``. This name is less likely to
-  cause clash with existing code.
+  cause clash with existing code::
+
+    # old (<= 0.7)
+    import ui
+    ui.info("This is", ui.green, "green")
+
+    # new (>= 0.8)
+    import cli_ui
+    cli_ui.info("This is", cli_ui.green, "green")
 
 
-* **Breaking change** Instead of hard-coding ANSI sequences names and values, use `colorama` instead.
-  All existing names have been kept, but some of the values changed slighlty.
+
+* **Breaking change**:  use `colorama` instead of hard-coding ANSI sequences names and values
+  of `cli_ui` constants. All existing names have been kept, but some of the values changed slighlty.
 
 * ``ask_`` functions now take a variable number of tokens as first argument.
   This allows to color the prompt when requiring input from the user, for instance::
