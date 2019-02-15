@@ -1,21 +1,15 @@
 python-cli-ui
 =============
 
-Tools for nice user interfaces in the terminal.
+Note
+----
 
-.. image:: https://img.shields.io/travis/TankerHQ/python-cli-ui.svg?branch=master
-  :target: https://travis-ci.org/TankerHQ/python-cli-ui
+*This project is deprecated. Please use* `cli-ui <https://pypi.org/project/cli-ui/>`_ *instead.*
 
-.. image:: https://img.shields.io/pypi/v/python-cli-ui.svg
-  :target: https://pypi.org/project/python-cli-ui/
-
-.. image:: https://img.shields.io/github/license/TankerHQ/python-cli-ui.svg
-  :target: https://github.com/TankerHQ/python-cli-ui/blob/master/LICENSE
-
+Originaly readme below.
 
 Documentation
 -------------
-
 
 See `python-cli-ui documentation <https://TankerHQ.github.io/python-cli-ui>`_.
 

@@ -9,10 +9,21 @@ import os
 import sys
 import time
 import traceback
+import warnings
 
 import colorama
 import unidecode
 import tabulate
+
+
+def print_warning():
+    message = "The 'python-cli-ui' package is deprecated, "
+    message += "please use 'cli-ui' instead. "
+    message += "(see https://tankerhq.github.io/python-cli-ui/changelog.html#v0-8-0 for details)"
+    warnings.warn(message, category=DeprecationWarning, stacklevel=1)
+
+print_warning()
+
 
 # Global variable to store configuration
 

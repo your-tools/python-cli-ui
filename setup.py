@@ -5,6 +5,9 @@ if sys.version_info.major < 3:
     sys.exit("Error: Please upgrade to Python3")
 
 
+print("Warning: this project is deprecated. Please use cli-ui instead", end="\n")
+print("See https://tankerhq.github.io/python-cli-ui/changelog.html#v0-8-0 for details")
+
 def get_long_description():
     with open("README.rst") as fp:
         return fp.read()
