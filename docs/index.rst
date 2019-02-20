@@ -372,6 +372,11 @@ Testing with pytest
 Changelog
 ----------
 
+v0.7.5
+++++++
+
+* Deprecate python-cli-ui: cli-ui is the new name
+
 v0.7.4
 ++++++
 
