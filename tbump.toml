@@ -20,3 +20,11 @@ tag_template = "v{new_version}"
 [[file]]
 src = "setup.cfg"
 search = 'version = '
+
+[[before_push]]
+name = "Check Changelog"
+cmd = "grep -q {new_version} docs/changelog.rst"
+
+[[after_push]]
+name = "Publish documentation and update project on Pypi"
+cmd = "./publish.sh"
