@@ -503,10 +503,9 @@ def ask_choice(
 
     Will loop until:
         * the user enters a valid index
-        * or hits ``ctrl-c``
         * or leaves the prompt empty
 
-    In the last two cases, None will be returned
+    In the last case, None will be returned
     """
     if func_desc is None:
         func_desc = lambda x: str(x)

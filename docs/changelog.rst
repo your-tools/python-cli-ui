@@ -79,7 +79,7 @@ v0.7.1
 ++++++
 
 * Fix crash in ``ask_password`` when password was empty.
-* Let the ``KeyboardInterrput`` exception propagate back to the caller instead of catching
+* Let the :py:exc:`KeyboardInterrupt`` exception propagate back to the caller instead of catching
   it ourselves and returning ``None``. Reported by Théo Delrieu.
 
 v0.7.0

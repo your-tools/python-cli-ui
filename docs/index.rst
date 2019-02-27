@@ -197,7 +197,7 @@ Progress messages
 
    ::
 
-      >>> for in in rang(0, 5):
+      >>> for in in range(0, 5):
       >>>     cli_ui.dot()
       ....<no newline>
       >>> cli_ui.dot(last=True)
@@ -296,6 +296,10 @@ Asking for user input
   .. versionchanged:: 0.8
 
       ``choices`` is now a named keyword argument
+
+  .. versionchanged:: 0.7
+
+       The :py:exc:`KeyboardInterrupt` exception is no longer caught by this function.
 
 
 .. autofunction:: ask_yes_no
