@@ -16,3 +16,4 @@ install:
 
 script:
   - bash ci.sh
+  - codecov
