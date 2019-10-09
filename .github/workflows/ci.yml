@@ -1,0 +1,61 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    stategy:
+        matrix:
+          os: [ubuntu-latest, macos-latest, windows-latest]
+          python: [3.5, 3.6, 3.7]
+
+    steps:
+
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrixx.python-version }}
+
+    - name: Install dependencies for Linux
+      if: ${{ matrix.os == "ubuntu-latest" }}
+      run: |
+        curl -L https://github.com/TankerHQ/dmenv/releases/download/v0.16.2/dmenv-linux -o dmenv
+        chmod u+x dmenv
+        ./dmenv install
+
+    - name: Install dependencies for macOS
+      if: ${{ matrix.os == "macos-latest" }]
+      run: |
+        curl -L https://github.com/TankerHQ/dmenv/releases/download/v0.16.2/dmenv-macos -o dmenv
+        chmod u+x dmenv
+        ./dmenv install
+
+    - name: Install dependencies for Windows
+      if: ${{ matrix.os == "windows-latest" }}
+      run: |
+        $wc = New-Object System.Net.WebClient
+        $wc.DownloadFile("https://github.com/TankerHQ/dmenv/releases/download/v0.16.2/dmenv-windows.exe", "dmenv.exe")
+        .\dmenv.exe install
+      shell: powershell
+
+   - name: Run all checks
+      if: ${{ matrix.os != "windows-latest" }}
+      run: |
+        source $(./dmenv show:bin_path)/activate
+
+        which black && black --check .
+        MYPYPATH=stubs mypy --ignore-missing-imports --strict cli_ui
+        pyflakes cli_ui/__init__.py cli_ui/tests/test_cli_ui.py
+        pytest --cov . --cov-report term
+        sphinx-build -W docs docs/_build/html
+
+   - name: Run Windows tests
+      if: ${{ matrix.os == "windows" }}
+      run: |
+        $binPath = .\dmenv show:bin_path
+        & "$binPath\activate.ps1"
+        pytest
+
