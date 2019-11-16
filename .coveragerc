@@ -1,0 +1,8 @@
+[run]
+source = tsrc
+
+omit =
+  cli_ui/tests/*
+  .venv/*
+
+branch = True
