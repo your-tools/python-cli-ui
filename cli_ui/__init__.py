@@ -494,8 +494,8 @@ FuncDesc = Callable[[Any], str]
 
 
 def ask_choice(
-    *prompt: Token, choices: List[Any], func_desc: Optional[FuncDesc] = None
-) -> Any:
+    *prompt: Token, choices: List[Any], func_desc: Optional[FuncDesc] = None,
+    sort: Optional[bool] = True) -> Any:
     """Ask the user to choose from a list of choices.
 
     :return: the selected choice
@@ -514,7 +514,8 @@ def ask_choice(
         func_desc = lambda x: str(x)
     tokens = get_ask_tokens(prompt)
     info(*tokens)
-    choices.sort(key=func_desc)
+    if sort:
+        choices.sort(key=func_desc)
     for i, choice in enumerate(choices, start=1):
         choice_desc = func_desc(choice)
         info("  ", blue, "%i" % i, reset, choice_desc)
