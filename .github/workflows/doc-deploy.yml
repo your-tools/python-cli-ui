@@ -5,7 +5,7 @@ on:
       master
 
 jobs:
-  run_tests:
+  deploy_doc:
 
     runs-on: ubuntu-latest
 

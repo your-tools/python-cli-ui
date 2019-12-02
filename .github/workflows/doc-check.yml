@@ -2,7 +2,7 @@ name: doc-check
 on: [push]
 
 jobs:
-  check-doc:
+  check_doc:
 
     runs-on: ubuntu-latest
 
