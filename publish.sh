@@ -5,7 +5,7 @@ set -e
 
 (
   cd docs
-  ./publish.sh
+  ./deploy.sh
 )
 
 rm -fr dist/
