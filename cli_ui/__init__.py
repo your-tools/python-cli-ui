@@ -509,10 +509,10 @@ def ask_choice(
 
     :param prompt: a list of tokens suitable for :func:`info`
     :param choices: a list of arbitrary elements
-    :func_desc: a callable. It will be used to display and
+    :param func_desc: a callable. It will be used to display and
                 sort the list of choices (unless ``sort`` is False)
                 Defaults to the identity function.
-    :sort: whether to sort the list of choices.
+    :param sort: whether to sort the list of choices.
 
     :return: the selected choice.
 
