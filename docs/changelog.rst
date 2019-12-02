@@ -6,6 +6,7 @@ v0.10.0
 
 * Add a ``sort`` argument to the ``ask_choices()`` function to disable sorting
   the list of choices. Patch by ``@smandon``.
+* CI: Drop Python 3.4, add Python 3.8, switch to GitHub Actions
 
 v0.9.1
 ++++++
