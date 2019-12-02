@@ -501,17 +501,21 @@ def ask_choice(
 ) -> Any:
     """Ask the user to choose from a list of choices.
 
-    :return: the selected choice
-
-    ``func_desc`` will be called on every list item for displaying
-    and sorting the list. If not given, will default to
-    the identity function.
-
     Will loop until:
         * the user enters a valid index
         * or leaves the prompt empty
 
-    In the last case, None will be returned
+    In the last case, `None` will be returned
+
+    :param prompt: a list of tokens suitable for :func:`info`
+    :param choices: a list of arbitrary elements
+    :func_desc: a callable. It will be used to display and
+                sort the list of choices (unless ``sort`` is False)
+                Defaults to the identity function.
+    :sort: whether to sort the list of choices.
+
+    :return: the selected choice.
+
     """
     if func_desc is None:
         func_desc = lambda x: str(x)

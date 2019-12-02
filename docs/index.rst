@@ -293,6 +293,11 @@ Asking for user input
       >>> fruit
       'banana'
 
+
+  .. versionchanged:: 0.10
+
+      Add ``sort`` paramater to disable sorting the list of choices
+
   .. versionchanged:: 0.8
 
       ``choices`` is now a named keyword argument
@@ -320,7 +325,6 @@ Asking for user input
       >>> fav_food = cli_ui.ask_password("Guilty pleasure?")
       :: Guilty pleasure?
       ****
-
       >>> fav_food
       'chocolate'
 
