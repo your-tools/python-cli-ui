@@ -18,8 +18,8 @@ message_template = "Bump to {new_version}"
 tag_template = "v{new_version}"
 
 [[file]]
-src = "setup.cfg"
-search = 'version = '
+src = "pyproject.toml"
+search = 'version = "{current_version}"'
 
 [[before_push]]
 name = "Check Changelog"
