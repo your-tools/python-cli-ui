@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cli-ui"
-version = "0.10.0"
+version = "0.10.1"
 description = "Build Nice User Interfaces In The Terminal"
 authors = ["Dimitri Merejkowsky <d.merej@gmail.com>"]
 readme = "README.rst"
