@@ -4,7 +4,7 @@ Changelog
 v0.10.1
 +++++++
 
-* Switch to `poetry <https://python-poetry.org/>`_ for packaging and dependency management.
+* Switch to `poetry`_ for packaging and dependency management.
 
 v0.10.0
 +++++++
