@@ -325,7 +325,7 @@ def info_3(*tokens: Token, **kwargs: Any) -> None:
     info(bold, blue, "*", reset, *tokens, **kwargs)
 
 
-def dot(*, last: bool = False, fileobj: Any = None) -> None:
+def dot(*, last: bool = False, fileobj: FileObj = sys.stdout) -> None:
     """ Print a dot without a newline unless it is the last one.
 
     Useful when you want to display a progress with very little
@@ -400,10 +400,8 @@ def info_table(
     data: Any,
     *,
     headers: Union[str, Dict[str, str], Sequence[str]] = (),
-    fileobj: Any = None
+    fileobj: FileObj = sys.stdout
 ) -> None:
-    if not fileobj:
-        fileobj = sys.stdout
     colored_data = list()
     plain_data = list()
     for row in data:
