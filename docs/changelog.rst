@@ -1,6 +1,11 @@
 Changelog
 ----------
 
+v0.10.2
++++++++
+
+* Fix calling `cli_ui.dot()` without `fileobj` argument.
+
 v0.10.1
 +++++++
 
