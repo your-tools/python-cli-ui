@@ -1,6 +1,11 @@
 Changelog
 ----------
 
+v0.10.3
++++++++
+
+* Mark this package as typed
+
 v0.10.2
 +++++++
 
