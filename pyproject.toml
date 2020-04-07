@@ -18,7 +18,7 @@ ghp-import = "^0.5.5"
 
 # linters
 black = { version = "19.10b0", python = '^3.6' }
-mypy =  "0.740"
+mypy = "^0.770"
 pyflakes = "2.1.1"
 
 # tests

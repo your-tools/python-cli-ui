@@ -397,10 +397,7 @@ def tabs(num: int) -> str:
 
 
 def info_table(
-    data: Any,
-    *,
-    headers: Union[str, Dict[str, str], Sequence[str]] = (),
-    fileobj: FileObj = sys.stdout
+    data: Any, *, headers: Union[str, Sequence[str]] = (), fileobj: FileObj = sys.stdout
 ) -> None:
     colored_data = list()
     plain_data = list()
