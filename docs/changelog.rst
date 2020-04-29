@@ -1,10 +1,15 @@
 Changelog
 ----------
 
+v0.10.3
++++++++
+
+* Add ``py.typed`` file in the package.
+
 v0.10.2
 +++++++
 
-* Fix calling `cli_ui.dot()` without `fileobj` argument.
+* Fix calling ``cli_ui.dot()`` without ``fileobj`` argument.
 
 v0.10.1
 +++++++
