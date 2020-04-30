@@ -15,6 +15,8 @@ Tools for nice user interfaces in the terminal.
 .. image:: https://img.shields.io/github/license/TankerHQ/python-cli-ui.svg
   :target: https://github.com/TankerHQ/python-cli-ui/blob/master/LICENSE
 
+.. image:: https://img.shields.io/badge/deps%20scanning-pyup.io-green
+  :target: https://github.com/TankerHQ/python-cli-ui/actions
 
 Documentation
 -------------
