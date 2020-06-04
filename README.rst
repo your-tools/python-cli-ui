@@ -1,8 +1,7 @@
-python-cli-ui
-=============
+.. image::  https://tanker.io/images/github-logo.png
+   :target: #readme
 
-Tools for nice user interfaces in the terminal.
-
+|
 .. image:: https://img.shields.io/travis/TankerHQ/python-cli-ui.svg?branch=master
   :target: https://travis-ci.org/TankerHQ/python-cli-ui
 
@@ -17,6 +16,11 @@ Tools for nice user interfaces in the terminal.
 
 .. image:: https://img.shields.io/badge/deps%20scanning-pyup.io-green
   :target: https://github.com/TankerHQ/python-cli-ui/actions
+
+python-cli-ui
+=============
+
+Tools for nice user interfaces in the terminal.
 
 Documentation
 -------------
