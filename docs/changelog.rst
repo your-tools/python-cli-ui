@@ -1,6 +1,19 @@
 Changelog
 ----------
 
+v0.11.0
++++++++
+
+* Implement `CLICOLORS standard <https://bixense.com/clicolors/>`_.
+
+* **breaking**:  Remove buggy workarounds when used on Windows.
+  Colors will now be off by default when using `mintty`, but
+  can be activated by setting `CLICOLORS_FORCE=1` as an environment
+  variable. See `#51 <https://github.com/TankerHQ/python-cli-ui/issues/51>`_ 
+  for details.
+
+
+
 v0.10.3
 +++++++
 

@@ -36,10 +36,6 @@ CONFIG = {
 # used for testing
 _MESSAGES = list()
 
-# so that we don't re-compute this variable over
-# and over again:
-_ENABLE_XTERM_TITLE = None
-
 # should we call colorama.init()?
 _INITIALIZED = False
 
@@ -73,6 +69,13 @@ def setup(
 def _setup(**kwargs: ConfigValue) -> None:
     for key, value in kwargs.items():
         CONFIG[key] = value
+
+
+def _init_colorama() -> None:
+    global _INITIALIZED
+    if not _INITIALIZED:
+        colorama.init()
+        _INITIALIZED = True
 
 
 class Color:
@@ -145,43 +148,35 @@ class Symbol(UnicodeSequence):
         return (self.as_string,)
 
 
-def using_colorama() -> bool:
-    if os.name == "nt":
-        if "TERM" not in os.environ:
-            return True
-        if os.environ["TERM"] == "cygwin":
-            return True
-        return False
-    else:
-        return False
-
-
 def config_color(fileobj: FileObj) -> bool:
+    # if CONFIG["color"] has been set, i.e, different
+    # from "auto", use it:
     if CONFIG["color"] == "never":
         return False
     if CONFIG["color"] == "always":
         return True
-    if os.name == "nt":
-        # sys.isatty() is False on mintty, so
-        # let there be colors by default. (when running on windows,
-        # people can use --color=never)
-        # Note that on Windows, when run from cmd.exe,
-        # console.init() does the right thing if sys.stdout is redirected
+    # CONFIG["color"] is auto, but maybe color support has
+    # been set in the environment - see
+    # https://bixense.com/clicolors/ for details
+    if os.environ.get("CLICOLORS_FORCE", "0") != "0":
         return True
-    else:
-        return fileobj.isatty()
+    if os.environ.get("CLICOLORS") == "0":
+        return False
+    # Nothing has been set, so call `isatty()` to "guess" if ANSI codes
+    # should be used.
+    #
+    # Note that on Windows, isatty() might return False even if
+    # Python is run from an interactive terminal. (see
+    #   https://stackoverflow.com/questions/40912072/git-for-windows-mintty-sys-stdout-isatty-returns-false
+    # )
+    # There's not much we can do here, except tell users of programs
+    # that use cli_ui to set CLICOLORS_FORCE=1
+    return fileobj.isatty()
 
 
-def write_title_string(mystr: str, fileobj: FileObj) -> None:
-    if using_colorama():
-        # By-pass colorama bug:
-        # colorama/win32.py, line 154
-        #   return _SetConsoleTitleW(title)
-        # ctypes.ArgumentError: argument 1: <class 'TypeError'>: wrong type
-        return
-    mystr = "\x1b]0;%s\x07" % mystr
-    fileobj.write(mystr)
-    fileobj.flush()
+def write_title_string(message: str, fileobj: FileObj) -> None:
+    to_write = "\x1b]0;" + message + "\x07"
+    write_and_flush(fileobj, to_write)
 
 
 def process_tokens(
@@ -252,11 +247,7 @@ def message(
     """ Helper method for error, warning, info, debug
 
     """
-    if using_colorama():
-        global _INITIALIZED
-        if not _INITIALIZED:
-            colorama.init()
-            _INITIALIZED = True
+    _init_colorama()
     with_color, without_color = process_tokens(tokens, end=end, sep=sep)
     if CONFIG["record"]:
         _MESSAGES.append(without_color)
