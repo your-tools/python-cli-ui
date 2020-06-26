@@ -16,11 +16,7 @@ Tools for nice user interfaces in the terminal.
 Installation
 -------------
 
-``cli-ui`` is available on `Pypi <https://pypi.org/project/cli-ui/>`_
-and is compatible with Python **3.4** and higher.
-
-It depends on ``colorama`` and ``unidecode`` for Windows support, and on
-``tabulate`` for the :func:`info_table` function.
+``cli-ui`` is available on `Pypi <https://pypi.org/project/cli-ui/>`_.
 
 API
 ----
