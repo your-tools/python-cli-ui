@@ -148,7 +148,7 @@ class Symbol(UnicodeSequence):
         return (self.as_string,)
 
 
-def config_color(fileobj: FileObj) -> bool:
+def colors_enabled(fileobj: FileObj) -> bool:
     # if CONFIG["color"] has been set, i.e, different
     # from "auto", use it:
     if CONFIG["color"] == "never":
@@ -253,7 +253,7 @@ def message(
         _MESSAGES.append(without_color)
     if update_title and with_color:
         write_title_string(without_color, fileobj)
-    to_write = with_color if config_color(fileobj) else without_color
+    to_write = with_color if colors_enabled(fileobj) else without_color
     write_and_flush(fileobj, to_write)
 
 
@@ -401,7 +401,7 @@ def info_table(
             plain_row.append(plain_str)
         colored_data.append(colored_row)
         plain_data.append(plain_row)
-    if config_color(fileobj):
+    if colors_enabled(fileobj):
         data_for_tabulate = colored_data
     else:
         data_for_tabulate = plain_data
