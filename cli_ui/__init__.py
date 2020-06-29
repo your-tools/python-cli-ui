@@ -626,38 +626,29 @@ def main_test_colors() -> None:
 
 
 def main_demo() -> None:
-    info("OK", check)
-    up = Symbol("👍", "+1")
-    info("I like it", blue, up)
     info_section(bold, "python-cli demo")
-    # Monkey-patch message() so that we sleep after
-    # each call
-    global message
-    old_message = message
 
-    def new_message(*args: Any, **kwargs: Any) -> None:
-        old_message(*args, **kwargs)
-        time.sleep(1)
-
-    message = new_message
+    info("OK", check)
 
     info_1("Important info")
     info_2("Secondary info")
     info("This is", red, "red")
     info("this is", bold, "bold")
+    up = Symbol("👍", "+1")
+    info("I like it", blue, up)
+
     list_of_things = ["foo", "bar", "baz"]
     for i, thing in enumerate(list_of_things):
         info_count(i, len(list_of_things), thing)
-    info_progress("Done", 5, 20)
-    info_progress("Done", 10, 20)
-    info_progress("Done", 20, 20)
-    info("\n", check, "all done")
 
-    # stop monkey patching
-    message = old_message
-    fruits = ["apple", "orange", "banana"]
-    answer = ask_choice("Choose a fruit", choices=fruits)
-    info("You chose:", answer)
+    time.sleep(0.5)
+    info_progress("Doing something", 5, 20)
+    time.sleep(0.5)
+    info_progress("Doing something", 10, 20)
+    time.sleep(0.5)
+    info_progress("Doing something", 20, 20)
+    time.sleep(0.5)
+    info("\n", check, "all done")
 
 
 def main() -> None:
