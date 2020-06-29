@@ -353,7 +353,7 @@ def info_progress(prefix: str, value: float, max_value: float) -> None:
 
 
     """
-    if sys.stdout.isatty():
+    if colors_enabled(sys.stdout):
         percent = float(value) / max_value * 100
         to_write = prefix + ": %.0f%%\r" % percent
         write_and_flush(sys.stdout, to_write)
