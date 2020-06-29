@@ -349,8 +349,8 @@ def info_progress(prefix: str, value: float, max_value: float) -> None:
     """
     if sys.stdout.isatty():
         percent = float(value) / max_value * 100
-        sys.stdout.write(prefix + ": %.0f%%\r" % percent)
-        sys.stdout.flush()
+        to_write = prefix + ": %.0f%%\r" % percent
+        write_and_flush(sys.stdout, to_write)
 
 
 def debug(*tokens: Token, **kwargs: Any) -> None:
