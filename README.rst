@@ -2,6 +2,7 @@
    :target: #readme
 
 |
+
 .. image:: https://img.shields.io/travis/TankerHQ/python-cli-ui.svg?branch=master
   :target: https://travis-ci.org/TankerHQ/python-cli-ui
 
