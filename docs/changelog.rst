@@ -54,7 +54,7 @@ Highlights
 
 
 * **Breaking change**:  use `colorama` instead of hard-coding ANSI sequences names and values
-  of `cli_ui` constants. All existing names have been kept, but some of the values changed slighlty.
+  of `cli_ui` constants. All existing names have been kept, but some of the values changed slightly.
 
 * ``ask_`` functions now take a variable number of tokens as first argument.
   This allows to color the prompt when requiring input from the user, for instance::
@@ -79,7 +79,7 @@ Other Changes
 
 * Annotate everything with ``mypy``.
 * Use ``black`` for automatic code formatting.
-* If you nedd the ``record_message()`` pytest fixture in your own tests, you can now
+* If you need the ``record_message()`` pytest fixture in your own tests, you can now
   import it with ``from cli_ui.tests import message_recorder``.
 
 v0.7.4
@@ -107,7 +107,7 @@ v0.7.1
 v0.7.0
 ++++++
 
-* Add ``ask_password`` and ``read_pasword``. Patch by @drazisil
+* Add ``ask_password`` and ``read_password``. Patch by @drazisil
 
 v0.6.1
 ++++++
