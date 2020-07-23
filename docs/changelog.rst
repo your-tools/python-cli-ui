@@ -1,6 +1,12 @@
 Changelog
 ----------
 
+v0.11.0
++++++++
+
+* Remove Python 3.5 compat
+* Add a ``__repr__`` method to some of the classes
+
 v0.10.3
 +++++++
 
