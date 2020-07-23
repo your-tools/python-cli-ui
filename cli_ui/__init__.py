@@ -78,28 +78,32 @@ def _setup(**kwargs: ConfigValue) -> None:
 class Color:
     """Represent an ANSI escape sequence """
 
-    def __init__(self, code: str):
+    def __init__(self, name: str, code: str):
+        self.name = name
         self.code = code
+
+    def __repr__(self) -> str:
+        return f"Color({self.name})"
 
 
 # fmt: off
-reset     = Color(colorama.Style.RESET_ALL)
-bold      = Color(colorama.Style.BRIGHT)
-faint     = Color(colorama.Style.DIM)
+reset     = Color("reset", colorama.Style.RESET_ALL)
+bold      = Color("bold", colorama.Style.BRIGHT)
+faint     = Color("dim", colorama.Style.DIM)
 # for some reason those are not in colorama
-standout  = Color('\x1b[3m')
-underline = Color('\x1b[4m')
-blink     = Color('\x1b[5m')
-overline  = Color('\x1b[6m')
+standout  = Color("standout", '\x1b[3m')
+underline = Color("underline", '\x1b[4m')
+blink     = Color("blink", '\x1b[5m')
+overline  = Color("overline", '\x1b[6m')
 
-black   = Color(colorama.Fore.BLACK)
-red     = Color(colorama.Fore.RED)
-green   = Color(colorama.Fore.GREEN)
-yellow  = Color(colorama.Fore.YELLOW)
-blue    = Color(colorama.Fore.BLUE)
-magenta = Color(colorama.Fore.MAGENTA)
-cyan    = Color(colorama.Fore.CYAN)
-white   = Color(colorama.Fore.WHITE)
+black   = Color("black", colorama.Fore.BLACK)
+red     = Color("red", colorama.Fore.RED)
+green   = Color("green", colorama.Fore.GREEN)
+yellow  = Color("yellow", colorama.Fore.YELLOW)
+blue    = Color("blue", colorama.Fore.BLUE)
+magenta = Color("magenta", colorama.Fore.MAGENTA)
+cyan    = Color("cyan", colorama.Fore.CYAN)
+white   = Color("white", colorama.Fore.WHITE)
 
 # backward compatibility:
 brown = yellow      # used by ui.warning
@@ -131,6 +135,9 @@ class UnicodeSequence:
     def tuple(self) -> Tuple[Token, ...]:
         return (reset, self.color, self.as_string, reset)
 
+    def __repr__(self) -> str:
+        return f"UnicodeSequence({repr(self.color)},{self.as_string})"
+
 
 ellipsis = UnicodeSequence(reset, "…", "...")
 check = UnicodeSequence(green, "✓", "ok")
@@ -143,6 +150,9 @@ class Symbol(UnicodeSequence):
 
     def tuple(self) -> Tuple[Token, ...]:
         return (self.as_string,)
+
+    def __repr__(self) -> str:
+        return f"Symbol({self.as_string})"
 
 
 def using_colorama() -> bool:
