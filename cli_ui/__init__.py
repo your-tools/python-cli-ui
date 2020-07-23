@@ -55,7 +55,7 @@ def setup(
     quiet: bool = False,
     color: str = "auto",
     title: str = "auto",
-    timestamp: bool = False
+    timestamp: bool = False,
 ) -> None:
     """ Configure behavior of message functions.
 
@@ -247,7 +247,7 @@ def message(
     end: str = "\n",
     sep: str = " ",
     fileobj: FileObj = sys.stdout,
-    update_title: bool = False
+    update_title: bool = False,
 ) -> None:
     """ Helper method for error, warning, info, debug
 
@@ -492,7 +492,7 @@ def ask_choice(
     *prompt: Token,
     choices: List[Any],
     func_desc: Optional[FuncDesc] = None,
-    sort: Optional[bool] = True
+    sort: Optional[bool] = True,
 ) -> Any:
     """Ask the user to choose from a list of choices.
 
