@@ -24,16 +24,6 @@ jobs:
     - name: Prepare project for development
       run: python -m poetry install
 
-    - name: Run black
+    - name: Run lints
       run: |
-        python -m poetry run black --check .
-
-    - name: Run mypy
-      run: |
-        MYPYPATH=stubs python -m poetry run mypy --ignore-missing-imports --strict cli_ui
-
-    - name: Run pyflakes
-      run: |
-        python -m poetry run pyflakes cli_ui/__init__.py cli_ui/tests/test_cli_ui.py
-
-
+        ./lint.sh
