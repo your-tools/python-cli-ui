@@ -1,12 +1,12 @@
-from typing import Iterator
 import datetime
 import io
 import operator
 import re
+from typing import Iterator
 from unittest import mock
 
-import colorama.ansi
 import colorama
+import colorama.ansi
 import pytest
 
 import cli_ui

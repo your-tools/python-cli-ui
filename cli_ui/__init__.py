@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type, Union, IO
+from typing import IO, Any, Callable, Dict, List, Optional, Sequence, Tuple, Type, Union
 
 Dict, Type
 
@@ -15,8 +15,8 @@ import time
 import traceback
 
 import colorama
-import unidecode
 import tabulate
+import unidecode
 
 ConfigValue = Union[None, bool, str]
 FileObj = IO[str]

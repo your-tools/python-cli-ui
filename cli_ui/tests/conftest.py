@@ -1,8 +1,9 @@
-from typing import Any, Iterator, Optional
-import cli_ui
 import re
+from typing import Any, Iterator, Optional
 
 import pytest
+
+import cli_ui
 
 
 class MessageRecorder:
