@@ -19,7 +19,7 @@ ghp-import = "^0.5.5"
 
 # linters
 black = "19.10b0"
-mypy = "^0.770"
+mypy = "^0.800"
 pyflakes = "2.1.1"
 
 # tests
