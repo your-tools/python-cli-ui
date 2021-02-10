@@ -113,6 +113,80 @@ def test_timestamp(dumb_tty: DumbTTY, toggle_timestamp: None) -> None:
     assert datetime.datetime.strptime(match.groups()[0], "%Y-%m-%d %H:%M:%S")
 
 
+def test_table_with_lists_no_color(dumb_tty: DumbTTY) -> None:
+    headers = ["name", "score"]
+    data = [
+        [(cli_ui.bold, "John"), (cli_ui.green, 10)],
+        [(cli_ui.bold, "Jane"), (cli_ui.green, 5)],
+    ]
+    cli_ui.info_table(data, headers=headers, fileobj=dumb_tty)
+    actual = dumb_tty.getvalue()
+    # fmt: off
+    expected = (
+        "name      score\n"
+        "------  -------\n"
+        "John         10\n"
+        "Jane          5\n"
+        )
+    # fmt: on
+    assert actual == expected
+
+
+def test_table_with_dict_no_color(dumb_tty: DumbTTY) -> None:
+    data = {
+        (cli_ui.bold, "Name"): [(cli_ui.green, "Alice"), (cli_ui.green, "Bob")],
+        (cli_ui.bold, "Age"): [(cli_ui.blue, 24), (cli_ui.blue, 9)],
+    }
+    cli_ui.info_table(data, headers="keys", fileobj=dumb_tty)
+    actual = dumb_tty.getvalue()
+    # fmt: off
+    expected = (
+    "Name      Age\n"
+    "------  -----\n"
+    "Alice      24\n"
+    "Bob         9\n"
+    )
+    # fmt: on
+    assert actual == expected
+
+
+def test_table_with_dict_and_color(smart_tty: SmartTTY) -> None:
+    data = {
+        (cli_ui.bold, "Name",): [(cli_ui.green, "Alice"), (cli_ui.green, "Bob")],
+        (cli_ui.bold, "Age",): [(cli_ui.blue, 24), (cli_ui.blue, 9)],
+    }
+    cli_ui.info_table(data, headers="keys", fileobj=smart_tty)
+    actual = smart_tty.getvalue()
+    # fmt: off
+    expected = (
+    f"{BRIGHT}Name{RESET_ALL}      {BRIGHT}Age{RESET_ALL}\n"
+    "------  -----\n"
+    f"{GREEN}Alice{RESET_ALL}      {BLUE}24{RESET_ALL}\n"
+    f"{GREEN}Bob{RESET_ALL}         {BLUE}9{RESET_ALL}\n"
+    )
+    # fmt: on
+    assert actual == expected
+
+
+def test_table_with_lists_with_color(smart_tty: SmartTTY) -> None:
+    headers = ["name", "score"]
+    data = [
+        [(cli_ui.bold, "John"), (cli_ui.green, 10)],
+        [(cli_ui.bold, "Jane"), (cli_ui.green, 5)],
+    ]
+    cli_ui.info_table(data, headers=headers, fileobj=smart_tty)
+    actual = smart_tty.getvalue()
+    # fmt: off
+    expected = (
+        "name      score\n"
+        "------  -------\n"
+        f"{BRIGHT}John{RESET_ALL}         {GREEN}10{RESET_ALL}\n"
+        f"{BRIGHT}Jane{RESET_ALL}          {GREEN}5{RESET_ALL}\n"
+        )
+    # fmt: on
+    assert actual == expected
+
+
 def test_record_message(message_recorder: MessageRecorder) -> None:
     cli_ui.info_1("This is foo")
     assert message_recorder.find("foo")

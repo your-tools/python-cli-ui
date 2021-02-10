@@ -409,17 +409,31 @@ def tabs(num: int) -> str:
 def info_table(
     data: Any, *, headers: Union[str, Sequence[str]] = (), fileobj: FileObj = sys.stdout
 ) -> None:
-    colored_data = list()
-    plain_data = list()
-    for row in data:
-        colored_row = list()
-        plain_row = list()
-        for item in row:
-            colored_str, plain_str = process_tokens(item, end="")
-            colored_row.append(colored_str)
-            plain_row.append(plain_str)
-        colored_data.append(colored_row)
-        plain_data.append(plain_row)
+    if headers == "keys":
+        colored_data: Any = dict()
+        plain_data: Any = dict()
+        for key, sequence in data.items():
+            colored_sequence = list()
+            plain_sequence = list()
+            for item in sequence:
+                colored_str, plain_str = process_tokens(item, end="")
+                colored_sequence.append(colored_str)
+                plain_sequence.append(plain_str)
+            colored_key, plain_key = process_tokens(key, end="")
+            colored_data[colored_key] = colored_sequence
+            plain_data[plain_key] = plain_sequence
+    else:
+        colored_data = list()
+        plain_data = list()
+        for row in data:
+            colored_row = list()
+            plain_row = list()
+            for item in row:
+                colored_str, plain_str = process_tokens(item, end="")
+                colored_row.append(colored_str)
+                plain_row.append(plain_str)
+            colored_data.append(colored_row)
+            plain_data.append(plain_row)
     if config_color(fileobj):
         data_for_tabulate = colored_data
     else:
