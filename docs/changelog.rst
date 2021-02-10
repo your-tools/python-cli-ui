@@ -1,6 +1,11 @@
 Changelog
 ----------
 
+v0.12.0
++++++++
+
+* Fix using `info_table` with `keys="headers"`
+
 v0.11.0
 +++++++
 
