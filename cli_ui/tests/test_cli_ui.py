@@ -1,20 +1,22 @@
-from typing import Iterator
 import datetime
 import io
 import operator
 import re
+from typing import Iterator
 from unittest import mock
 
-import colorama.ansi
 import colorama
+import colorama.ansi
 import pytest
 
 import cli_ui
 from cli_ui.tests.conftest import MessageRecorder
 
-
-def assert_equal_strings(a: str, b: str) -> bool:
-    return a.split() == b.split()
+BLUE = colorama.Fore.BLUE
+GREEN = colorama.Fore.GREEN
+RED = colorama.Fore.RED
+RESET_ALL = colorama.Style.RESET_ALL
+BRIGHT = colorama.Style.BRIGHT
 
 
 class SmartTTY(io.StringIO):
@@ -59,16 +61,10 @@ def test_info_stdout_is_a_tty(smart_tty: io.StringIO) -> None:
     )
     # fmt: on
     expected = (
-        colorama.Fore.RED
-        + "this is red "
-        + colorama.Style.RESET_ALL
-        + colorama.Fore.GREEN
-        + "this is green"
-        + colorama.Style.RESET_ALL
-        + "\n"
+        RED + "this is red " + RESET_ALL + GREEN + "this is green" + "\n" + RESET_ALL
     )
     actual = smart_tty.getvalue()
-    assert_equal_strings(actual, expected)
+    assert actual == expected
 
 
 def test_update_title(smart_tty: SmartTTY) -> None:
@@ -78,17 +74,13 @@ def test_update_title(smart_tty: SmartTTY) -> None:
         fileobj=smart_tty,
         update_title=True
     )
-    # fmt: on
     expected = (
-        colorama.ansi.set_title("Something bold")
-        + "Something "
-        + colorama.Style.BRIGHT
-        + "bold"
-        + colorama.Style.RESET_ALL
-        + "\n"
+        "\x1b]0;Something bold\n\x07"
+        f"Something {BRIGHT}bold\n{RESET_ALL}"
     )
+    # fmt: on
     actual = smart_tty.getvalue()
-    assert_equal_strings(actual, expected)
+    assert actual == expected
 
 
 def test_info_stdout_is_not_a_tty(dumb_tty: DumbTTY) -> None:
@@ -101,7 +93,7 @@ def test_info_stdout_is_not_a_tty(dumb_tty: DumbTTY) -> None:
     # fmt: on
     expected = "this is red this is green\n"
     actual = dumb_tty.getvalue()
-    assert_equal_strings(actual, expected)
+    assert actual == expected
 
 
 def test_info_characters(smart_tty: SmartTTY) -> None:
@@ -109,15 +101,8 @@ def test_info_characters(smart_tty: SmartTTY) -> None:
         "Doing stuff", cli_ui.ellipsis, "sucess", cli_ui.check, fileobj=smart_tty
     )
     actual = smart_tty.getvalue()
-    expected = (
-        "Doing stuff "
-        + colorama.Style.RESET_ALL
-        + "…"
-        + " sucess "
-        + colorama.Fore.GREEN
-        + "✓"
-    )
-    assert_equal_strings(actual, expected)
+    expected = f"Doing stuff {RESET_ALL}{RESET_ALL}… {RESET_ALL}sucess {RESET_ALL}{GREEN}✓ {RESET_ALL}\n{RESET_ALL}"
+    assert actual == expected
 
 
 def test_timestamp(dumb_tty: DumbTTY, toggle_timestamp: None) -> None:
@@ -126,6 +111,80 @@ def test_timestamp(dumb_tty: DumbTTY, toggle_timestamp: None) -> None:
     match = re.match(r"\[(.*)\]", actual)
     assert match
     assert datetime.datetime.strptime(match.groups()[0], "%Y-%m-%d %H:%M:%S")
+
+
+def test_table_with_lists_no_color(dumb_tty: DumbTTY) -> None:
+    headers = ["name", "score"]
+    data = [
+        [(cli_ui.bold, "John"), (cli_ui.green, 10)],
+        [(cli_ui.bold, "Jane"), (cli_ui.green, 5)],
+    ]
+    cli_ui.info_table(data, headers=headers, fileobj=dumb_tty)
+    actual = dumb_tty.getvalue()
+    # fmt: off
+    expected = (
+        "name      score\n"
+        "------  -------\n"
+        "John         10\n"
+        "Jane          5\n"
+        )
+    # fmt: on
+    assert actual == expected
+
+
+def test_table_with_dict_no_color(dumb_tty: DumbTTY) -> None:
+    data = {
+        (cli_ui.bold, "Name"): [(cli_ui.green, "Alice"), (cli_ui.green, "Bob")],
+        (cli_ui.bold, "Age"): [(cli_ui.blue, 24), (cli_ui.blue, 9)],
+    }
+    cli_ui.info_table(data, headers="keys", fileobj=dumb_tty)
+    actual = dumb_tty.getvalue()
+    # fmt: off
+    expected = (
+    "Name      Age\n"
+    "------  -----\n"
+    "Alice      24\n"
+    "Bob         9\n"
+    )
+    # fmt: on
+    assert actual == expected
+
+
+def test_table_with_dict_and_color(smart_tty: SmartTTY) -> None:
+    data = {
+        (cli_ui.bold, "Name",): [(cli_ui.green, "Alice"), (cli_ui.green, "Bob")],
+        (cli_ui.bold, "Age",): [(cli_ui.blue, 24), (cli_ui.blue, 9)],
+    }
+    cli_ui.info_table(data, headers="keys", fileobj=smart_tty)
+    actual = smart_tty.getvalue()
+    # fmt: off
+    expected = (
+    f"{BRIGHT}Name{RESET_ALL}      {BRIGHT}Age{RESET_ALL}\n"
+    "------  -----\n"
+    f"{GREEN}Alice{RESET_ALL}      {BLUE}24{RESET_ALL}\n"
+    f"{GREEN}Bob{RESET_ALL}         {BLUE}9{RESET_ALL}\n"
+    )
+    # fmt: on
+    assert actual == expected
+
+
+def test_table_with_lists_with_color(smart_tty: SmartTTY) -> None:
+    headers = ["name", "score"]
+    data = [
+        [(cli_ui.bold, "John"), (cli_ui.green, 10)],
+        [(cli_ui.bold, "Jane"), (cli_ui.green, 5)],
+    ]
+    cli_ui.info_table(data, headers=headers, fileobj=smart_tty)
+    actual = smart_tty.getvalue()
+    # fmt: off
+    expected = (
+        "name      score\n"
+        "------  -------\n"
+        f"{BRIGHT}John{RESET_ALL}         {GREEN}10{RESET_ALL}\n"
+        f"{BRIGHT}Jane{RESET_ALL}          {GREEN}5{RESET_ALL}\n"
+        )
+    # fmt: on
+    assert actual == expected
 
 
 def test_record_message(message_recorder: MessageRecorder) -> None:

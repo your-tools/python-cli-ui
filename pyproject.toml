@@ -1,3 +1,6 @@
+[tool.isort]
+profile = "black"
+
 [tool.poetry]
 name = "cli-ui"
 version = "0.11.0"
@@ -19,7 +22,7 @@ ghp-import = "^0.5.5"
 
 # linters
 black = "19.10b0"
-mypy = "^0.770"
+mypy = "^0.800"
 pyflakes = "2.1.1"
 
 # tests
@@ -29,6 +32,7 @@ coverage = "^5.2"
 pytest = "^6.2.1"
 pytest-cov = "^2.10"
 safety = "^1.9.0"
+isort = "^5.7.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
