@@ -1,33 +1,33 @@
-.. image::  https://tanker.io/images/github-logo.png
-   :target: #readme
-
-|
-
-.. image:: https://img.shields.io/travis/TankerHQ/python-cli-ui.svg?branch=master
-  :target: https://travis-ci.org/TankerHQ/python-cli-ui
-
 .. image:: https://img.shields.io/pypi/pyversions/cli-ui.svg
   :target: https://pypi.org/project/cli-ui
 
 .. image:: https://img.shields.io/pypi/v/cli-ui.svg
   :target: https://pypi.org/project/cli-ui/
 
-.. image:: https://img.shields.io/github/license/TankerHQ/python-cli-ui.svg
-  :target: https://github.com/TankerHQ/python-cli-ui/blob/master/LICENSE
+.. image:: https://img.shields.io/github/license/dmerejkowsky/python-cli-ui.svg
+  :target: https://github.com/dmerejkowsky/python-cli-ui/blob/master/LICENSE
 
 .. image:: https://img.shields.io/badge/deps%20scanning-pyup.io-green
-  :target: https://github.com/TankerHQ/python-cli-ui/actions
+  :target: https://github.com/dmerejkowsky/python-cli-ui/actions
 
 python-cli-ui
 =============
 
 Tools for nice user interfaces in the terminal.
 
+Note
+----
+
+This project was originally hosted on the `TankerHQ
+<https://github.com/TankerHQ>`_ organization, which was my employer from 2016
+to 2021. They kindly agreed to give back ownership of this project to
+me. Thanks!
+
 Documentation
 -------------
 
 
-See `python-cli-ui documentation <https://TankerHQ.github.io/python-cli-ui>`_.
+See `python-cli-ui documentation <https://dmerejkowsky.github.io/python-cli-ui>`_.
 
 Demo
 ----
