@@ -27,7 +27,6 @@ pyflakes = "2.1.1"
 
 # tests
 attrs = "^19.3"
-codecov = "^2.1"
 coverage = "^5.2"
 pytest = "^6.2.1"
 pytest-cov = "^2.10"

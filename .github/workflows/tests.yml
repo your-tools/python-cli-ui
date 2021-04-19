@@ -31,4 +31,3 @@ jobs:
     - name: Run tests
       run: |
         python -m poetry run pytest --cov cli_ui
-        python -m poetry run codecov
