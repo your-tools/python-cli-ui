@@ -1,6 +1,11 @@
 Changelog
 ----------
 
+v0.13.0
++++++++
+
+* Move out of `TankerHQ` GitHub organization
+
 v0.12.0
 +++++++
 
