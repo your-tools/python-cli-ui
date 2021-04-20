@@ -391,15 +391,29 @@ def info_progress_bar(
     """
     MAX_SIZE = 10
     BLOCK_CHAR = "█"
-    value_size = int((float(value) * MAX_SIZE) / max_value)
+    COLOR_LIST = [
+        colorama.Fore.RED + colorama.Style.BRIGHT,
+        colorama.Fore.RED + colorama.Style.BRIGHT,
+        colorama.Fore.RED + colorama.Style.NORMAL,
+        colorama.Fore.RED + colorama.Style.DIM,
+        colorama.Fore.GREEN + colorama.Style.DIM,
+        colorama.Fore.GREEN + colorama.Style.NORMAL,
+        colorama.Fore.GREEN + colorama.Style.BRIGHT,
+        colorama.Fore.GREEN + colorama.Style.BRIGHT,
+        colorama.Fore.GREEN + colorama.Style.BRIGHT,
+    ]
+    COLOR_RESET = colorama.Fore.WHITE + colorama.Style.NORMAL
 
+    percent = float(value) / max_value * 100
+    color = COLOR_LIST[int(percent / 12.5)]
+    value_size = int((float(value) * MAX_SIZE) / max_value)
     if fileObj.isatty():
         fileObj.write(
             "{prefix}: |{blocks}{spaces}| {percent:>3.0f}%\r".format(
                 prefix=prefix,
-                blocks=value_size * BLOCK_CHAR,
+                blocks=color + value_size * BLOCK_CHAR + COLOR_RESET,
                 spaces=(MAX_SIZE - value_size) * " ",
-                percent=float(value) / max_value * 100,
+                percent=percent,
             )
         )
         fileObj.flush()

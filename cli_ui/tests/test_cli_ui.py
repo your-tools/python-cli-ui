@@ -99,7 +99,15 @@ def test_info_stdout_is_not_a_tty(dumb_tty: DumbTTY) -> None:
 def test_info_progress_bar(smart_tty: SmartTTY) -> None:
     cli_ui.info_progress_bar(">>> Test", 42, 100, fileObj=smart_tty)
     actual = smart_tty.getvalue()
-    expected = f">>> Test: |████      |  42%\r"
+    expected = (
+        f">>> Test: |"
+        + colorama.Fore.RED
+        + colorama.Style.DIM
+        + "████"
+        + colorama.Fore.WHITE
+        + colorama.Style.NORMAL
+        + "      |  42%\r"
+    )
     assert actual == expected
 
 
