@@ -154,7 +154,7 @@ class Symbol(UnicodeSequence):
         return f"Symbol({self.as_string})"
 
 
-def config_color(fileobj: FileObj) -> bool:
+def colors_enabled(fileobj: FileObj) -> bool:
     if CONFIG["color"] == "never":
         return False
     if CONFIG["color"] == "always":
@@ -168,7 +168,7 @@ def config_color(fileobj: FileObj) -> bool:
 
 
 def write_title_string(mystr: str, fileobj: FileObj) -> None:
-    if not config_color(fileobj):
+    if not colors_enabled(fileobj):
         return
     mystr = "\x1b]0;%s\x07" % mystr
     fileobj.write(mystr)
@@ -243,7 +243,7 @@ def message(
     """ Helper method for error, warning, info, debug
 
     """
-    should_use_colors = config_color(fileobj)
+    should_use_colors = colors_enabled(fileobj)
     with_color, without_color = process_tokens(tokens, end=end, sep=sep)
     if CONFIG["record"]:
         _MESSAGES.append(without_color)
@@ -411,7 +411,7 @@ def info_table(
                 plain_row.append(plain_str)
             colored_data.append(colored_row)
             plain_data.append(plain_row)
-    if config_color(fileobj):
+    if colors_enabled(fileobj):
         data_for_tabulate = colored_data
     else:
         data_for_tabulate = plain_data
