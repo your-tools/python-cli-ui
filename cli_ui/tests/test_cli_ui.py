@@ -119,7 +119,7 @@ def test_info_progress_bar(smart_tty: SmartTTY) -> None:
     assert actual == expected
 
 
-def test_info_characters(smart_tty: SmartTTY) -> None:
+def test_info_characters(always_color: None, smart_tty: SmartTTY) -> None:
     cli_ui.info(
         "Doing stuff", cli_ui.ellipsis, "sucess", cli_ui.check, fileobj=smart_tty
     )
