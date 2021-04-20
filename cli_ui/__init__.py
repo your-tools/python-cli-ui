@@ -377,6 +377,7 @@ def info_progress(prefix: str, value: float, max_value: float) -> None:
         sys.stdout.write(prefix + ": %.0f%%\r" % percent)
         sys.stdout.flush()
 
+
 def info_progress_bar(prefix: str, value: float, max_value: float) -> None:
     """ Display info progress as a bar.
 
@@ -394,6 +395,7 @@ def info_progress_bar(prefix: str, value: float, max_value: float) -> None:
             percent = float(value) / max_value * 100
             ))
         sys.stdout.flush()
+
 
 def debug(*tokens: Token, **kwargs: Any) -> None:
     """ Print a debug message.
