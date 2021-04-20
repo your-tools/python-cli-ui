@@ -1,7 +1,3 @@
-from typing import IO, Any, Callable, Dict, List, Optional, Sequence, Tuple, Type, Union
-
-Dict, Type
-
 import argparse
 import datetime
 import difflib
@@ -13,6 +9,7 @@ import os
 import sys
 import time
 import traceback
+from typing import IO, Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import colorama
 import tabulate
@@ -39,6 +36,7 @@ _MESSAGES = list()
 # so that we don't re-compute this variable over
 # and over again:
 _ENABLE_XTERM_TITLE = None
+
 
 colorama.init()
 
@@ -367,7 +365,7 @@ def debug(*tokens: Token, **kwargs: Any) -> None:
 
 def indent_iterable(elems: Sequence[str], num: int = 2) -> List[str]:
     """Indent an iterable."""
-    return [" " * num + l for l in elems]
+    return [" " * num + elem for elem in elems]
 
 
 def indent(text: str, num: int = 2) -> str:
