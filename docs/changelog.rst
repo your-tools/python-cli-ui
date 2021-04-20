@@ -1,6 +1,17 @@
 Changelog
 ----------
 
+v0.14.0
++++++++
+
+* **breaking**:  Remove buggy workarounds on Windows.
+  Colors will now be off by default unless ``cli_setup()`` is called
+  with ``color="always"``. Configurations that are known to work are
+  ``cmd.exe`` and ``git-bash`` when using ``mintty``.
+
+* **breaking**:  ``colorama.init()`` is called uncoditionaly when ``cli_ui`` is
+  imported
+
 v0.13.0
 +++++++
 
