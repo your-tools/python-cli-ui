@@ -378,7 +378,7 @@ def info_progress(prefix: str, value: float, max_value: float) -> None:
         sys.stdout.flush()
 
 
-def info_progress_bar(prefix: str, value: float, max_value: float) -> None:
+def info_progress_bar(prefix: str, value: float, max_value: float, fileObj: FileObj = sys.stdout) -> None:
     """ Display info progress as a bar.
 
     :param value: the current value
@@ -387,14 +387,18 @@ def info_progress_bar(prefix: str, value: float, max_value: float) -> None:
 
 
     """
-    if sys.stdout.isatty():
-        sys.stdout.write("{prefix}: |{done}{spaces}| {percent:>3.0f}%\r".format(
+    MAX_SIZE = 10
+    BLOCK_CHAR = "█"
+    value_size = int((float(value) * MAX_SIZE) / max_value)
+    
+    if fileObj.isatty():
+        fileObj.write("{prefix}: |{blocks}{spaces}| {percent:>3.0f}%\r".format(
             prefix=prefix,
-            done = int(value*2)*"█",
-            spaces = int(-1 * (max_value*2 - int(value*2)) // 1 * -1)*" ",
+            blocks = value_size*BLOCK_CHAR,
+            spaces = (MAX_SIZE - value_size)*" ",
             percent = float(value) / max_value * 100
             ))
-        sys.stdout.flush()
+        fileObj.flush()
 
 
 def debug(*tokens: Token, **kwargs: Any) -> None:
