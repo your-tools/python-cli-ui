@@ -1,5 +1,10 @@
 name: doc-check
-on: [push]
+
+on:
+  push:
+    branches: [master]
+    tags: v*
+  pull_request:
 
 jobs:
   check_doc:
