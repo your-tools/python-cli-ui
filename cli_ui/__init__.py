@@ -40,8 +40,7 @@ _MESSAGES = list()
 # and over again:
 _ENABLE_XTERM_TITLE = None
 
-# should we call colorama.init()?
-_INITIALIZED = False
+colorama.init()
 
 
 # Tokens can be strings, or Color, UnicodeSequence or Symbol instances,
@@ -155,39 +154,21 @@ class Symbol(UnicodeSequence):
         return f"Symbol({self.as_string})"
 
 
-def using_colorama() -> bool:
-    if os.name == "nt":
-        if "TERM" not in os.environ:
-            return True
-        if os.environ["TERM"] == "cygwin":
-            return True
-        return False
-    else:
-        return False
-
-
-def config_color(fileobj: FileObj) -> bool:
+def colors_enabled(fileobj: FileObj) -> bool:
     if CONFIG["color"] == "never":
         return False
     if CONFIG["color"] == "always":
         return True
     if os.name == "nt":
-        # sys.isatty() is False on mintty, so
-        # let there be colors by default. (when running on windows,
-        # people can use --color=never)
-        # Note that on Windows, when run from cmd.exe,
-        # console.init() does the right thing if sys.stdout is redirected
-        return True
+        # Color is always an opt-in on Windows,
+        # because there are two many ways for this to go wrong
+        return False
     else:
         return fileobj.isatty()
 
 
 def write_title_string(mystr: str, fileobj: FileObj) -> None:
-    if using_colorama():
-        # By-pass colorama bug:
-        # colorama/win32.py, line 154
-        #   return _SetConsoleTitleW(title)
-        # ctypes.ArgumentError: argument 1: <class 'TypeError'>: wrong type
+    if not colors_enabled(fileobj):
         return
     mystr = "\x1b]0;%s\x07" % mystr
     fileobj.write(mystr)
@@ -262,17 +243,13 @@ def message(
     """ Helper method for error, warning, info, debug
 
     """
-    if using_colorama():
-        global _INITIALIZED
-        if not _INITIALIZED:
-            colorama.init()
-            _INITIALIZED = True
+    should_use_colors = colors_enabled(fileobj)
     with_color, without_color = process_tokens(tokens, end=end, sep=sep)
     if CONFIG["record"]:
         _MESSAGES.append(without_color)
     if update_title and with_color:
         write_title_string(without_color, fileobj)
-    to_write = with_color if config_color(fileobj) else without_color
+    to_write = with_color if should_use_colors else without_color
     write_and_flush(fileobj, to_write)
 
 
@@ -434,7 +411,7 @@ def info_table(
                 plain_row.append(plain_str)
             colored_data.append(colored_row)
             plain_data.append(plain_row)
-    if config_color(fileobj):
+    if colors_enabled(fileobj):
         data_for_tabulate = colored_data
     else:
         data_for_tabulate = plain_data
@@ -670,7 +647,7 @@ def main_demo() -> None:
 
     def new_message(*args: Any, **kwargs: Any) -> None:
         old_message(*args, **kwargs)
-        time.sleep(1)
+        time.sleep(0.5)
 
     message = new_message
 
