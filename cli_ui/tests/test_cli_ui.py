@@ -1,6 +1,7 @@
 import datetime
 import io
 import operator
+import os
 import re
 from typing import Iterator
 from unittest import mock
@@ -47,12 +48,19 @@ def dumb_tty() -> DumbTTY:
 
 @pytest.fixture
 def toggle_timestamp() -> Iterator[None]:
-    cli_ui.CONFIG["timestamp"] = True
+    cli_ui.setup(timestamp=True)
     yield
-    cli_ui.CONFIG["timestamp"] = False
+    cli_ui.setup(timestamp=False)
 
 
-def test_info_stdout_is_a_tty(smart_tty: io.StringIO) -> None:
+@pytest.fixture
+def always_color() -> Iterator[None]:
+    cli_ui.setup(color="always")
+    yield
+    cli_ui.setup(color="auto")
+
+
+def test_info_with_colors(always_color: None, smart_tty: io.StringIO) -> None:
     # fmt: off
     cli_ui.info(
         cli_ui.red, "this is red", cli_ui.reset,
@@ -67,7 +75,7 @@ def test_info_stdout_is_a_tty(smart_tty: io.StringIO) -> None:
     assert actual == expected
 
 
-def test_update_title(smart_tty: SmartTTY) -> None:
+def test_update_title(always_color: None, smart_tty: SmartTTY) -> None:
     # fmt: off
     cli_ui.info(
         "Something", cli_ui.bold, "bold",
@@ -83,7 +91,7 @@ def test_update_title(smart_tty: SmartTTY) -> None:
     assert actual == expected
 
 
-def test_info_stdout_is_not_a_tty(dumb_tty: DumbTTY) -> None:
+def test_info_stdout_no_colors(dumb_tty: DumbTTY) -> None:
     # fmt: off
     cli_ui.info(
         cli_ui.red, "this is red", cli_ui.reset,
@@ -116,7 +124,13 @@ def test_info_characters(smart_tty: SmartTTY) -> None:
         "Doing stuff", cli_ui.ellipsis, "sucess", cli_ui.check, fileobj=smart_tty
     )
     actual = smart_tty.getvalue()
-    expected = f"Doing stuff {RESET_ALL}{RESET_ALL}… {RESET_ALL}sucess {RESET_ALL}{GREEN}✓ {RESET_ALL}\n{RESET_ALL}"
+    if os.name == "nt":
+        success = "ok"
+        ellipsis = "..."
+    else:
+        success = "✓"
+        ellipsis = "…"
+    expected = f"Doing stuff {RESET_ALL}{RESET_ALL}{ellipsis} {RESET_ALL}sucess {RESET_ALL}{GREEN}{success} {RESET_ALL}\n{RESET_ALL}"
     assert actual == expected
 
 
@@ -165,7 +179,7 @@ def test_table_with_dict_no_color(dumb_tty: DumbTTY) -> None:
     assert actual == expected
 
 
-def test_table_with_dict_and_color(smart_tty: SmartTTY) -> None:
+def test_table_with_dict_and_color(always_color: None, smart_tty: SmartTTY) -> None:
     data = {
         (cli_ui.bold, "Name",): [(cli_ui.green, "Alice"), (cli_ui.green, "Bob")],
         (cli_ui.bold, "Age",): [(cli_ui.blue, 24), (cli_ui.blue, 9)],
@@ -183,7 +197,7 @@ def test_table_with_dict_and_color(smart_tty: SmartTTY) -> None:
     assert actual == expected
 
 
-def test_table_with_lists_with_color(smart_tty: SmartTTY) -> None:
+def test_table_with_lists_with_color(always_color: None, smart_tty: SmartTTY) -> None:
     headers = ["name", "score"]
     data = [
         [(cli_ui.bold, "John"), (cli_ui.green, 10)],
