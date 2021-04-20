@@ -377,6 +377,23 @@ def info_progress(prefix: str, value: float, max_value: float) -> None:
         sys.stdout.write(prefix + ": %.0f%%\r" % percent)
         sys.stdout.flush()
 
+def info_progress_bar(prefix: str, value: float, max_value: float) -> None:
+    """ Display info progress as a bar.
+
+    :param value: the current value
+    :param max_value: the max value
+    :param prefix: the prefix message to print
+
+
+    """
+    if sys.stdout.isatty():
+        sys.stdout.write("{prefix}: |{done}{spaces}| {percent:>3.0f}%\r".format(
+            prefix=prefix,
+            done = int(value*2)*"█",
+            spaces = int(-1 * (max_value*2 - int(value*2)) // 1 * -1)*" ",
+            percent = float(value) / max_value * 100
+            ))
+        sys.stdout.flush()
 
 def debug(*tokens: Token, **kwargs: Any) -> None:
     """ Print a debug message.
