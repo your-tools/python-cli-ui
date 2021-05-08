@@ -1,0 +1,8 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v1.0.0-4-g05f2882
+_src_path: git+https://git.sr.ht/~dmerej/copier-python
+author_email: dimitri@dmerej.info
+author_name: Dimitri Merejkowsky
+project_description: Build Nice User Interfaces In The Terminal
+project_name: cli-ui
+project_version: 0.14.0
