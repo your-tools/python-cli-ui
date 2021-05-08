@@ -31,4 +31,5 @@ jobs:
 
     - name: Run lints
       run: |
-        ./lint.sh
+        python -m poetry run invoke lint
+
