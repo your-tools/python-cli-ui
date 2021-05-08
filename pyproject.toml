@@ -23,6 +23,9 @@ tabulate = "^0.8.3"
 unidecode = "^1.0.23"
 
 [tool.poetry.dev-dependencies]
+# general
+invoke = "^1.5"
+
 # doc
 sphinx  = "^3.0.4"
 ghp-import = "^0.5.5"
