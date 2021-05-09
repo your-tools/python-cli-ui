@@ -17,7 +17,7 @@ Issues = "https://github.com/dmerejkowsky/python-cli-ui/issues"
 
 [tool.poetry.dependencies]
 # Keep this in sync with .github/workflows/
-python = "^3.6"
+python = "^3.6.2"
 colorama = "^0.4.1"
 tabulate = "^0.8.3"
 unidecode = "^1.0.23"
