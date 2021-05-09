@@ -31,7 +31,7 @@ sphinx  = "^3.0.4"
 ghp-import = "^0.5.5"
 
 # linters
-black = "19.10b0"
+black = "21.5b0"
 isort = "^5.7.0"
 mypy = "^0.800"
 flake8 = "^3.9.1"
