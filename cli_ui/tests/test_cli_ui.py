@@ -166,8 +166,14 @@ def test_table_with_dict_no_color(dumb_tty: DumbTTY) -> None:
 
 def test_table_with_dict_and_color(always_color: None, smart_tty: SmartTTY) -> None:
     data = {
-        (cli_ui.bold, "Name",): [(cli_ui.green, "Alice"), (cli_ui.green, "Bob")],
-        (cli_ui.bold, "Age",): [(cli_ui.blue, 24), (cli_ui.blue, 9)],
+        (
+            cli_ui.bold,
+            "Name",
+        ): [(cli_ui.green, "Alice"), (cli_ui.green, "Bob")],
+        (
+            cli_ui.bold,
+            "Age",
+        ): [(cli_ui.blue, 24), (cli_ui.blue, 9)],
     }
     cli_ui.info_table(data, headers="keys", fileobj=smart_tty)
     actual = smart_tty.getvalue()
@@ -258,7 +264,7 @@ def test_empty_password() -> None:
 
 
 def test_ask_yes_no() -> None:
-    """ Test that you can answer with several types of common answers """
+    """Test that you can answer with several types of common answers"""
     with mock.patch("builtins.input") as m:
         m.side_effect = ["y", "yes", "Yes", "n", "no", "No"]
         expected_res = [True, True, True, False, False, False]
@@ -268,7 +274,7 @@ def test_ask_yes_no() -> None:
 
 
 def test_ask_yes_no_default() -> None:
-    """ Test that just pressing enter returns the default value """
+    """Test that just pressing enter returns the default value"""
     with mock.patch("builtins.input") as m:
         m.side_effect = ["", ""]
         assert cli_ui.ask_yes_no("coffee?", default=True) is True
@@ -276,7 +282,7 @@ def test_ask_yes_no_default() -> None:
 
 
 def test_ask_yes_no_wrong_input() -> None:
-    """ Test that we keep asking when answer does not make sense """
+    """Test that we keep asking when answer does not make sense"""
     with mock.patch("builtins.input") as m:
         m.side_effect = ["coffee!", "n"]
         assert cli_ui.ask_yes_no("tea?") is False
