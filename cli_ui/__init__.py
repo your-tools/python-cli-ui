@@ -38,7 +38,11 @@ _MESSAGES = list()
 _ENABLE_XTERM_TITLE = None
 
 
-colorama.init()
+if os.name == "nt":
+    # On Windows using `isatty()` does *not* work reliably,
+    # so we always setup colorama.
+    # See colors_enabled() for details
+    colorama.init()
 
 
 # Tokens can be strings, or Color, UnicodeSequence or Symbol instances,
