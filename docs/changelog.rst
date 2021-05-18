@@ -9,7 +9,7 @@ v0.14.0 (2021-04-20)
   with ``color="always"``. Configurations that are known to work are
   ``cmd.exe`` and ``git-bash`` when using ``winpty``.
 
-* **breaking**:  ``colorama.init()`` is called uncoditionaly when ``cli_ui`` is
+* **breaking**:  ``colorama.init()`` is called unconditionally when ``cli_ui`` is
   imported
 
 v0.13.0 (2021-04-19)
