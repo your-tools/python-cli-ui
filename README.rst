@@ -5,7 +5,7 @@
   :target: https://pypi.org/project/cli-ui/
 
 .. image:: https://img.shields.io/github/license/dmerejkowsky/python-cli-ui.svg
-  :target: https://github.com/dmerejkowsky/python-cli-ui/blob/master/LICENSE
+  :target: https://github.com/dmerejkowsky/python-cli-ui/blob/main/LICENSE
 
 .. image:: https://img.shields.io/badge/deps%20scanning-pyup.io-green
   :target: https://github.com/dmerejkowsky/python-cli-ui/actions
