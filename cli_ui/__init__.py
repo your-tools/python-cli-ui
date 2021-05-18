@@ -655,8 +655,10 @@ def main_demo() -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--color", choices=["always", "never", "auto"])
     parser.add_argument("action", choices=["test_colors", "demo"])
     args = parser.parse_args()
+    setup(color=args.color)
     if args.action == "demo":
         main_demo()
     elif args.action == "test_colors":
