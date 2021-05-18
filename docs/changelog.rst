@@ -1,6 +1,11 @@
 Changelog
 ----------
 
+v0.14.1
++++++++
+
+* Development branch is now called ``main``.
+
 v0.14.0 (2021-04-20)
 ++++++++++++++++++++
 
