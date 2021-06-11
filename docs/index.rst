@@ -62,7 +62,6 @@ You can use any of these constants as a ``token`` in the following functions:
   * ``darkred``
   * ``darkyellow``
   * ``fuchsia``
-  * ``fuscia``
   * ``green``
   * ``lightgray``
   * ``purple``

@@ -113,7 +113,6 @@ darkred = red
 darkgreen = green
 darkblue = blue
 purple = magenta
-fuscia = magenta
 fuschia = magenta
 turquoise = cyan
 darkgray = black
