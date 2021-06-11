@@ -32,10 +32,10 @@ ghp-import = "^0.5.5"
 
 # linters
 black = "21.5b0"
-isort = "^5.7.0"
-mypy = "^0.800"
 flake8 = "^3.9.1"
 flake8-bugbear = "^21.4.3"
+isort = "^5.7.0"
+mypy = "^0.800"
 pep8-naming = "^0.11.1"
 
 # tests
