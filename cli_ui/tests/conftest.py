@@ -10,7 +10,7 @@ class MessageRecorder:
     """Helper class to tests emitted messages"""
 
     def __init__(self) -> None:
-        cli_ui._MESSAGES = list()
+        cli_ui._MESSAGES = []
 
     def start(self) -> None:
         """Start recording messages"""
@@ -19,11 +19,11 @@ class MessageRecorder:
     def stop(self) -> None:
         """Stop recording messages"""
         cli_ui.CONFIG["record"] = False
-        cli_ui._MESSAGES = list()
+        cli_ui._MESSAGES = []
 
     def reset(self) -> None:
         """Reset the list"""
-        cli_ui._MESSAGES = list()
+        cli_ui._MESSAGES = []
 
     def find(self, pattern: str) -> Optional[str]:
         """Find a message in the list of recorded message

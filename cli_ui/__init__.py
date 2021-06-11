@@ -31,7 +31,7 @@ CONFIG = {
 
 
 # used for testing
-_MESSAGES = list()
+_MESSAGES = []
 
 # so that we don't re-compute this variable over
 # and over again:
@@ -187,7 +187,7 @@ def process_tokens(
     """
     # Flatten the list of tokens in case some of them are of
     # class UnicodeSequence:
-    flat_tokens = list()  # type: List[Token]
+    flat_tokens = []  # type: List[Token]
     for token in tokens:
         if isinstance(token, UnicodeSequence):
             flat_tokens.extend(token.tuple())
@@ -385,11 +385,11 @@ def info_table(
     data: Any, *, headers: Union[str, Sequence[str]] = (), fileobj: FileObj = sys.stdout
 ) -> None:
     if headers == "keys":
-        colored_data: Any = dict()
-        plain_data: Any = dict()
+        colored_data: Any = {}
+        plain_data: Any = {}
         for key, sequence in data.items():
-            colored_sequence = list()
-            plain_sequence = list()
+            colored_sequence = []
+            plain_sequence = []
             for item in sequence:
                 colored_str, plain_str = process_tokens(item, end="")
                 colored_sequence.append(colored_str)
@@ -398,11 +398,11 @@ def info_table(
             colored_data[colored_key] = colored_sequence
             plain_data[plain_key] = plain_sequence
     else:
-        colored_data = list()
-        plain_data = list()
+        colored_data = []
+        plain_data = []
         for row in data:
-            colored_row = list()
-            plain_row = list()
+            colored_row = []
+            plain_row = []
             for item in row:
                 colored_str, plain_str = process_tokens(item, end="")
                 colored_row.append(colored_str)
