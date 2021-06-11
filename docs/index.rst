@@ -293,7 +293,7 @@ Asking for user input
 
   .. versionchanged:: 0.10
 
-      Add ``sort`` paramater to disable sorting the list of choices
+      Add ``sort`` parameter to disable sorting the list of choices
 
   .. versionchanged:: 0.8
 
@@ -319,10 +319,10 @@ Asking for user input
 
   ::
 
-      >>> fav_food = cli_ui.ask_password("Guilty pleasure?")
+      >>> favorite_food = cli_ui.ask_password("Guilty pleasure?")
       :: Guilty pleasure?
       ****
-      >>> fav_food
+      >>> favorite_food
       'chocolate'
 
 Displaying duration
@@ -390,10 +390,10 @@ Testing
 
     # in foo.py
     def foo():
-        cli_ui.info("Fooing")
+        cli_ui.info("Doing foo stuff")
 
 
     # in test_foo.py
     def test_foo(message_recorder):
          foo()
-         assert message_recorder.find("Fooing")
+         assert message_recorder.find("foo stuff")

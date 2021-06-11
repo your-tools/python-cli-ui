@@ -106,7 +106,7 @@ def test_info_stdout_no_colors(dumb_tty: DumbTTY) -> None:
 
 def test_info_characters(always_color: None, smart_tty: SmartTTY) -> None:
     cli_ui.info(
-        "Doing stuff", cli_ui.ellipsis, "sucess", cli_ui.check, fileobj=smart_tty
+        "Doing stuff", cli_ui.ellipsis, "success", cli_ui.check, fileobj=smart_tty
     )
     actual = smart_tty.getvalue()
     if os.name == "nt":
@@ -115,7 +115,7 @@ def test_info_characters(always_color: None, smart_tty: SmartTTY) -> None:
     else:
         success = "✓"
         ellipsis = "…"
-    expected = f"Doing stuff {RESET_ALL}{RESET_ALL}{ellipsis} {RESET_ALL}sucess {RESET_ALL}{GREEN}{success} {RESET_ALL}\n{RESET_ALL}"
+    expected = f"Doing stuff {RESET_ALL}{RESET_ALL}{ellipsis} {RESET_ALL}success {RESET_ALL}{GREEN}{success} {RESET_ALL}\n{RESET_ALL}"
     assert actual == expected
 
 

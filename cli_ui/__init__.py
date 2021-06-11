@@ -226,7 +226,7 @@ def write_and_flush(fileobj: FileObj, to_write: str) -> None:
     try:
         fileobj.write(to_write)
     except UnicodeEncodeError:
-        # Maybe the file descritor does not support the full Unicode
+        # Maybe the file descriptor does not support the full Unicode
         # set, like stdout on Windows.
         # Use the unidecode library
         # to make sure we only have ascii, while still keeping
