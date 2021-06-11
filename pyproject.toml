@@ -23,14 +23,16 @@ tabulate = "^0.8.3"
 unidecode = "^1.0.23"
 
 [tool.poetry.dev-dependencies]
-# general
+# Task runner
 invoke = "^1.5"
 
-# doc
-sphinx  = "^3.0.4"
-ghp-import = "^0.5.5"
+# Tests
+attrs = "^19.3"
+coverage = "^5.2"
+pytest = "^6.2.1"
+pytest-cov = "^2.10"
 
-# linters
+# Linters
 black = "21.5b0"
 flake8 = "^3.9.1"
 flake8-bugbear = "^21.4.3"
@@ -38,12 +40,13 @@ isort = "^5.7.0"
 mypy = "^0.800"
 pep8-naming = "^0.11.1"
 
-# tests
-attrs = "^19.3"
-coverage = "^5.2"
-pytest = "^6.2.1"
-pytest-cov = "^2.10"
+# Deps scanning
 safety = "^1.9.0"
+
+# Documentation
+sphinx  = "^3.0.4"
+ghp-import = "^0.5.5"
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
