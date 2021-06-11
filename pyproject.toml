@@ -27,7 +27,6 @@ unidecode = "^1.0.23"
 invoke = "^1.5"
 
 # Tests
-attrs = "^19.3"
 coverage = "^5.2"
 pytest = "^6.2.1"
 pytest-cov = "^2.10"
