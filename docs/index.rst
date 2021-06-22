@@ -19,6 +19,17 @@ Installation
 ``cli-ui`` is available on `Pypi <https://pypi.org/project/cli-ui/>`_.
 and is compatible with Python **3.6** and higher.
 
+Note for Windows users
+-----------------------
+
+`cli_ui` tries to be smart and disables color output when it would create
+weird strings to appear on screen, and this works pretty well on non-Windows
+platforms (because the behavior of the `isatty()` function be trusted there).
+
+On Windows, the behavior of `isatty()` cannot be trusted (it may return
+False on `Mintty` for instance),  so coloring is disabled unless you
+opt-in by calling :func:`setup` with `color=always`.
+
 API
 ----
 
