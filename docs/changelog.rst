@@ -1,8 +1,8 @@
 Changelog
 ----------
 
-v0.14.1
-+++++++
+v0.14.1 (2021-06-06)
+++++++++++++++++++++
 
 * Development branch is now called ``main``.
 * Fix #66 - only call ``colorama.init()`` on Windows.
