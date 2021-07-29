@@ -331,6 +331,20 @@ def test_quiet(message_recorder: MessageRecorder) -> None:
     assert not message_recorder.find("info")
 
 
+def test_fatal() -> None:
+    cli_ui.setup(quiet=True)
+    with pytest.raises(SystemExit) as e:
+        cli_ui.fatal("default exit code")
+    assert e.value.code == 1
+
+
+def test_fatal_with_custom_code() -> None:
+    cli_ui.setup(quiet=True)
+    with pytest.raises(SystemExit) as e:
+        cli_ui.fatal("custom exit code", exit_code=3)
+    assert e.value.code == 3
+
+
 def test_color_always(dumb_tty: DumbTTY) -> None:
     cli_ui.setup(color="always")
     cli_ui.info(cli_ui.red, "this is red", fileobj=dumb_tty)
