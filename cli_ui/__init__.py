@@ -252,10 +252,11 @@ def message(
     write_and_flush(fileobj, to_write)
 
 
-def fatal(*tokens: Token, **kwargs: Any) -> None:
-    """Print an error message and call ``sys.exit``"""
+def fatal(*tokens: Token, exit_code: int = 1, **kwargs: Any) -> None:
+    """Print an error message and call ``sys.exit` with a given
+    `exit_code` (default: 1)`"""
     error(*tokens, **kwargs)
-    sys.exit(1)
+    sys.exit(exit_code)
 
 
 def error(*tokens: Token, **kwargs: Any) -> None:

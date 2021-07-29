@@ -194,7 +194,13 @@ Functions below use ``sys.stderr`` by default:
 
       >>> cli_ui.fatal("Message")
       Error: message
-      exit()
+      exit(1)
+
+    ::
+
+      >>> cli_ui.fatal("Another message", exit_code=2)
+      Error: message
+      exit(2)
 
 
 Progress messages
