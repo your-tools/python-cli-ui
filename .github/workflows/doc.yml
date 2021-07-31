@@ -8,7 +8,6 @@ on:
 
 jobs:
   doc:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +29,6 @@ jobs:
         python -m poetry install
 
     - name: Build documentation
-      if: github.ref != 'refs/heads/main'
       run: |
         poetry run invoke sphinx
 
