@@ -1,5 +1,5 @@
 [run]
-source = tsrc
+source = cli_ui
 
 omit =
   cli_ui/tests/*
