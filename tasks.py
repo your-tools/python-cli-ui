@@ -55,8 +55,11 @@ def sphinx(c, dev=False):
 
 @task(pre=[call(sphinx)])
 def deploy_docs(c):
-    with c.cd("docs"):
-        c.run("ghp-import _build/html/ -p -n -m 'ghp-import automatic commit'")
+    c.run("ghp-import --push --force --no-jekyll docs/_build/html/")
+
+
+def publish_wheel(c):
+    c.run("poetry publish --build")
 
 
 @task(
@@ -71,10 +74,9 @@ def lint(c):
     pass
 
 
-@task(
-    pre=[
-        call(sphinx)
-        ]
+@task(pre=[call(deploy_docs, publish_wheel)])
+def publish(c):
+    pass
 
 
 @task
