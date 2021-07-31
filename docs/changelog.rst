@@ -1,10 +1,10 @@
 Changelog
 ----------
 
-unreleased
-++++++++++
+v0.15.0 (2021-07-31)
+++++++++++++++++++++
 
-* `fatal` can now be called with a custom exit code, different than
+* ``fatal`` can now be called with a custom exit code, different than
   the default 1.
 
 v0.14.1 (2021-06-06)
