@@ -252,10 +252,15 @@ def message(
     write_and_flush(fileobj, to_write)
 
 
-def fatal(*tokens: Token, **kwargs: Any) -> None:
-    """Print an error message and call ``sys.exit``"""
+def fatal(*tokens: Token, exit_code: int = 1, **kwargs: Any) -> None:
+    """Print an error message and exit the program
+
+    :param tokens: list of `ui` constants or strings, like
+                   ``(cli_ui.red, "this is a fatal  error")``
+    :param exit_code: value of the exit code (default: 1)
+    """
     error(*tokens, **kwargs)
-    sys.exit(1)
+    sys.exit(exit_code)
 
 
 def error(*tokens: Token, **kwargs: Any) -> None:
