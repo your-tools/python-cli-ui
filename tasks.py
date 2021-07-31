@@ -58,6 +58,7 @@ def deploy_docs(c):
     c.run("ghp-import --push --force --no-jekyll docs/_build/html/")
 
 
+@task
 def publish_wheel(c):
     c.run("poetry publish --build")
 
@@ -74,7 +75,7 @@ def lint(c):
     pass
 
 
-@task(pre=[call(deploy_docs, publish_wheel)])
+@task(pre=[call(deploy_docs), call(publish_wheel)])
 def publish(c):
     pass
 
