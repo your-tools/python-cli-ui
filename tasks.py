@@ -53,6 +53,12 @@ def sphinx(c, dev=False):
         c.run(f"{cmd} -W . _build/html")
 
 
+@task(pre=[call(sphinx)])
+def deploy_docs(c):
+    with c.cd("docs"):
+        c.run("ghp-import _build/html/ -p -n -m 'ghp-import automatic commit'")
+
+
 @task(
     pre=[
         call(black, check=True),
