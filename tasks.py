@@ -45,6 +45,14 @@ def test(c):
     c.run("pytest")
 
 
+@task
+def sphinx(c, dev=False):
+    print("Running sphinx")
+    cmd = "sphinx-autobuild" if dev else "sphinx-build"
+    with c.cd("docs"):
+        c.run(f"{cmd} -W . _build/html")
+
+
 @task(
     pre=[
         call(black, check=True),

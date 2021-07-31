@@ -45,7 +45,8 @@ mypy = "0.900"
 safety = "^1.9.0"
 
 # Documentation
-sphinx  = "^3.0.4"
+sphinx  = "^4.1.2"
+sphinx-autobuild = "2021.3.14"
 ghp-import = "^0.5.5"
 
 
