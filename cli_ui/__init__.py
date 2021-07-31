@@ -253,8 +253,12 @@ def message(
 
 
 def fatal(*tokens: Token, exit_code: int = 1, **kwargs: Any) -> None:
-    """Print an error message and call ``sys.exit` with a given
-    `exit_code` (default: 1)`"""
+    """Print an error message and exit the program
+
+    :param tokens: list of `ui` constants or strings, like
+                   ``(cli_ui.red, "this is a fatal  error")``
+    :param exit_code: value of the exit code (default: 1)
+    """
     error(*tokens, **kwargs)
     sys.exit(exit_code)
 

@@ -196,10 +196,8 @@ Functions below use ``sys.stderr`` by default:
       Error: message
       exit(1)
 
-    ::
-
       >>> cli_ui.fatal("Another message", exit_code=2)
-      Error: message
+      Error: Another message
       exit(2)
 
 
