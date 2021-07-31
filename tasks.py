@@ -65,11 +65,16 @@ def deploy_docs(c):
         call(isort, check=True),
         call(flake8),
         call(mypy),
-        sphinx,
     ]
 )
 def lint(c):
     pass
+
+
+@task(
+    pre=[
+        call(sphinx)
+        ]
 
 
 @task
