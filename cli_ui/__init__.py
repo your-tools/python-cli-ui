@@ -10,6 +10,7 @@ import sys
 import time
 import traceback
 from typing import IO, Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
+from threading import RLock
 
 import colorama
 import tabulate
@@ -27,6 +28,7 @@ CONFIG = {
     "title": "auto",
     "timestamp": False,
     "record": False,  # used for testing
+    "sessions": False,
 }  # type: Dict[str, ConfigValue]
 
 
@@ -37,6 +39,7 @@ _MESSAGES = []
 # and over again:
 _ENABLE_XTERM_TITLE = None
 
+_SESSIONS = {}
 
 if os.name == "nt":
     # On Windows using `isatty()` does *not* work reliably,
@@ -57,6 +60,7 @@ def setup(
     color: str = "auto",
     title: str = "auto",
     timestamp: bool = False,
+    sessions: bool = False,
 ) -> None:
     """Configure behavior of message functions.
 
@@ -68,7 +72,7 @@ def setup(
     :param title: Ditto for setting terminal title
     :param timestamp: Whether to prefix every message with a time stamp
     """
-    _setup(verbose=verbose, quiet=quiet, color=color, title=title, timestamp=timestamp)
+    _setup(verbose=verbose, quiet=quiet, color=color, title=title, timestamp=timestamp, sessions=sessions)
 
 
 def _setup(**kwargs: ConfigValue) -> None:
@@ -168,6 +172,65 @@ def colors_enabled(fileobj: FileObj) -> bool:
         return fileobj.isatty()
 
 
+lock = RLock()
+
+class SessionBuffer(io.StringIO):
+
+    def __init__(self) -> None:
+        super().__init__()
+
+    def flush(self) -> None:
+        with lock:
+            print(self.getvalue())
+
+
+class ColorSessionBuffer(SessionBuffer):
+    def __init__(self) -> None:
+        super().__init__()
+
+    def isatty(self) -> bool:
+        return True
+
+
+class NoColorSessionBuffer(SessionBuffer):
+    def __init__(self) -> None:
+        super().__init__()
+
+    def isatty(self) -> bool:
+        return False
+
+
+def _pseudo_decor(fun, default_target):
+
+    @functools.wraps(fun)
+    def wrapper_select_target(*args, **kwargs):
+
+        if 'fileobj' not in kwargs:
+            kwargs['fileobj'] = default_target
+
+        if CONFIG['sessions'] and 'session_id' in kwargs:
+
+            session_id = kwargs['session_id']
+
+            if session_id in _SESSIONS:
+                new_target = _SESSIONS[session_id]
+            else:
+                if colors_enabled(kwargs['fileobj']):
+                    _SESSIONS[session_id] = ColorSessionBuffer()
+                else:
+                    _SESSIONS[session_id] = NoColorSessionBuffer()
+                new_target = _SESSIONS[session_id]
+
+            kwargs['fileobj'] = new_target
+
+        return fun(*args, **kwargs)
+
+    return wrapper_select_target
+
+
+write_to_session_or_stdout = functools.partial(_pseudo_decor, default_target=sys.stdout)
+write_to_session_or_stderr = functools.partial(_pseudo_decor, default_target=sys.stderr)
+
 def write_title_string(mystr: str, fileobj: FileObj) -> None:
     if not colors_enabled(fileobj):
         return
@@ -231,17 +294,28 @@ def write_and_flush(fileobj: FileObj, to_write: str) -> None:
         # to make sure we only have ascii, while still keeping
         # as much info as we can
         fileobj.write(unidecode.unidecode(to_write))
+
+    if not isinstance(fileobj, SessionBuffer):
+        fileobj.flush()
+
+
+@write_to_session_or_stdout
+def flush(fileobj: FileObj, **kwargs: Any) -> None:
     fileobj.flush()
 
 
+@write_to_session_or_stdout
 def message(
     *tokens: Token,
     end: str = "\n",
     sep: str = " ",
     fileobj: FileObj = sys.stdout,
     update_title: bool = False,
+    **kwargs: Any,
 ) -> None:
     """Helper method for error, warning, info, debug"""
+    if update_title and CONFIG['sessions']:
+        raise Exception(f"{__name__} does not work with sessions.")
     should_use_colors = colors_enabled(fileobj)
     with_color, without_color = process_tokens(tokens, end=end, sep=sep)
     if CONFIG["record"]:
@@ -263,17 +337,17 @@ def fatal(*tokens: Token, exit_code: int = 1, **kwargs: Any) -> None:
     sys.exit(exit_code)
 
 
+@write_to_session_or_stderr
 def error(*tokens: Token, **kwargs: Any) -> None:
     """Print an error message"""
     tokens = [bold, red, "Error:"] + list(tokens)  # type: ignore
-    kwargs["fileobj"] = sys.stderr
     message(*tokens, **kwargs)
 
 
+@write_to_session_or_stderr
 def warning(*tokens: Token, **kwargs: Any) -> None:
     """Print a warning message"""
     tokens = [brown, "Warning:"] + list(tokens)  # type: ignore
-    kwargs["fileobj"] = sys.stderr
     message(*tokens, **kwargs)
 
 
@@ -660,15 +734,30 @@ def main_demo() -> None:
     time.sleep(0.5)
     info("\n", check, "all done")
 
+def sessions_demo() -> None:
+    info()
+    info_section(bold, "sessions demo")
+
+    info('Session 1: This is useful to output of parallelized tasks', session_id=1)
+    info('Session 2: >>> This is just an example text', session_id=2)
+    info('Session 1: to ensure that their output is printed out in meaningful order.', session_id=1)
+    info('Session 2: >>> that will be put after the text of the first session', session_id=2)
+    info('Session 1: For that each print each task\'s output into its "session"', session_id=1)
+    info('Session 2: >>> although we have been calling info() without such order.', session_id=2)
+    info('Session 1: and flush it when you are done."', session_id=1)
+
+    flush(session_id=1)
+    flush(session_id=2)
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--color", choices=["always", "never", "auto"])
     parser.add_argument("action", choices=["test_colors", "demo"])
     args = parser.parse_args()
-    setup(color=args.color)
+    setup(color=args.color, sessions=True)
     if args.action == "demo":
         main_demo()
+        sessions_demo()
     elif args.action == "test_colors":
         main_test_colors()
 
