@@ -172,65 +172,6 @@ def colors_enabled(fileobj: FileObj) -> bool:
         return fileobj.isatty()
 
 
-lock = RLock()
-
-class SessionBuffer(io.StringIO):
-
-    def __init__(self) -> None:
-        super().__init__()
-
-    def flush(self) -> None:
-        with lock:
-            print(self.getvalue())
-
-
-class ColorSessionBuffer(SessionBuffer):
-    def __init__(self) -> None:
-        super().__init__()
-
-    def isatty(self) -> bool:
-        return True
-
-
-class NoColorSessionBuffer(SessionBuffer):
-    def __init__(self) -> None:
-        super().__init__()
-
-    def isatty(self) -> bool:
-        return False
-
-
-def _pseudo_decor(fun, default_target):
-
-    @functools.wraps(fun)
-    def wrapper_select_target(*args, **kwargs):
-
-        if 'fileobj' not in kwargs:
-            kwargs['fileobj'] = default_target
-
-        if CONFIG['sessions'] and 'session_id' in kwargs:
-
-            session_id = kwargs['session_id']
-
-            if session_id in _SESSIONS:
-                new_target = _SESSIONS[session_id]
-            else:
-                if colors_enabled(kwargs['fileobj']):
-                    _SESSIONS[session_id] = ColorSessionBuffer()
-                else:
-                    _SESSIONS[session_id] = NoColorSessionBuffer()
-                new_target = _SESSIONS[session_id]
-
-            kwargs['fileobj'] = new_target
-
-        return fun(*args, **kwargs)
-
-    return wrapper_select_target
-
-
-write_to_session_or_stdout = functools.partial(_pseudo_decor, default_target=sys.stdout)
-write_to_session_or_stderr = functools.partial(_pseudo_decor, default_target=sys.stderr)
-
 def write_title_string(mystr: str, fileobj: FileObj) -> None:
     if not colors_enabled(fileobj):
         return
@@ -294,28 +235,57 @@ def write_and_flush(fileobj: FileObj, to_write: str) -> None:
         # to make sure we only have ascii, while still keeping
         # as much info as we can
         fileobj.write(unidecode.unidecode(to_write))
-
-    if not isinstance(fileobj, SessionBuffer):
-        fileobj.flush()
-
-
-@write_to_session_or_stdout
-def flush(fileobj: FileObj, **kwargs: Any) -> None:
     fileobj.flush()
 
+lock = RLock()
 
-@write_to_session_or_stdout
+class SessionBuffer(io.StringIO):
+
+    def __init__(self, should_use_colors: bool) -> None:
+        super().__init__()
+        self.should_use_colors = should_use_colors
+
+    def flush(self) -> None:
+        # this is intentially no-op to prevent clearing the buffer before printing it
+        pass
+
+    def print(self) -> None:
+        with lock:
+            print(self.getvalue())
+
+    def isatty(self) -> bool:
+        return self.should_use_colors
+
+
+def _get_buffer(fileobj, session_id):
+
+    if session_id not in _SESSIONS:
+        # the buffer should have the same capabilities as the original
+        # fileobj
+        should_use_colors = colors_enabled(fileobj)
+        buffer = SessionBuffer(should_use_colors)
+        _SESSIONS[session_id] = buffer
+
+    return _SESSIONS[session_id]
+
+
+def flush_session(session_id: Any) -> None:
+    _SESSIONS[session_id].print()
+
+
 def message(
     *tokens: Token,
     end: str = "\n",
     sep: str = " ",
     fileobj: FileObj = sys.stdout,
     update_title: bool = False,
-    **kwargs: Any,
+    session_id: Any = None,
 ) -> None:
     """Helper method for error, warning, info, debug"""
-    if update_title and CONFIG['sessions']:
-        raise Exception(f"{__name__} does not work with sessions.")
+    if CONFIG['sessions'] and session_id:
+        if update_title:
+            raise Exception("update_title cannot be used with sessions.")
+        fileobj = _get_buffer(fileobj, session_id)
     should_use_colors = colors_enabled(fileobj)
     with_color, without_color = process_tokens(tokens, end=end, sep=sep)
     if CONFIG["record"]:
@@ -337,17 +307,17 @@ def fatal(*tokens: Token, exit_code: int = 1, **kwargs: Any) -> None:
     sys.exit(exit_code)
 
 
-@write_to_session_or_stderr
 def error(*tokens: Token, **kwargs: Any) -> None:
     """Print an error message"""
     tokens = [bold, red, "Error:"] + list(tokens)  # type: ignore
+    kwargs["fileobj"] = sys.stderr
     message(*tokens, **kwargs)
 
 
-@write_to_session_or_stderr
 def warning(*tokens: Token, **kwargs: Any) -> None:
     """Print a warning message"""
     tokens = [brown, "Warning:"] + list(tokens)  # type: ignore
+    kwargs["fileobj"] = sys.stderr
     message(*tokens, **kwargs)
 
 
@@ -746,8 +716,8 @@ def sessions_demo() -> None:
     info('Session 2: >>> although we have been calling info() without such order.', session_id=2)
     info('Session 1: and flush it when you are done."', session_id=1)
 
-    flush(session_id=1)
-    flush(session_id=2)
+    flush_session(1)
+    flush_session(2)
 
 def main() -> None:
     parser = argparse.ArgumentParser()
