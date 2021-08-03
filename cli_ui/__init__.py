@@ -241,9 +241,9 @@ lock = RLock()
 
 class SessionBuffer(io.StringIO):
 
-    def __init__(self, should_use_colors: bool) -> None:
+    def __init__(self, is_like_tty: bool) -> None:
         super().__init__()
-        self.should_use_colors = should_use_colors
+        self.is_like_tty = is_like_tty
 
     def flush(self) -> None:
         # this is intentially no-op to prevent clearing the buffer before printing it
@@ -254,23 +254,24 @@ class SessionBuffer(io.StringIO):
             print(self.getvalue())
 
     def isatty(self) -> bool:
-        return self.should_use_colors
+        return self.is_like_tty
 
 
 def _get_buffer(fileobj, session_id):
 
     if session_id not in _SESSIONS:
-        # the buffer should have the same capabilities as the original
-        # fileobj
-        should_use_colors = colors_enabled(fileobj)
-        buffer = SessionBuffer(should_use_colors)
+        # the buffer should have the same capabilities
+        # as the original target fileobj
+        is_like_tty = fileobj.isatty()
+        buffer = SessionBuffer(is_like_tty)
         _SESSIONS[session_id] = buffer
 
     return _SESSIONS[session_id]
 
 
 def flush_session(session_id: Any) -> None:
-    _SESSIONS[session_id].print()
+    if session_id in _SESSIONS:
+        _SESSIONS[session_id].print()
 
 
 def message(
