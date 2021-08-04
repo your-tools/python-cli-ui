@@ -269,7 +269,7 @@ def _get_buffer(fileobj, session_id):
     return _SESSIONS[session_id]
 
 
-def flush_session(session_id: Any) -> None:
+def print_session(session_id: Any) -> None:
     if session_id in _SESSIONS:
         _SESSIONS[session_id].print()
 
@@ -717,8 +717,8 @@ def sessions_demo() -> None:
     info('Session 2: >>> although we have been calling info() without such order.', session_id=2)
     info('Session 1: and flush it when you are done."', session_id=1)
 
-    flush_session(1)
-    flush_session(2)
+    print_session(1)
+    print_session(2)
 
 def main() -> None:
     parser = argparse.ArgumentParser()
