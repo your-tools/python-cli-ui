@@ -74,7 +74,14 @@ def setup(
     :param parallel: Whether support for synchronized outputs of parallel task should
                      be enabled.
     """
-    _setup(verbose=verbose, quiet=quiet, color=color, title=title, timestamp=timestamp, parallel=parallel)
+    _setup(
+        verbose=verbose,
+        quiet=quiet,
+        color=color,
+        title=title,
+        timestamp=timestamp,
+        parallel=parallel,
+    )
 
 
 def _setup(**kwargs: ConfigValue) -> None:
@@ -239,10 +246,11 @@ def write_and_flush(fileobj: FileObj, to_write: str) -> None:
         fileobj.write(unidecode.unidecode(to_write))
     fileobj.flush()
 
+
 lock = RLock()
 
-class Buffer(io.StringIO):
 
+class Buffer(io.StringIO):
     def __init__(self, is_like_tty: bool) -> None:
         super().__init__()
         self.is_like_tty = is_like_tty
@@ -285,7 +293,7 @@ def message(
     buffer: Any = None,
 ) -> None:
     """Helper method for error, warning, info, debug"""
-    if CONFIG['parallel'] and buffer:
+    if CONFIG["parallel"] and buffer:
         if update_title:
             raise Exception("update_title cannot be used with paralell support.")
         fileobj = _get_buffer(fileobj, buffer)
@@ -707,20 +715,24 @@ def main_demo() -> None:
     time.sleep(0.5)
     info("\n", check, "all done")
 
+
 def parallel_demo() -> None:
     info()
     info_section(bold, "parallel demo")
 
-    info('Task 1: This is useful to output of parallelized tasks', buffer=1)
-    info('Task 2: >>> This is just an example text', buffer=2)
-    info('Task 1: to ensure that their output is printed out in a meaningful order.', buffer=1)
-    info('Task 2: >>> that will be put after the text of the first task', buffer=2)
-    info('Task 1: For that each print each task\'s output into its own buffer"', buffer=1)
-    info('Task 2: >>> although we have been calling info() without such order.', buffer=2)
+    # fmt: off
+    info("Task 1: This is useful to output of parallelized tasks", buffer=1)
+    info("Task 2: >>> This is just an example text", buffer=2)
+    info("Task 1: to ensure that their output is printed out in a meaningful order.", buffer=1)
+    info("Task 2: >>> that will be put after the text of the first task", buffer=2)
+    info("Task 1: For that each print each task's output into its own buffer", buffer=1)
+    info("Task 2: >>> although we have been calling info() without such order.", buffer=2)
     info('Task 1: and flush it when you are done."', buffer=1)
+    # fmt: on
 
     print_buffer(1)
     print_buffer(2)
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
