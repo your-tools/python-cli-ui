@@ -28,7 +28,7 @@ CONFIG = {
     "title": "auto",
     "timestamp": False,
     "record": False,  # used for testing
-    "sessions": False,
+    "parallel": False,
 }  # type: Dict[str, ConfigValue]
 
 
@@ -39,7 +39,7 @@ _MESSAGES = []
 # and over again:
 _ENABLE_XTERM_TITLE = None
 
-_SESSIONS = {}
+_BUFFERS = {}
 
 if os.name == "nt":
     # On Windows using `isatty()` does *not* work reliably,
@@ -60,7 +60,7 @@ def setup(
     color: str = "auto",
     title: str = "auto",
     timestamp: bool = False,
-    sessions: bool = False,
+    parallel: bool = False,
 ) -> None:
     """Configure behavior of message functions.
 
@@ -71,8 +71,10 @@ def setup(
                   By default ('auto'), only use color when output is a terminal.
     :param title: Ditto for setting terminal title
     :param timestamp: Whether to prefix every message with a time stamp
+    :param parallel: Whether support for synchronized outputs of parallel task should
+                     be enabled.
     """
-    _setup(verbose=verbose, quiet=quiet, color=color, title=title, timestamp=timestamp, sessions=sessions)
+    _setup(verbose=verbose, quiet=quiet, color=color, title=title, timestamp=timestamp, parallel=parallel)
 
 
 def _setup(**kwargs: ConfigValue) -> None:
@@ -239,7 +241,7 @@ def write_and_flush(fileobj: FileObj, to_write: str) -> None:
 
 lock = RLock()
 
-class SessionBuffer(io.StringIO):
+class Buffer(io.StringIO):
 
     def __init__(self, is_like_tty: bool) -> None:
         super().__init__()
@@ -257,21 +259,21 @@ class SessionBuffer(io.StringIO):
         return self.is_like_tty
 
 
-def _get_buffer(fileobj, session_id):
+def _get_buffer(fileobj: FileObj, key: Any):
 
-    if session_id not in _SESSIONS:
+    if key not in _BUFFERS:
         # the buffer should have the same capabilities
-        # as the original target fileobj
+        # as the originally requested fileobj
         is_like_tty = fileobj.isatty()
-        buffer = SessionBuffer(is_like_tty)
-        _SESSIONS[session_id] = buffer
+        buffer = Buffer(is_like_tty)
+        _BUFFERS[key] = buffer
 
-    return _SESSIONS[session_id]
+    return _BUFFERS[key]
 
 
-def print_session(session_id: Any) -> None:
-    if session_id in _SESSIONS:
-        _SESSIONS[session_id].print()
+def print_buffer(key: Any) -> None:
+    if key in _BUFFERS:
+        _BUFFERS[key].print()
 
 
 def message(
@@ -280,13 +282,13 @@ def message(
     sep: str = " ",
     fileobj: FileObj = sys.stdout,
     update_title: bool = False,
-    session_id: Any = None,
+    buffer: Any = None,
 ) -> None:
     """Helper method for error, warning, info, debug"""
-    if CONFIG['sessions'] and session_id:
+    if CONFIG['parallel'] and buffer:
         if update_title:
-            raise Exception("update_title cannot be used with sessions.")
-        fileobj = _get_buffer(fileobj, session_id)
+            raise Exception("update_title cannot be used with paralell support.")
+        fileobj = _get_buffer(fileobj, buffer)
     should_use_colors = colors_enabled(fileobj)
     with_color, without_color = process_tokens(tokens, end=end, sep=sep)
     if CONFIG["record"]:
@@ -705,30 +707,30 @@ def main_demo() -> None:
     time.sleep(0.5)
     info("\n", check, "all done")
 
-def sessions_demo() -> None:
+def parallel_demo() -> None:
     info()
-    info_section(bold, "sessions demo")
+    info_section(bold, "parallel demo")
 
-    info('Session 1: This is useful to output of parallelized tasks', session_id=1)
-    info('Session 2: >>> This is just an example text', session_id=2)
-    info('Session 1: to ensure that their output is printed out in meaningful order.', session_id=1)
-    info('Session 2: >>> that will be put after the text of the first session', session_id=2)
-    info('Session 1: For that each print each task\'s output into its "session"', session_id=1)
-    info('Session 2: >>> although we have been calling info() without such order.', session_id=2)
-    info('Session 1: and flush it when you are done."', session_id=1)
+    info('Task 1: This is useful to output of parallelized tasks', buffer=1)
+    info('Task 2: >>> This is just an example text', buffer=2)
+    info('Task 1: to ensure that their output is printed out in a meaningful order.', buffer=1)
+    info('Task 2: >>> that will be put after the text of the first task', buffer=2)
+    info('Task 1: For that each print each task\'s output into its own buffer"', buffer=1)
+    info('Task 2: >>> although we have been calling info() without such order.', buffer=2)
+    info('Task 1: and flush it when you are done."', buffer=1)
 
-    print_session(1)
-    print_session(2)
+    print_buffer(1)
+    print_buffer(2)
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--color", choices=["always", "never", "auto"])
     parser.add_argument("action", choices=["test_colors", "demo"])
     args = parser.parse_args()
-    setup(color=args.color, sessions=True)
+    setup(color=args.color, parallel=True)
     if args.action == "demo":
         main_demo()
-        sessions_demo()
+        parallel_demo()
     elif args.action == "test_colors":
         main_test_colors()
 
