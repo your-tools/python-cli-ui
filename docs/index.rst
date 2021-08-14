@@ -411,3 +411,22 @@ Testing
     def test_foo(message_recorder):
          foo()
          assert message_recorder.find("foo stuff")
+
+Using cli-ui in concurrent programs
+-----------------------------------
+
+Thanks to the `GIL <https://wiki.python.org/moin/GlobalInterpreterLock>`_, it's
+*usually* fine to use cli-ui in concurrent contexts.
+
+However, be careful when using code like this::
+
+  cli_ui.info("Some thing that starts here", end=" ")
+  cli_ui.info("and ends there")
+
+It's possible for a race condition to occur that would clutter
+standard output if some other code prints anything between to two
+`cli_ui.info` calls.
+
+One way to fix the problems is to use *locks*. You can see examples of
+this in the `examples/ folder of the repository of this project
+<https://github.com/dmerejkowsky/python-cli-ui/tree/main/examples>`_.
