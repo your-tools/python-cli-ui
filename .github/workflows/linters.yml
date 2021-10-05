@@ -15,10 +15,10 @@ jobs:
 
     - uses: actions/checkout@v1
 
-    - name: Set up Python 3.9
+    - name: Set up Python
       uses: actions/setup-python@v1
       with:
-        python-version: 3.9
+        python-version: 3.10
 
     - name: Install and configure poetry
       run: |
@@ -29,7 +29,7 @@ jobs:
         python -m poetry run python -m pip install --upgrade pip
         python -m poetry install
 
-    - name: Run lints
+    - name: Run linters
       run: |
         python -m poetry run invoke lint
 
