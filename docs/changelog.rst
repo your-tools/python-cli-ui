@@ -5,6 +5,7 @@ v0.16.0 (2021-12-22)
 ++++++++++++++++++++
 
 * Drop support for Python 3.6
+* Bump flake8 and its plugins
 
 v0.15.2 (2021-10-05)
 ++++++++++++++++++++
