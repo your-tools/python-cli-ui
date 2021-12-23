@@ -1,0 +1,14 @@
+---
+name: spellcheck
+
+on: [push, pull_request]
+
+jobs:
+  spellcheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2.3.3
+
+      - name: Check project for spelling errors
+        uses: docker://dmerej/skyspell:ci-0.2
