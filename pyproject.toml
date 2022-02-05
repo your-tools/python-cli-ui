@@ -28,9 +28,8 @@ unidecode = "^1.0.23"
 invoke = "^1.5.0"
 
 # Tests
-coverage = "^5.2"
-pytest = "^6.2.1"
-pytest-cov = "^2.10"
+pytest = "^7.0.0"
+pytest-cov = "^3.0.0"
 
 # Linters
 black = "21.10b0"
