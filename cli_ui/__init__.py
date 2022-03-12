@@ -265,16 +265,16 @@ def fatal(*tokens: Token, exit_code: int = 1, **kwargs: Any) -> None:
 
 def error(*tokens: Token, **kwargs: Any) -> None:
     """Print an error message"""
-    tokens = [bold, red, "Error:"] + list(tokens)  # type: ignore
+    args = [bold, red, "Error:"] + list(tokens)
     kwargs["fileobj"] = sys.stderr
-    message(*tokens, **kwargs)
+    message(*args, **kwargs)
 
 
 def warning(*tokens: Token, **kwargs: Any) -> None:
     """Print a warning message"""
-    tokens = [brown, "Warning:"] + list(tokens)  # type: ignore
+    args = [brown, "Warning:"] + list(tokens)
     kwargs["fileobj"] = sys.stderr
-    message(*tokens, **kwargs)
+    message(*args, **kwargs)
 
 
 def info(*tokens: Token, **kwargs: Any) -> None:
