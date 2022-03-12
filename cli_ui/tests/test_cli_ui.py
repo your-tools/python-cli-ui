@@ -355,3 +355,21 @@ def test_color_never(smart_tty: SmartTTY) -> None:
     cli_ui.setup(color="never")
     cli_ui.info(cli_ui.red, "this is red", fileobj=smart_tty)
     assert colorama.Fore.RED not in smart_tty.getvalue()
+
+
+def test_message_for_exception(
+    message_recorder: MessageRecorder, dumb_tty: DumbTTY
+) -> None:
+    def foo():
+        x = 1 / 0
+
+    try:
+        foo()
+    except Exception as e:
+        error_message_tokens = cli_ui.message_for_exception(e, "error when fooing")
+
+    assert error_message_tokens[:3] == (
+        cli_ui.red,
+        "error when fooing\n",
+        "ZeroDivisionError",
+    )

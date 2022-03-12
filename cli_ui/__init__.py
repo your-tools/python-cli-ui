@@ -435,7 +435,7 @@ def message_for_exception(exception: Exception, message: str) -> Sequence[Token]
     """
     tb = sys.exc_info()[2]
     buffer = io.StringIO()
-    traceback.print_tb(tb, file=io)  # type: ignore
+    traceback.print_tb(tb, file=buffer)
     # fmt: off
     return (
         red, message + "\n",
