@@ -39,7 +39,7 @@ flake8-comprehensions = "^3.7.0"
 pep8-naming = "^0.12.1"
 isort = "^5.7.0"
 types-tabulate = "^0.1.0"
-mypy = "0.930"
+mypy = "0.940"
 
 # Deps scanning
 safety = "^1.9.0"
