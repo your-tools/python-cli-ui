@@ -360,8 +360,9 @@ def test_color_never(smart_tty: SmartTTY) -> None:
 def test_message_for_exception(
     message_recorder: MessageRecorder, dumb_tty: DumbTTY
 ) -> None:
-    def foo():
+    def foo() -> None:
         x = 1 / 0
+        print(x)
 
     try:
         foo()
