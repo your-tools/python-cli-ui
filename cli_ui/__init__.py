@@ -6,10 +6,12 @@ import getpass
 import inspect
 import io
 import os
+import re
 import sys
 import time
 import traceback
 from typing import IO, Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
+from operator import itemgetter
 
 import colorama
 import tabulate
@@ -534,6 +536,65 @@ def ask_choice(
             continue
         res = choices[index - 1]
         keep_asking = False
+
+    return res
+
+def select_choices(
+    *prompt: Token,
+    choices: List[Any],
+    func_desc: Optional[FuncDesc] = None,
+    sort: Optional[bool] = True,
+) -> Any:
+    """Ask the user to select one or multiple from a list of choices. Note: delimit your choices by space, comma or semi colon.
+
+    Will loop until:
+        * the user enters a valid index
+        * or leaves the prompt empty
+
+    In the last case, `None` will be returned
+
+    :param prompt: a list of tokens suitable for :func:`info`
+    :param choices: a list of arbitrary elements
+    :param func_desc: a callable. It will be used to display and
+                sort the list of choices (unless ``sort`` is False)
+                Defaults to the identity function.
+    :param sort: whether to sort the list of choices.
+
+    :return: the selected choice(s).
+
+    """
+    if func_desc is None:
+        func_desc = lambda x: str(x)
+    tokens = get_ask_tokens(prompt)
+    info(*tokens)
+    if sort:
+        choices.sort(key=func_desc)
+    for i, choice in enumerate(choices, start=1):
+        choice_desc = func_desc(choice)
+        info("  ", blue, "%i" % i, reset, choice_desc)
+    keep_asking = True
+    res = None
+    while keep_asking:
+        answer = read_input()
+        if not answer:
+            return None
+        try:
+            import re
+
+            index = [int(item) for item in re.split(r'; |, |\s |;|,|\s',answer)]
+            index = [x-1 for x in index] # convert to true index
+            # index = int(answer)
+        except ValueError:
+            info("Please enter a valid number")
+            continue
+
+        try:
+            res = itemgetter(*index)(choices)
+            # res = choices[index - 1]
+            keep_asking = False
+        except:
+            info("Please enter valid selection number(s)")
+            continue
 
     return res
 
