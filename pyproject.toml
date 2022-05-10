@@ -3,7 +3,7 @@ profile = "black"
 
 [tool.poetry]
 name = "cli-ui"
-version = "0.16.1"
+version = "0.16.2"
 description = "Build Nice User Interfaces In The Terminal"
 readme = "README.rst"
 authors = ["Dimitri Merejkowsky <dimitri@dmerej.info>"]
