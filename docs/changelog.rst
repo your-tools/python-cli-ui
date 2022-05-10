@@ -1,6 +1,11 @@
 Changelog
 ----------
 
+v0.16.2 (2022-05-10)
+++++++++++++++++++++
+
+* Add multi selection method `cli_ui.select_choices`
+
 v0.16.1 (2022-03-12)
 ++++++++++++++++++++
 

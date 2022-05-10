@@ -316,6 +316,21 @@ Asking for user input
   .. versionchanged:: 0.7
 
        The :py:exc:`KeyboardInterrupt` exception is no longer caught by this function.
+       
+.. autofunction:: select_choices
+
+
+  ::
+
+      >>> choices = ["apple", "banana", "orange"]
+      >>> fruit = cli_ui.ask_choice("Select several fruits", choices=choices)
+      :: Select a fruit
+        1 apple
+        2 banana
+        3 orange
+      <1,2>
+      >>> fruit
+      ('apple, 'banana')
 
 
 .. autofunction:: ask_yes_no
