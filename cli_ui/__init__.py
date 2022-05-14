@@ -580,7 +580,6 @@ def select_choices(
         if not answer:
             return None
         try:
-            import re
 
             index = [int(item) for item in re.split(r"; |, |\s |;|,|\s", answer)]
             index = [x - 1 for x in index]  # convert to true index
@@ -591,9 +590,7 @@ def select_choices(
 
         try:
             res = itemgetter(*index)(choices)
-            # res = choices[index - 1]
-            keep_asking = False
-        except:
+        except Exception:
             info("Please enter valid selection number(s)")
             continue
 
