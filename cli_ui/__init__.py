@@ -546,10 +546,13 @@ def select_choices(
     func_desc: Optional[FuncDesc] = None,
     sort: Optional[bool] = True,
 ) -> Any:
-    """Ask the user to select one or multiple from a list of choices. Note: delimit your choices by space, comma or semi colon.
+    """
+    Ask the user to select one or multiple from a list of choices,
+    delimited by space, comma or semi colon.
 
     Will loop until:
-        * the user enters a valid index
+
+        * the user enters a valid selection
         * or leaves the prompt empty
 
     In the last case, `None` will be returned
