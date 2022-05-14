@@ -588,7 +588,7 @@ def select_choices(
             continue
 
         try:
-            res = itemgetter(*index)(choices)
+            res = list(itemgetter(*index)(choices))
         except Exception:
             info("Please enter valid selection number(s)")
             continue
