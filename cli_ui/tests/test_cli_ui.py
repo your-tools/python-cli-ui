@@ -301,7 +301,7 @@ def test_ask_choice() -> None:
     fruits = [Fruit("apple", 42), Fruit("banana", 10), Fruit("orange", 12)]
     with mock.patch("builtins.input") as m:
         m.side_effect = ["nan", "5", "2"]
-        
+
         actual = cli_ui.ask_choice(
             "Select a fruit", choices=fruits, func_desc=operator.attrgetter("name")
         )
@@ -322,8 +322,8 @@ def test_ask_choice_ctrl_c() -> None:
         with mock.patch("builtins.input") as m:
             m.side_effect = KeyboardInterrupt
             cli_ui.ask_choice("Select a animal", choices=["cat", "dog", "cow"])
-            
-            
+
+
 def test_select_choices() -> None:
     class Fruit:
         def __init__(self, name: str, price: int):
@@ -344,8 +344,8 @@ def test_select_choices() -> None:
         assert actual[1].name == "banana"
         assert actual[1].price == 10
         assert m.call_count == 3
-        
-        
+
+
 def test_select_choices_empty_input() -> None:
     with mock.patch("builtins.input") as m:
         m.side_effect = [""]
@@ -357,7 +357,7 @@ def test_select_choices_ctrl_c() -> None:
     with pytest.raises(KeyboardInterrupt):
         with mock.patch("builtins.input") as m:
             m.side_effect = KeyboardInterrupt
-            cli_ui.select_choices("Select a animal", choices=["cat", "dog", "cow"])            
+            cli_ui.select_choices("Select a animal", choices=["cat", "dog", "cow"])
 
 
 def test_quiet(message_recorder: MessageRecorder) -> None:

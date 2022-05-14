@@ -539,6 +539,7 @@ def ask_choice(
 
     return res
 
+
 def select_choices(
     *prompt: Token,
     choices: List[Any],
@@ -581,8 +582,8 @@ def select_choices(
         try:
             import re
 
-            index = [int(item) for item in re.split(r'; |, |\s |;|,|\s',answer)]
-            index = [x-1 for x in index] # convert to true index
+            index = [int(item) for item in re.split(r"; |, |\s |;|,|\s", answer)]
+            index = [x - 1 for x in index]  # convert to true index
             # index = int(answer)
         except ValueError:
             info("Please enter a valid number")
