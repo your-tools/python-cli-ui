@@ -353,6 +353,15 @@ def test_select_choices_empty_input() -> None:
         assert res is None
 
 
+def test_select_choices_using_space_separator() -> None:
+    with mock.patch("builtins.input") as m:
+        m.side_effect = ["1 3"]
+        res = cli_ui.select_choices(
+            "Select a animal", choices=["cat", "dog", "cow"], sort=False
+        )
+        assert res == ["cat", "cow"]
+
+
 def test_select_choices_ctrl_c() -> None:
     with pytest.raises(KeyboardInterrupt):
         with mock.patch("builtins.input") as m:
