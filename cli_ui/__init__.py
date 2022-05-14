@@ -594,7 +594,7 @@ def select_choices(
             info("Please enter valid selection number(s)")
             continue
 
-    return res
+        return res
 
 
 def ask_yes_no(*question: Token, default: bool = False) -> bool:
