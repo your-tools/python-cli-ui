@@ -10,8 +10,8 @@ import re
 import sys
 import time
 import traceback
-from typing import IO, Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 from operator import itemgetter
+from typing import IO, Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import colorama
 import tabulate
