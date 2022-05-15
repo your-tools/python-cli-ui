@@ -1,15 +1,16 @@
 Changelog
 ----------
 
-v0.16.2 (2022-05-10)
+v0.17.0 (2022-05-13)
 ++++++++++++++++++++
 
-* Add multi selection method `cli_ui.select_choices`
+* Add multi selection method ``select_choices``. Initial patch
+  by @cunyap
 
 v0.16.1 (2022-03-12)
 ++++++++++++++++++++
 
-* Fix bug in `cli_ui.message_for_exception`
+* Fix bug in ``message_for_exception``
 
 v0.16.0 (2021-12-22)
 ++++++++++++++++++++
@@ -58,7 +59,7 @@ v0.13.0 (2021-04-19)
 v0.12.0 (2021-02-11)
 +++++++++++++++++++++
 
-* Fix using `info_table` with `keys="headers"`
+* Fix using ``info_table`` with ``keys="headers"``
 
 v0.11.0 (2020-07-23)
 ++++++++++++++++++++
@@ -74,7 +75,7 @@ v0.10.3 (2020-04-29)
 v0.10.2 (2020-02-10)
 ++++++++++++++++++++
 
-* Fix calling `cli_ui.dot()` without `fileobj` argument.
+* Fix calling ``dot()`` without `fileobj` argument.
 
 v0.10.1 (2020-02-04)
 ++++++++++++++++++++
