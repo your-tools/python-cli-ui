@@ -1,29 +1,32 @@
+poetry := "python -m poetry"
+poetry_run := poetry + " run"
+
 default:
     just --list --unsorted
 
 setup:
-    python -m poetry install
+    {{ poetry }} install
 
 lint:
-    python -m poetry run black --check .
-    python -m poetry run isort --check .
-    python -m poetry run flake8  .
-    python -m poetry run mypy
+    {{ poetry_run }} black --check .
+    {{ poetry_run }} isort --check .
+    {{ poetry_run }} flake8  .
+    {{ poetry_run }} mypy
 
 test:
-    python -m poetry run pytest
+    {{ poetry_run }} pytest
 
 format:
-    python - m poetry run black .
-    python - m poetry run isort .
+    {{ poetry_run }} black .
+    {{ poetry_run }} isort .
 
 
 build-doc:
-    cd docs ; python -m poetry run sphinx-build -W . _build/html
+    cd docs ; {{ poetry_run }} sphinx-build -W . _build/html
 
 dev-doc:
-    cd docs ; python -m poetry run sphinx-autobuild . _build/html
+    cd docs ; {{poetry_run }} run sphinx-autobuild . _build/html
 
 deploy-doc: build-doc
-    ghp-import --push --force --no-jekyll docs/_build/html/
+    {{ poetry_run }} ghp-import --push --force --no-jekyll docs/_build/html/
 
