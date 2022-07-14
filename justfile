@@ -22,10 +22,10 @@ format:
 
 
 build-doc:
-    cd docs ; {{ poetry_run }} sphinx-build -W . _build/html
+    {{ poetry_run }} sphinx-build -W docs/ docs/_build/html
 
 dev-doc:
-    cd docs ; {{poetry_run }} run sphinx-autobuild . _build/html
+    {{poetry_run }} sphinx-autobuild docs/ docs/_build/html
 
 deploy-doc: build-doc
     {{ poetry_run }} ghp-import --push --force --no-jekyll docs/_build/html/
