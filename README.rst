@@ -78,4 +78,6 @@ Example:
 Contributing
 ------------
 
-Install `just <https://just.systems/man/en/>_ and run it to see available tasks.
+We use `optimistic merging <>` so you don't have to worry too much about formatting the code, pleasing the linters or making sure all the test pass.
+
+That being said, if you want, you can install `just <https://just.systems/man/en/>`_ and use it to check your changes automatically. Just run `just` to see available tasks.
