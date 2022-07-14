@@ -74,3 +74,8 @@ Example:
     selected_fruit = cli_ui.ask_choice("Choose a fruit", choices=fruits)
 
     #  ... and more!
+
+Contributing
+------------
+
+Install `just <https://just.systems/man/en/>_ and run it to see available tasks.
