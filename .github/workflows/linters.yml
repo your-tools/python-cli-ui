@@ -24,11 +24,13 @@ jobs:
       run: |
         python -m pip install poetry
 
+    - uses: extractions/setup-just@v1
+
     - name: Prepare project for development
       run: |
-        python -m poetry install
+        just setup
 
     - name: Run linters
       run: |
-        python -m poetry run invoke lint
+        just lint
 
