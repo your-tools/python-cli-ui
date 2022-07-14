@@ -24,9 +24,6 @@ tabulate = "^0.8.3"
 unidecode = "^1.0.23"
 
 [tool.poetry.dev-dependencies]
-# Task runner
-invoke = "^1.5.0"
-
 # Tests
 pytest = "^7.0.0"
 pytest-cov = "^3.0.0"
