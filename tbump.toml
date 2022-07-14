@@ -29,4 +29,4 @@ cmd = "grep -q {new_version} docs/changelog.rst"
 
 [[after_push]]
 name = "Publish project"
-cmd = "poetry run invoke publish"
+cmd = "python -m poetry publish --build"
