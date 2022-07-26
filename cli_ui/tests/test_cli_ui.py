@@ -1,6 +1,5 @@
 import datetime
 import io
-import operator
 import os
 import re
 from typing import Iterator
@@ -303,7 +302,7 @@ def test_ask_choice() -> None:
         m.side_effect = ["nan", "5", "2"]
 
         actual = cli_ui.ask_choice(
-            "Select a fruit", choices=fruits, func_desc=operator.attrgetter("name")
+            "Select a fruit", choices=fruits, func_desc=func_desc
         )
         assert actual.name == "banana"
         assert actual.price == 10
@@ -337,7 +336,7 @@ def test_select_choices() -> None:
     with mock.patch("builtins.input") as m:
         m.side_effect = ["nan", "5", "1, 2"]
         actual = cli_ui.select_choices(
-            "Select a fruit", choices=fruits, func_desc=operator.attrgetter("name")
+            "Select a fruit", choices=fruits, func_desc=func_desc
         )
         assert actual[0].name == "apple"
         assert actual[0].price == 42
