@@ -4,12 +4,17 @@ Changelog
 v0.17.2 (2022-08-29)
 ++++++++++++++++++++
 
-* Fix github and sr.ht mis-synchronization
+* Fix github and sr.ht de-synchronization
 
 v0.17.1 (2022-08-29)
 ++++++++++++++++++++
 
 * Move to the `your-tools` organization
+* Move from `invoke` to `just`
+* Bump flake8 plugins
+* Bump copier template
+* Fix two warnings found by SonarQube
+* Bump black
 
 v0.17.0 (2022-05-13)
 ++++++++++++++++++++
@@ -229,3 +234,5 @@ v0.1.0 (2017-08-25)
 +++++++++++++++++++
 
 First public release
+
+
