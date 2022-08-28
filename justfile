@@ -28,5 +28,8 @@ dev-doc:
     {{poetry_run }} sphinx-autobuild docs/ docs/_build/html
 
 deploy-doc: build-doc
-    {{ poetry_run }} ghp-import --push --force --no-jekyll docs/_build/html/
-
+    {{ poetry_run }} ghp-import \
+        --no-jekyll \
+        --remote github \
+        docs/_build/html/
+    git push github gh-pages --force --no-verify
