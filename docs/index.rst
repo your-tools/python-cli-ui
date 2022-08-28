@@ -444,4 +444,4 @@ standard output if some other code prints anything between to two
 
 One way to fix the problems is to use *locks*. You can see examples of
 this in the `examples/ folder of the repository of this project
-<https://github.com/dmerejkowsky/python-cli-ui/tree/main/examples>`_.
+<https://github.com/your-tools/python-cli-ui/tree/main/examples>`_.

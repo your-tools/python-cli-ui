@@ -8,12 +8,12 @@ description = "Build Nice User Interfaces In The Terminal"
 readme = "README.rst"
 authors = ["Dimitri Merejkowsky <dimitri@dmerej.info>"]
 license = "BSD-3-Clause"
-repository = "https://github.com/dmerejkowsky/python-cli-ui"
-documentation = "https://dmerejkowsky.github.io/python-cli-ui/"
+repository = "https://git.sr.ht/~your-tools/python-cli-ui"
+documentation = "https://your-tools.github.io/python-cli-ui/"
 
 [tool.poetry.urls]
-Changelog = "https://dmerejkowsky.github.io/python-cli-ui/changelog.html"
-Issues = "https://github.com/dmerejkowsky/python-cli-ui/issues"
+Changelog = "https://your-tools.github.io/python-cli-ui/changelog.html"
+Issues = "https://github.com/your-tools/python-cli-ui/issues"
 
 [tool.poetry.dependencies]
 # Keep this in sync with .github/workflows/

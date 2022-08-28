@@ -4,11 +4,11 @@
 .. image:: https://img.shields.io/pypi/v/cli-ui.svg
   :target: https://pypi.org/project/cli-ui/
 
-.. image:: https://img.shields.io/github/license/dmerejkowsky/python-cli-ui.svg
-  :target: https://github.com/dmerejkowsky/python-cli-ui/blob/main/LICENSE
+.. image:: https://img.shields.io/github/license/your-tools/python-cli-ui.svg
+  :target: https://github.com/your-tools/python-cli-ui/blob/main/LICENSE
 
 .. image:: https://img.shields.io/badge/deps%20scanning-pyup.io-green
-  :target: https://github.com/dmerejkowsky/python-cli-ui/actions
+  :target: https://github.com/your-tools/python-cli-ui/actions
 
 python-cli-ui
 =============
@@ -27,7 +27,7 @@ Documentation
 -------------
 
 
-See `python-cli-ui documentation <https://dmerejkowsky.github.io/python-cli-ui>`_.
+See `python-cli-ui documentation <https://your-tools.github.io/python-cli-ui>`_.
 
 Demo
 ----
