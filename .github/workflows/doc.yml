@@ -32,10 +32,3 @@ jobs:
     - name: Build documentation
       run: |
         just build-doc
-
-    - name: Deploy to GitHub pages
-      uses: JamesIves/github-pages-deploy-action@v4.3.3
-      with:
-        token: ${{ secrets.GH_PAT }}
-        branch: gh-pages
-        folder: docs/_build/html/
