@@ -1,4 +1,4 @@
-poetry := "python -m poetry"
+poetry := "poetry"
 poetry_run := poetry + " run"
 
 default:
