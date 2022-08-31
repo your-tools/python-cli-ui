@@ -5,6 +5,7 @@ default:
     just --list --unsorted
 
 setup:
+    {{ poetry }} lock --check
     {{ poetry }} install
 
 lint:
