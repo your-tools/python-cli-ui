@@ -81,3 +81,18 @@ Contributing
 We use `optimistic merging <https://dmerej.info/blog/post/optimistic-merging/>`_ so you don't have to worry too much about formatting the code, pleasing the linters or making sure all the test pass.
 
 That being said, if you want, you can install `just <https://just.systems/man/en/>`_ and use it to check your changes automatically. Just run ``just`` to see available tasks.
+
+Making a new release
+--------------------
+
+Install `tbump <https://pypi.org/project/tbump>`_ and use it to bump `cli-ui` to the new version.
+
+Uploading documentation
+-----------------------
+
+Run:
+
+.. code-block:: sh
+
+    just deploy-doc
+
