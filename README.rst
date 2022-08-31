@@ -85,7 +85,9 @@ That being said, if you want, you can install `just <https://just.systems/man/en
 Making a new release
 --------------------
 
-Install `tbump <https://pypi.org/project/tbump>`_ and use it to bump `cli-ui` to the new version.
+* Create a token on pypi : see `pypi help  <https://pypi.org/help/#apitoken>`_ for details.
+
+* Install `tbump <https://pypi.org/project/tbump>`_ and use it to bump `cli-ui` to the new version.
 
 Uploading documentation
 -----------------------
