@@ -23,7 +23,7 @@ colorama = "^0.4.1"
 tabulate = "^0.8.3"
 unidecode = "^1.0.23"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 # Tests
 pytest = "^7.0.0"
 pytest-cov = "^3.0.0"
