@@ -27,8 +27,7 @@ jobs:
 
     - name: Install and configure poetry
       run: |
-        python -m pip install pipx
-        pipx install poetry
+        python -m pip install poetry
 
     - uses: extractions/setup-just@v1
       env:

@@ -23,8 +23,7 @@ jobs:
 
     - name: Install and configure poetry
       run: |
-        python -m pip install pipx
-        pipx install poetry
+        python -m pip install poetry
 
     - name: Prepare project for development
       run: |
