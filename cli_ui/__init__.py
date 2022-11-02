@@ -218,8 +218,6 @@ def _process_tokens(
             if i != len(tokens) - 1:
                 res += sep
     res += end
-    if color:
-        res += reset.code
     return res
 
 
