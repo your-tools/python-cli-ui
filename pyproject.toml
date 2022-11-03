@@ -39,7 +39,7 @@ types-tabulate = "^0.1.0"
 mypy = "0.960"
 
 # Deps scanning
-safety = "^1.9.0"
+safety = "^2.0.0"
 
 # Documentation
 sphinx  = "^4.1.2"
