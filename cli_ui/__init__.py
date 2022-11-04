@@ -23,6 +23,7 @@ FileObj = IO[str]
 # Global variable to store configuration
 
 CONFIG = {
+    "debug": os.environ.get("DEBUG"),
     "verbose": os.environ.get("VERBOSE"),
     "quiet": False,
     "color": "auto",
@@ -54,6 +55,7 @@ Token = Any
 
 def setup(
     *,
+    debug: bool = False,
     verbose: bool = False,
     quiet: bool = False,
     color: str = "auto",
@@ -62,7 +64,8 @@ def setup(
 ) -> None:
     """Configure behavior of message functions.
 
-    :param verbose: Whether :func:`debug` messages should get printed
+    :param debug: Whether :func:`debug` messages should get printed
+    :param verbose: Whether :func:`verbose` messages should get printed
     :param quiet: Hide every message except :func:`warning`, :func:`error`, and
                   :func:`fatal`
     :param color: Choices: 'auto', 'always', or 'never'. Whether to color output.
@@ -361,12 +364,21 @@ def info_progress(prefix: str, value: float, max_value: float) -> None:
         write_and_flush(sys.stdout, to_write)
 
 
+def verbose(*tokens: Token, **kwargs: Any) -> None:
+    """Print a verbose message.
+
+    Messages are shown only when ``CONFIG["verbose"]`` is true"""
+    if not CONFIG["verbose"]:
+        return
+    message(*tokens, **kwargs)
+
+
 def debug(*tokens: Token, **kwargs: Any) -> None:
     """Print a debug message.
 
-    Messages are shown only when ``CONFIG["verbose"]`` is true
+    Messages are shown only when ``CONFIG["debug"]`` is true
     """
-    if not CONFIG["verbose"] or CONFIG["record"]:
+    if not CONFIG["debug"] or CONFIG["record"]:
         return
     message(*tokens, **kwargs)
 

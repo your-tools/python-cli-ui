@@ -42,7 +42,7 @@ Configuration
 
   >>> cli_ui.debug("this will not be printed")
   <nothing>
-  >>> cli_ui.setup(verbose=True)
+  >>> cli_ui.setup(debug=True)
   >>> cli_ui.debug("this will be printed")
   this will be printed
 
@@ -160,6 +160,13 @@ Functions below take the same arguments as the :func:`info` function
 
       >>> cli_ui.info_3("Message")
       * Message
+
+.. autofunction:: verbose
+
+    ::
+
+      >>> cli_ui.verbose("Message")
+      <nothing>
 
 .. autofunction:: debug
 
