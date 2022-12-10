@@ -22,14 +22,14 @@ FileObj = IO[str]
 
 # Global variable to store configuration
 
-CONFIG = {
+CONFIG: Dict[str, ConfigValue] = {
     "verbose": os.environ.get("VERBOSE"),
     "quiet": False,
     "color": "auto",
     "title": "auto",
     "timestamp": False,
     "record": False,  # used for testing
-}  # type: Dict[str, ConfigValue]
+}
 
 
 # used for testing
@@ -188,7 +188,7 @@ def process_tokens(
     """
     # Flatten the list of tokens in case some of them are of
     # class UnicodeSequence:
-    flat_tokens = []  # type: List[Token]
+    flat_tokens: List[Token] = []
     for token in tokens:
         if isinstance(token, UnicodeSequence):
             flat_tokens.extend(token.tuple())
