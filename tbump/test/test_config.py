@@ -70,7 +70,6 @@ def test_happy_parse(test_project: Path) -> None:
 def test_uses_pyproject_if_tbump_toml_is_missing(
     test_project: Path, tmp_path: Path
 ) -> None:
-
     expected_file = get_config_file(test_project)
     parsed_config = expected_file.get_parsed()
     tools_config = tomlkit.table()
