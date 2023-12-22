@@ -6,6 +6,7 @@ Next release
 
 * Bump dependencies
 * Remove support for Python 3.7
+* Add support for Python 3.12
 
 v0.17.2 (2022-08-29)
 ++++++++++++++++++++
