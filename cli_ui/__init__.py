@@ -591,7 +591,11 @@ def select_choices(
             continue
 
         try:
-            res = list(itemgetter(*index)(choices))
+            res = (
+                list(itemgetter(*index)(choices))
+                if len(index) > 1
+                else [itemgetter(*index)(choices)]
+            )
         except Exception:
             info("Please enter valid selection number(s)")
             continue
