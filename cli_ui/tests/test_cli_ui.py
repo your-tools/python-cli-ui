@@ -345,6 +345,13 @@ def test_select_choices() -> None:
         assert m.call_count == 3
 
 
+def test_select_choices_single_select() -> None:
+    with mock.patch("builtins.input") as m:
+        m.side_effect = ["1"]
+        res = cli_ui.select_choices("Select a animal", choices=["cat", "dog", "cow"])
+        assert res == ["cat"]
+
+
 def test_select_choices_empty_input() -> None:
     with mock.patch("builtins.input") as m:
         m.side_effect = [""]
