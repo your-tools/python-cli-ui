@@ -11,6 +11,7 @@ class MessageRecorder:
 
     def __init__(self) -> None:
         cli_ui._MESSAGES = []
+        self.idx_find_next: int = 0
 
     def start(self) -> None:
         """Start recording messages"""
@@ -32,9 +33,29 @@ class MessageRecorder:
                         when looking for recorded message
         """
         regexp = re.compile(pattern)
-        for message in cli_ui._MESSAGES:
+        for idx, message in enumerate(cli_ui._MESSAGES):
             if re.search(regexp, message):
-                return message
+                if isinstance(message, str):
+                    self.idx_find_next = idx + 1
+                    return message
+        return None
+
+    def find_next(self, pattern: str) -> Optional[str]:
+        """Same as 'find', however finds in next message ONLY.
+
+        :param pattern: regular expression pattern to use
+                        when looking for recorded message
+
+        This is particulary usefull when we want to match only consecutive message.
+        Calling this function can be repeated for further consecutive message match.
+        """
+        if len(cli_ui._MESSAGES) > self.idx_find_next:
+            regexp = re.compile(pattern)
+            message = cli_ui._MESSAGES[self.idx_find_next]
+            if re.search(regexp, message):
+                if isinstance(message, str):
+                    self.idx_find_next += 1
+                    return message
         return None
 
 
