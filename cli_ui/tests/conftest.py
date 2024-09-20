@@ -40,8 +40,10 @@ class MessageRecorder:
                     return message
         return None
 
-    def find_next(self, pattern: str) -> Optional[str]:
-        """Same as 'find', however finds in next message ONLY.
+    def find_right_after(self, pattern: str) -> Optional[str]:
+        """Same as 'find', but only check the message that is right after
+        the one found last time. if no message was found before, the 1st
+        message in buffer is checked
 
         :param pattern: regular expression pattern to use
                         when looking for recorded message
