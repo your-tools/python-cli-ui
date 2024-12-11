@@ -1,8 +1,8 @@
 Changelog
 ----------
 
-Next release
-++++++++++++
+v0.18.0 (2024-12-11)
+++++++++++++++++++++
 
 * Bump dependencies
 * Remove support for Python 3.7
