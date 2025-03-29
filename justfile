@@ -33,4 +33,4 @@ deploy-doc: build-doc
         --no-jekyll \
         --remote github \
         docs/_build/html/
-    git push github gh-pages --force --no-verify
+    git push origin gh-pages --force --no-verify
