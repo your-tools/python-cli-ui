@@ -7,6 +7,7 @@ import inspect
 import io
 import os
 import re
+import shutil
 import sys
 import time
 import traceback
@@ -330,7 +331,14 @@ def dot(*, last: bool = False, fileobj: FileObj = sys.stdout) -> None:
     info(".", end=end, fileobj=fileobj)
 
 
-def info_count(i: int, n: int, *rest: Token, **kwargs: Any) -> None:
+def erase_last_line() -> None:
+    terminal_size = shutil.get_terminal_size()
+    info(" " * terminal_size.columns, end="\r")
+
+
+def info_count(
+    i: int, n: int, *rest: Token, one_line: bool = False, **kwargs: Any
+) -> None:
     """Display a counter before the rest of the message.
 
     ``rest`` and ``kwargs`` are passed to :func:`info`
@@ -343,6 +351,9 @@ def info_count(i: int, n: int, *rest: Token, **kwargs: Any) -> None:
     num_digits = len(str(n))
     counter_format = "(%{}d/%d)".format(num_digits)
     counter_str = counter_format % (i + 1, n)
+    if one_line:
+        kwargs["end"] = "\r"
+        erase_last_line()
     info(green, "*", reset, counter_str, reset, *rest, **kwargs)
 
 
@@ -711,11 +722,21 @@ def main_demo() -> None:
     info()
     info_section(bold, "progress info")
 
+    info_2("3 things")
     list_of_things = ["foo", "bar", "baz"]
     for i, thing in enumerate(list_of_things):
         info_count(i, len(list_of_things), thing)
     info()
 
+    info_2("3 other things on one line")
+    list_of_things = ["spam", "eggs", "butter"]
+    for i, thing in enumerate(list_of_things):
+        time.sleep(0.5)
+        info_count(i, len(list_of_things), thing, one_line=True)
+    info()
+
+    info()
+    info_2("Doing someting that takes some time")
     time.sleep(0.5)
     info_progress("Doing something", 5, 20)
     time.sleep(0.5)
