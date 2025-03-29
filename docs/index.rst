@@ -17,7 +17,7 @@ Installation
 -------------
 
 ``cli-ui`` is available on `Pypi <https://pypi.org/project/cli-ui/>`_.
-and is compatible with Python **3.8** and higher.
+and is compatible with Python **3.9** and higher.
 
 Note for Windows users
 -----------------------
