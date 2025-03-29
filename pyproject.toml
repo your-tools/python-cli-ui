@@ -1,22 +1,18 @@
-[tool.isort]
-profile = "black"
-
-[tool.poetry]
+[project]
 name = "cli-ui"
 version = "0.18.0"
 description = "Build Nice User Interfaces In The Terminal"
 readme = "README.rst"
-authors = ["Dimitri Merejkowsky <dimitri@dmerej.info>"]
+authors = [{ name = "Dimitri Merejkowsky", email = "dimitri@dmerej.info" }]
 license = "BSD-3-Clause"
 repository = "https://git.sr.ht/~your-tools/python-cli-ui"
 documentation = "https://your-tools.github.io/python-cli-ui/"
+dynamic = ["requires-python", "dependencies"]
 
-[tool.poetry.urls]
-Changelog = "https://your-tools.github.io/python-cli-ui/changelog.html"
-Issues = "https://github.com/your-tools/python-cli-ui/issues"
+[tool.isort]
+profile = "black"
 
 [tool.poetry.dependencies]
-# Keep this in sync with .github/workflows/
 python = "^3.9"
 
 colorama = "^0.4.1"
@@ -39,8 +35,8 @@ types-tabulate = "^0.9.0"
 mypy = "0.991"
 
 # Documentation
-sphinx  = "^5.3.0"
-sphinx-autobuild = "2021.3.14"
+sphinx  = "^7.4"
+sphinx-autobuild = "2024.10.3"
 ghp-import = "^2.1.0"
 
 
