@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Python CLI UI &#8212; cli_ui 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="python-cli-ui">
+<h1><a class="toc-backref" href="#id1" role="doc-backlink">Python CLI UI</a><a class="headerlink" href="#python-cli-ui" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p id="module-cli_ui">Tools for nice user interfaces in the terminal.</p>
+<nav class="contents" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#python-cli-ui" id="id1">Python CLI UI</a></p>
+<ul>
+<li><p><a class="reference internal" href="#installation" id="id2">Installation</a></p></li>
+<li><p><a class="reference internal" href="#note-for-windows-users" id="id3">Note for Windows users</a></p></li>
+<li><p><a class="reference internal" href="#api" id="id4">API</a></p>
+<ul>
+<li><p><a class="reference internal" href="#configuration" id="id5">Configuration</a></p></li>
+<li><p><a class="reference internal" href="#constants" id="id6">Constants</a></p></li>
+<li><p><a class="reference internal" href="#informative-messages" id="id7">Informative messages</a></p></li>
+<li><p><a class="reference internal" href="#error-messages" id="id8">Error messages</a></p></li>
+<li><p><a class="reference internal" href="#progress-messages" id="id9">Progress messages</a></p></li>
+<li><p><a class="reference internal" href="#formatting" id="id10">Formatting</a></p></li>
+<li><p><a class="reference internal" href="#asking-for-user-input" id="id11">Asking for user input</a></p></li>
+<li><p><a class="reference internal" href="#displaying-duration" id="id12">Displaying duration</a></p></li>
+<li><p><a class="reference internal" href="#auto-correct" id="id13">Auto-correct</a></p></li>
+<li><p><a class="reference internal" href="#testing" id="id14">Testing</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#using-cli-ui-in-concurrent-programs" id="id15">Using cli-ui in concurrent programs</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="installation">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Installation</a><a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">cli-ui</span></code> is available on <a class="reference external" href="https://pypi.org/project/cli-ui/">Pypi</a>.
+and is compatible with Python <strong>3.9</strong> and higher.</p>
+</section>
+<section id="note-for-windows-users">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Note for Windows users</a><a class="headerlink" href="#note-for-windows-users" title="Link to this heading">¶</a></h2>
+<p><cite>cli_ui</cite> tries to be smart and disables color output when it would create
+weird strings to appear on screen, and this works pretty well on non-Windows
+platforms (because the behavior of the <cite>isatty()</cite> function be trusted there).</p>
+<p>On Windows, the behavior of <cite>isatty()</cite> cannot be trusted (it may return
+False on <cite>Mintty</cite> for instance),  so coloring is disabled unless you
+opt-in by calling <a class="reference internal" href="#cli_ui.setup" title="cli_ui.setup"><code class="xref py py-func docutils literal notranslate"><span class="pre">setup()</span></code></a> with <cite>color=always</cite>.</p>
+</section>
+<section id="api">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">API</a><a class="headerlink" href="#api" title="Link to this heading">¶</a></h2>
+<section id="configuration">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Configuration</a><a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.setup">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.setup" title="Link to this definition">¶</a></dt>
+<dd><p>Configure behavior of message functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>verbose</strong> – Whether <a class="reference internal" href="#cli_ui.debug" title="cli_ui.debug"><code class="xref py py-func docutils literal notranslate"><span class="pre">debug()</span></code></a> messages should get printed</p></li>
+<li><p><strong>quiet</strong> – Hide every message except <a class="reference internal" href="#cli_ui.warning" title="cli_ui.warning"><code class="xref py py-func docutils literal notranslate"><span class="pre">warning()</span></code></a>, <a class="reference internal" href="#cli_ui.error" title="cli_ui.error"><code class="xref py py-func docutils literal notranslate"><span class="pre">error()</span></code></a>, and
+<a class="reference internal" href="#cli_ui.fatal" title="cli_ui.fatal"><code class="xref py py-func docutils literal notranslate"><span class="pre">fatal()</span></code></a></p></li>
+<li><p><strong>color</strong> – Choices: ‘auto’, ‘always’, or ‘never’. Whether to color output.
+By default (‘auto’), only use color when output is a terminal.</p></li>
+<li><p><strong>title</strong> – Ditto for setting terminal title</p></li>
+<li><p><strong>timestamp</strong> – Whether to prefix every message with a time stamp</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;this will not be printed&quot;</span><span class="p">)</span>
+<span class="go">&lt;nothing&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;this will be printed&quot;</span><span class="p">)</span>
+<span class="go">this will be printed</span>
+</pre></div>
+</div>
+</section>
+<section id="constants">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Constants</a><a class="headerlink" href="#constants" title="Link to this heading">¶</a></h3>
+<p>You can use any of these constants as a <code class="docutils literal notranslate"><span class="pre">token</span></code> in the following functions:</p>
+<ul class="simple">
+<li><p>Effects:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">bold</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">faint</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">standout</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">underline</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">blink</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">overline</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reset</span></code></p></li>
+</ul>
+</li>
+<li><p>Colors:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">black</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">blue</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">brown</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">darkblue</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">darkgray</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">darkgreen</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">darkred</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">darkyellow</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fuchsia</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">green</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lightgray</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">purple</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">red</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">teal</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">turquoise</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">white</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yellow</span></code></p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each of these constants is an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code>.</p>
+</div>
+<ul>
+<li><p>Sequence of Unicode characters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">check</span></code>: ✓ (green, replaced by ‘ok’ on Windows)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cross</span></code>: ❌ (red, replaced by ‘ko’ on Windows)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ellipsis</span></code>:  … (no color, replaced by ‘…’ on Windows)</p></li>
+</ul>
+<p>You can create your own colored sequences using <a class="reference internal" href="#cli_ui.UnicodeSequence" title="cli_ui.UnicodeSequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnicodeSequence</span></code></a>:</p>
+</li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="cli_ui.UnicodeSequence">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">UnicodeSequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_unicode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_ascii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cli_ui.UnicodeSequence" title="Link to this definition">¶</a></dt>
+<dd><p>Represent a sequence containing a color followed by a Unicode symbol</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">up_arrow</span> <span class="o">=</span> <span class="n">cli_ui</span><span class="o">.</span><span class="n">UnicodeSequence</span><span class="p">(</span><span class="n">cli_ui</span><span class="o">.</span><span class="n">blue</span><span class="p">,</span> <span class="s2">&quot;↑&quot;</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">up_arrow</span><span class="p">,</span> <span class="s2">&quot;2 commits&quot;</span><span class="p">)</span>
+<span class="go">↑ 2 commits # on Linux</span>
+<span class="go">+ 2 commits # on Windows</span>
+</pre></div>
+</div>
+<p>Alternatively, if you do not want to force a color, you can use
+<a class="reference internal" href="#cli_ui.Symbol" title="cli_ui.Symbol"><code class="xref py py-class docutils literal notranslate"><span class="pre">Symbol</span></code></a>:</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cli_ui.Symbol">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">Symbol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_unicode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_ascii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cli_ui.Symbol" title="Link to this definition">¶</a></dt>
+<dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">heart</span> <span class="o">=</span> <span class="n">cli_ui</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;❤&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;3&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Thanks for using cli-ui&quot;</span><span class="p">,</span> <span class="n">heart</span><span class="p">)</span>
+<span class="go">Thanks for using cli-ui ❤  # on Linux</span>
+<span class="go">Thanks for using cli-ui &lt;3  # on Windows</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="informative-messages">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Informative messages</a><a class="headerlink" href="#informative-messages" title="Link to this heading">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.info">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.info" title="Link to this definition">¶</a></dt>
+<dd><p>Print an informative message</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tokens</strong> – list of <cite>ui</cite> constants or strings, like <code class="docutils literal notranslate"><span class="pre">(cli_ui.red,</span> <span class="pre">'this</span> <span class="pre">is</span> <span class="pre">an</span> <span class="pre">error')</span></code></p></li>
+<li><p><strong>sep</strong> – separator, defaults to <code class="docutils literal notranslate"><span class="pre">'</span> <span class="pre">'</span></code></p></li>
+<li><p><strong>end</strong> – token to place at the end, defaults to <code class="docutils literal notranslate"><span class="pre">'\n'</span></code></p></li>
+<li><p><strong>fileobj</strong> – file-like object to print the output, defaults to <code class="docutils literal notranslate"><span class="pre">sys.stdout</span></code></p></li>
+<li><p><strong>update_title</strong> – whether to update the title of the terminal window</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;this is&quot;</span><span class="p">,</span> <span class="n">cli_ui</span><span class="o">.</span><span class="n">red</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">)</span>
+<span class="go">This is red</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>Functions below take the same arguments as the <a class="reference internal" href="#cli_ui.info" title="cli_ui.info"><code class="xref py py-func docutils literal notranslate"><span class="pre">info()</span></code></a> function</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.info_section">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">info_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.info_section" title="Link to this definition">¶</a></dt>
+<dd><p>Print an underlined section name</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info_section</span><span class="p">(</span><span class="s2">&quot;Section one&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting stuff&quot;</span><span class="p">)</span>
+
+<span class="go">Section one</span>
+<span class="go">------------</span>
+
+<span class="go">Starting stuff</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.info_1">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">info_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.info_1" title="Link to this definition">¶</a></dt>
+<dd><p>Print an important informative message</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info_1</span><span class="p">(</span><span class="s2">&quot;Message&quot;</span><span class="p">)</span>
+<span class="go">:: Message</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.info_2">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">info_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.info_2" title="Link to this definition">¶</a></dt>
+<dd><p>Print an not so important informative message</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info_2</span><span class="p">(</span><span class="s2">&quot;Message&quot;</span><span class="p">)</span>
+<span class="go">=&gt; Message</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.info_3">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">info_3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.info_3" title="Link to this definition">¶</a></dt>
+<dd><p>Print an even less important informative message</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info_3</span><span class="p">(</span><span class="s2">&quot;Message&quot;</span><span class="p">)</span>
+<span class="go">* Message</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.debug">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.debug" title="Link to this definition">¶</a></dt>
+<dd><p>Print a debug message.</p>
+<p>Messages are shown only when <code class="docutils literal notranslate"><span class="pre">CONFIG[&quot;verbose&quot;]</span></code> is true</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Message&quot;</span><span class="p">)</span>
+<span class="go">&lt;nothing&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="error-messages">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Error messages</a><a class="headerlink" href="#error-messages" title="Link to this heading">¶</a></h3>
+<p>Functions below use <code class="docutils literal notranslate"><span class="pre">sys.stderr</span></code> by default:</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.error">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.error" title="Link to this definition">¶</a></dt>
+<dd><p>Print an error message</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Message&quot;</span><span class="p">)</span>
+<span class="go">Error: message</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.warning">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.warning" title="Link to this definition">¶</a></dt>
+<dd><p>Print a warning message</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Message&quot;</span><span class="p">)</span>
+<span class="go">Warning: message</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.fatal">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">fatal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exit_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.fatal" title="Link to this definition">¶</a></dt>
+<dd><p>Print an error message and exit the program</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tokens</strong> – list of <cite>ui</cite> constants or strings, like
+<code class="docutils literal notranslate"><span class="pre">(cli_ui.red,</span> <span class="pre">&quot;this</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">fatal</span>&#160; <span class="pre">error&quot;)</span></code></p></li>
+<li><p><strong>exit_code</strong> – value of the exit code (default: 1)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s2">&quot;Message&quot;</span><span class="p">)</span>
+<span class="go">Error: message</span>
+<span class="go">exit(1)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s2">&quot;Another message&quot;</span><span class="p">,</span> <span class="n">exit_code</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">Error: Another message</span>
+<span class="go">exit(2)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="progress-messages">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Progress messages</a><a class="headerlink" href="#progress-messages" title="Link to this heading">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.dot">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileobj:</span> <span class="pre">~typing.IO[str]</span> <span class="pre">=</span> <span class="pre">&lt;_io.TextIOWrapper</span> <span class="pre">name='&lt;stdout&gt;'</span> <span class="pre">mode='w'</span> <span class="pre">encoding='utf-8'&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.dot" title="Link to this definition">¶</a></dt>
+<dd><p>Print a dot without a newline unless it is the last one.</p>
+<p>Useful when you want to display a progress with very little
+knowledge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>last</strong> – whether this is the last dot (will insert a newline)</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="ow">in</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">cli_ui</span><span class="o">.</span><span class="n">dot</span><span class="p">()</span>
+<span class="go">....&lt;no newline&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">last</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">.....</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.info_count">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">info_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">rest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.info_count" title="Link to this definition">¶</a></dt>
+<dd><p>Display a counter before the rest of the message.</p>
+<p><code class="docutils literal notranslate"><span class="pre">rest</span></code> and <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> are passed to <a class="reference internal" href="#cli_ui.info" title="cli_ui.info"><code class="xref py py-func docutils literal notranslate"><span class="pre">info()</span></code></a></p>
+<p>Current index should start at 0 and end at <code class="docutils literal notranslate"><span class="pre">n-1</span></code>, like in <code class="docutils literal notranslate"><span class="pre">enumerate()</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> – current index</p></li>
+<li><p><strong>n</strong> – total number of items</p></li>
+<li><p><strong>one_line</strong> – force all messages to be printed on one line</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info_count</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+<span class="go">* ( 5/12) message</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.info_progress">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">info_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.info_progress" title="Link to this definition">¶</a></dt>
+<dd><p>Display info progress in percent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> – the current value</p></li>
+<li><p><strong>max_value</strong> – the max value</p></li>
+<li><p><strong>prefix</strong> – the prefix message to print</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info_progress</span><span class="p">(</span><span class="s2">&quot;Done&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="go">Done: 25%</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="formatting">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Formatting</a><a class="headerlink" href="#formatting" title="Link to this heading">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.tabs">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">tabs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cli_ui.tabs" title="Link to this definition">¶</a></dt>
+<dd><p>Compute a blank tab</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="go">            cli_ui.tabs(1), &quot;two&quot;, &quot;\n&quot;,</span>
+<span class="go">            cli_ui.tabs(2), &quot;three&quot;, &quot;\n&quot;,</span>
+<span class="go">            sep=&quot;&quot;)</span>
+<span class="go">one</span>
+<span class="go">  two</span>
+<span class="go">    three</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.indent">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">indent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cli_ui.indent" title="Link to this definition">¶</a></dt>
+<dd><p>Indent a piece of text.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">quote</span> <span class="o">=</span> <span class="p">(</span>
+<span class="go">      &quot;First, we take Manhattan\n&quot;</span>
+<span class="go">      &quot;Then we take Berlin!&quot;</span>
+<span class="go">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;John said:&quot;</span><span class="p">,</span> <span class="n">cli_ui</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">quote</span><span class="p">))</span>
+<span class="go">John said:</span>
+<span class="go">   First, we take Manhattan.</span>
+<span class="go">   Then we take Berlin!</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.info_table">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">info_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data:</span> <span class="pre">~typing.Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Sequence[str]</span> <span class="pre">=</span> <span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileobj:</span> <span class="pre">~typing.IO[str]</span> <span class="pre">=</span> <span class="pre">&lt;_io.TextIOWrapper</span> <span class="pre">name='&lt;stdout&gt;'</span> <span class="pre">mode='w'</span> <span class="pre">encoding='utf-8'&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.info_table" title="Link to this definition">¶</a></dt>
+<dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+<span class="go">      [(bold, &quot;John&quot;), (green, 10.0)],</span>
+<span class="go">      [(bold, &quot;Jane&quot;), (green, 5.0)],</span>
+<span class="go">    ]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info_table</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<span class="go">name      score</span>
+<span class="go">--------  --------</span>
+<span class="go">John       10.0</span>
+<span class="go">Jane        5.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="asking-for-user-input">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Asking for user input</a><a class="headerlink" href="#asking-for-user-input" title="Link to this heading">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.read_input">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">read_input</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cli_ui.read_input" title="Link to this definition">¶</a></dt>
+<dd><p>Read input from the user</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.ask_string">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">ask_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.ask_string" title="Link to this definition">¶</a></dt>
+<dd><p>Ask the user to enter a string.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">cli_ui</span><span class="o">.</span><span class="n">ask_string</span><span class="p">(</span><span class="s2">&quot;Enter your name&quot;</span><span class="p">)</span>
+<span class="go">:: Enter your name</span>
+<span class="go">&lt;john&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span>
+<span class="go">&#39;john&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.ask_choice">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">ask_choice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func_desc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#cli_ui.ask_choice" title="Link to this definition">¶</a></dt>
+<dd><p>Ask the user to choose from a list of choices.</p>
+<dl class="simple">
+<dt>Will loop until:</dt><dd><ul class="simple">
+<li><p>the user enters a valid index</p></li>
+<li><p>or leaves the prompt empty</p></li>
+</ul>
+</dd>
+</dl>
+<p>In the last case, <cite>None</cite> will be returned</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt</strong> – a list of tokens suitable for <a class="reference internal" href="#cli_ui.info" title="cli_ui.info"><code class="xref py py-func docutils literal notranslate"><span class="pre">info()</span></code></a></p></li>
+<li><p><strong>choices</strong> – a list of arbitrary elements</p></li>
+<li><p><strong>func_desc</strong> – a callable. It will be used to display and
+sort the list of choices (unless <code class="docutils literal notranslate"><span class="pre">sort</span></code> is False)
+Defaults to the identity function.</p></li>
+<li><p><strong>sort</strong> – whether to sort the list of choices.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the selected choice.</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fruit</span> <span class="o">=</span> <span class="n">cli_ui</span><span class="o">.</span><span class="n">ask_choice</span><span class="p">(</span><span class="s2">&quot;Select a fruit&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">choices</span><span class="p">)</span>
+<span class="go">:: Select a fruit</span>
+<span class="go">  1 apple</span>
+<span class="go">  2 banana</span>
+<span class="go">  3 orange</span>
+<span class="go">&lt;2&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fruit</span>
+<span class="go">&#39;banana&#39;</span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.10: </span>Add <code class="docutils literal notranslate"><span class="pre">sort</span></code> parameter to disable sorting the list of choices</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.8: </span><code class="docutils literal notranslate"><span class="pre">choices</span></code> is now a named keyword argument</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.7: </span>The <code class="xref py py-exc docutils literal notranslate"><span class="pre">KeyboardInterrupt</span></code> exception is no longer caught by this function.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.select_choices">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">select_choices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func_desc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#cli_ui.select_choices" title="Link to this definition">¶</a></dt>
+<dd><p>Ask the user to select one or multiple from a list of choices,
+delimited by space, comma or semi colon.</p>
+<p>Will loop until:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>the user enters a valid selection</p></li>
+<li><p>or leaves the prompt empty</p></li>
+</ul>
+</div></blockquote>
+<p>In the last case, <cite>None</cite> will be returned</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt</strong> – a list of tokens suitable for <a class="reference internal" href="#cli_ui.info" title="cli_ui.info"><code class="xref py py-func docutils literal notranslate"><span class="pre">info()</span></code></a></p></li>
+<li><p><strong>choices</strong> – a list of arbitrary elements</p></li>
+<li><p><strong>func_desc</strong> – a callable. It will be used to display and
+sort the list of choices (unless <code class="docutils literal notranslate"><span class="pre">sort</span></code> is False)
+Defaults to the identity function.</p></li>
+<li><p><strong>sort</strong> – whether to sort the list of choices.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the selected choice(s).</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fruits</span> <span class="o">=</span> <span class="n">cli_ui</span><span class="o">.</span><span class="n">ask_choice</span><span class="p">(</span><span class="s2">&quot;Select several fruits&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">choices</span><span class="p">)</span>
+<span class="go">:: Select a fruit</span>
+<span class="go">  1 apple</span>
+<span class="go">  2 banana</span>
+<span class="go">  3 orange</span>
+<span class="go">&lt;1, 2&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fruits</span>
+<span class="go">[&#39;apple&#39;, &#39;banana&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.ask_yes_no">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">ask_yes_no</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#cli_ui.ask_yes_no" title="Link to this definition">¶</a></dt>
+<dd><p>Ask the user to answer by yes or no</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">with_cream</span> <span class="o">=</span> <span class="n">cli_ui</span><span class="o">.</span><span class="n">ask_yes_no</span><span class="p">(</span><span class="s2">&quot;With cream?&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">:: With cream? (y/N)</span>
+<span class="go">&lt;y&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">with_cream</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.read_password">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">read_password</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cli_ui.read_password" title="Link to this definition">¶</a></dt>
+<dd><p>Read a password from the user</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.ask_password">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">ask_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">question</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cli_ui.ask_password" title="Link to this definition">¶</a></dt>
+<dd><p>Ask the user to enter a password.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">favorite_food</span> <span class="o">=</span> <span class="n">cli_ui</span><span class="o">.</span><span class="n">ask_password</span><span class="p">(</span><span class="s2">&quot;Guilty pleasure?&quot;</span><span class="p">)</span>
+<span class="go">:: Guilty pleasure?</span>
+<span class="go">****</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">favorite_food</span>
+<span class="go">&#39;chocolate&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="displaying-duration">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Displaying duration</a><a class="headerlink" href="#displaying-duration" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="cli_ui.Timer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">Timer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cli_ui.Timer" title="Link to this definition">¶</a></dt>
+<dd><p>Display time taken when executing a list of statements.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@cli_ui</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="s2">&quot;something&quot;</span><span class="p">)</span>
+<span class="go">    def do_something():</span>
+<span class="go">         foo()</span>
+<span class="go">         bar()</span>
+<span class="go"># Or:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">cli_ui</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="s2">&quot;something&quot;</span><span class="p">):</span>
+<span class="go">        foo()</span>
+<span class="go">        bar()</span>
+<span class="go">* Something took 0h 3m 10s 430ms</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="auto-correct">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Auto-correct</a><a class="headerlink" href="#auto-correct" title="Link to this heading">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="cli_ui.did_you_mean">
+<span class="sig-prename descclassname"><span class="pre">cli_ui.</span></span><span class="sig-name descname"><span class="pre">did_you_mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cli_ui.did_you_mean" title="Link to this definition">¶</a></dt>
+<dd><p>Given a list of choices and an invalid user input, display the closest
+items in the list that match the input.</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">allowed_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">cli_ui</span><span class="o">.</span><span class="n">ask_string</span><span class="p">(</span><span class="s2">&quot;Enter a name&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">allowed_names</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>      <span class="n">cli_ui</span><span class="o">.</span><span class="n">did_you_mean</span><span class="p">(</span><span class="s2">&quot;Invalid name&quot;</span><span class="p">,</span> <span class="n">user_input</span><span class="p">,</span> <span class="n">choices</span><span class="p">)</span>
+<span class="go">:: Enter a name</span>
+<span class="go">&lt;Joohn&gt;</span>
+<span class="go">Invalid name.</span>
+<span class="go">Did you mean: John?</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Note: if the list of possible choices is short, consider using
+<a class="reference internal" href="#cli_ui.ask_choice" title="cli_ui.ask_choice"><code class="xref py py-func docutils literal notranslate"><span class="pre">ask_choice()</span></code></a> instead.</p>
+</dd></dl>
+
+</section>
+<section id="testing">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Testing</a><a class="headerlink" href="#testing" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="cli_ui.tests.MessageRecorder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cli_ui.tests.</span></span><span class="sig-name descname"><span class="pre">MessageRecorder</span></span><a class="headerlink" href="#cli_ui.tests.MessageRecorder" title="Link to this definition">¶</a></dt>
+<dd><p>Helper class to tests emitted messages</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cli_ui.tests.MessageRecorder.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.tests.MessageRecorder.find" title="Link to this definition">¶</a></dt>
+<dd><p>Find a message in the list of recorded message</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pattern</strong> – regular expression pattern to use
+when looking for recorded message</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cli_ui.tests.MessageRecorder.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.tests.MessageRecorder.reset" title="Link to this definition">¶</a></dt>
+<dd><p>Reset the list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cli_ui.tests.MessageRecorder.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.tests.MessageRecorder.start" title="Link to this definition">¶</a></dt>
+<dd><p>Start recording messages</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cli_ui.tests.MessageRecorder.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cli_ui.tests.MessageRecorder.stop" title="Link to this definition">¶</a></dt>
+<dd><p>Stop recording messages</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example with pytest</span>
+
+<span class="c1"># in conftest.py</span>
+<span class="kn">from</span> <span class="nn">cli_ui.tests</span> <span class="kn">import</span> <span class="n">MessageRecorder</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">message_recorder</span><span class="p">():</span>
+    <span class="n">message_recorder</span> <span class="o">=</span> <span class="n">MessageRecorder</span><span class="p">()</span>
+    <span class="n">message_recorder</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">message_recorder</span>
+    <span class="n">message_recorder</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+
+<span class="c1"># in foo.py</span>
+<span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+    <span class="n">cli_ui</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Doing foo stuff&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># in test_foo.py</span>
+<span class="k">def</span> <span class="nf">test_foo</span><span class="p">(</span><span class="n">message_recorder</span><span class="p">):</span>
+     <span class="n">foo</span><span class="p">()</span>
+     <span class="k">assert</span> <span class="n">message_recorder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;foo stuff&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="using-cli-ui-in-concurrent-programs">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">Using cli-ui in concurrent programs</a><a class="headerlink" href="#using-cli-ui-in-concurrent-programs" title="Link to this heading">¶</a></h2>
+<p>Thanks to the <a class="reference external" href="https://wiki.python.org/moin/GlobalInterpreterLock">GIL</a>, it’s
+<em>usually</em> fine to use cli-ui in concurrent contexts.</p>
+<p>However, be careful when using code like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cli_ui</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Some thing that starts here&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="n">cli_ui</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;and ends there&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It’s possible for a race condition to occur that would clutter
+standard output if some other code prints anything between to two
+<cite>cli_ui.info</cite> calls.</p>
+<p>One way to fix the problems is to use <em>locks</em>. You can see examples of
+this in the <a class="reference external" href="https://github.com/your-tools/python-cli-ui/tree/main/examples">examples/ folder of the repository of this project</a>.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">cli_ui</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="changelog.html" title="next chapter">Changelog</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2017, Kontrol SAS.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
