@@ -1,6 +1,16 @@
 Changelog
 ----------
 
+v0.19.0 (2025-03-29)
+++++++++++++++++++++
+
+* Add ``one_line`` argument to ``info_count``  method
+* Bump dependencies
+* Remove support for Python 3.8 and 3.9
+* Add support for Python 3.13
+
+
+
 v0.18.0 (2024-12-11)
 ++++++++++++++++++++
 
