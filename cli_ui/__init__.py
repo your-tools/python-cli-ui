@@ -347,6 +347,7 @@ def info_count(
 
     :param i: current index
     :param n: total number of items
+    :param one_line: force all messages to be printed on one line
     """
     num_digits = len(str(n))
     counter_format = "(%{}d/%d)".format(num_digits)
