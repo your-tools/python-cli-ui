@@ -11,6 +11,7 @@ class MessageRecorder:
 
     def __init__(self) -> None:
         cli_ui._MESSAGES = []
+        self.idx_find_next: int = 0
 
     def start(self) -> None:
         """Start recording messages"""
@@ -24,6 +25,7 @@ class MessageRecorder:
     def reset(self) -> None:
         """Reset the list"""
         cli_ui._MESSAGES = []
+        self.idx_find_next = 0
 
     def find(self, pattern: str) -> Optional[str]:
         """Find a message in the list of recorded message
@@ -32,10 +34,56 @@ class MessageRecorder:
                         when looking for recorded message
         """
         regexp = re.compile(pattern)
-        for message in cli_ui._MESSAGES:
+        for idx, message in enumerate(cli_ui._MESSAGES):
             if re.search(regexp, message):
-                return message
+                if isinstance(message, str):
+                    self.idx_find_next = idx + 1
+                    return message
         return None
+
+    def find_after(self, pattern: str) -> Optional[str]:
+        """Same as 'find', but it check any message that comes
+        after the last 'find'|'find_after'|'find_right_after'
+
+        :param pattern: regular expression pattern to use
+                        when looking for recorded message
+        """
+        regexp = re.compile(pattern)
+        for idx, message in enumerate(cli_ui._MESSAGES):
+            if idx < self.idx_find_next:
+                continue
+            if re.search(regexp, message):
+                if isinstance(message, str):
+                    self.idx_find_next = idx + 1
+                    return message
+        return None
+
+    def find_right_after(self, pattern: str) -> Optional[str]:
+        """Same as 'find', but only check the message that is right after
+        the one found last time. if no message was found before, the 1st
+        message in buffer is checked
+
+        This is particulary usefull if we want to match only consecutive message.
+        Calling this function can be repeated for further consecutive message match.
+        """
+        if len(cli_ui._MESSAGES) > self.idx_find_next:
+            regexp = re.compile(pattern)
+            message = cli_ui._MESSAGES[self.idx_find_next]
+            if re.search(regexp, message):
+                if isinstance(message, str):
+                    self.idx_find_next += 1
+                    return message
+        return None
+
+    def find_eob(self) -> bool:  # find end of (the) buffer
+        """If we want to be sure we are at the end of the message buffer
+
+        That means, that our last 'find' or 'find_ritht_after'
+        matched the very last line of the message buffer"""
+        if len(cli_ui._MESSAGES) == self.idx_find_next:
+            return True
+        else:
+            return False
 
 
 @pytest.fixture
