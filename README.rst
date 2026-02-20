@@ -18,10 +18,7 @@ Tools for nice user interfaces in the terminal.
 Note
 ----
 
-This project was originally hosted on the `TankerHQ
-<https://github.com/TankerHQ>`_ organization, which was my employer from 2016
-to 2021. They kindly agreed to give back ownership of this project to
-me. Thanks!
+This project is no longer maintained. `rich <https://rich.readthedocs.io/en/stable/introduction.html>`_ is a recommanded an alternative
 
 Documentation
 -------------
